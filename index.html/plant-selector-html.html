@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sélecteur de Plantes Permaculture Québec</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .plant-card {
+            transition: all 0.3s ease;
+        }
+        .plant-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
+            <div class="flex items-center gap-3 mb-6">
+                <svg class="text-green-600" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+                    <path d="M12 6v12M6 12h12"/>
+                </svg>
+                <h1 class="text-3xl font-bold text-gray-800">Sélecteur de Plantes Permaculture Québec</h1>
+            </div>
+            <p class="text-gray-600 mb-6">Trouvez les plantes parfaites pour votre aménagement (50 plantes)</p>
+
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <div class="relative">
+                    <svg class="absolute left-3 top-3 text-gray-400" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Rechercher une plante..."
+                        class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none"
+                    >
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">☀️ Ensoleillement</label>
+                    <select id="lightFilter" class="w-full p-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none">
+                        <option value="">Tous</option>
+                        <option value="○">Plein soleil (8h+)</option>
+                        <option value="◐">Mi-ombre (4-8h)</option>
+                        <option value="●">Ombre (&lt;4h)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">💧 Besoins en eau</label>
+                    <select id="waterFilter" class="w-full p-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none">
+                        <option value="">Tous</option>
+                        <option value="▁">Peu d'eau</option>
+                        <option value="▅">Eau moyenne</option>
+                        <option value="█">Beaucoup d'eau</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">🌱 Type de sol</label>
+                    <select id="soilFilter" class="w-full p-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none">
+                        <option value="">Tous</option>
+                        <option value="░">Sol léger</option>
+                        <option value="▒">Sol moyen</option>
+                        <option value="▓">Sol lourd</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">🌳 Type de plante</label>
+                    <select id="typeFilter" class="w-full p-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none">
+                        <option value="">Tous</option>
+                        <option value="A">Arbre</option>
+                        <option value="Ar">Arbuste</option>
+                        <option value="H">Herbacée</option>
+                        <option value="G">Grimpante</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">❄️ Zone de rusticité (max)</label>
+                    <select id="zoneFilter" class="w-full p-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none">
+                        <option value="">Toutes</option>
+                        <option value="2">Zone 2 et moins</option>
+                        <option value="3">Zone 3 et moins</option>
+                        <option value="4">Zone 4 et moins</option>
+                        <option value="5">Zone 5 et moins</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">🎯 Fonction</label>
+                    <select id="functionFilter" class="w-full p-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none">
+                        <option value="">Toutes</option>
+                        <option value="comestible">Comestible</option>
+                        <option value="medicinal">Médicinale</option>
+                        <option value="pollinisateurs">Mellifère</option>
+                        <option value="couvreSol">Couvre-sol</option>
+                        <option value="haie">Haie</option>
+                        <option value="accumulateur">Accumulateur</option>
+                        <option value="fixateurAzote">Fixateur d'azote</option>
+                        <option value="vieSauvage">Attire faune</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="clearFilters" class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 mb-4">
+                ✕ Effacer les filtres
+            </button>
+
+            <div id="resultCount" class="text-sm text-gray-600 mb-4"></div>
+        </div>
+
+        <!-- Results Grid -->
+        <div id="plantsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="bg-white rounded-xl shadow-lg p-12 text-center hidden">
+            <p class="text-gray-500 text-lg">Aucune plante ne correspond à vos critères. Essayez d'ajuster vos filtres.</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-start mb-6">
+                <div id="modalContent"></div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
+            </div>
+            <div id="modalDetails"></div>
+        </div>
+    </div>
+
+    <script>
+        // Base de données des plantes
+        const plants = [
+            {genre:"Acer",espece:"saccharum",nomFr:"Érable à Sucre",nomEn:"Sugar maple",zone:"3b",light:["○","◐","●"],water:["▅"],soilTexture:["▒"],forme:"A",hauteur:"15",largeur:"20",comestible:["S"],vieSauvage:"NA",floraison:["P"],notes:"Production de sirop d'érable"},
+            {genre:"Achillea",espece:"millefolium",nomFr:"Achillée millefeuille",nomEn:"Yarrow",zone:"3",light:["○"],water:["▁","▅"],soilTexture:["░","▒"],forme:"H",hauteur:"0.5",largeur:"0.4",pollinisateurs:"S",couvreSol:true,medicinal:true,floraison:["É","A"],couleurFleur:["B","V"]},
+            {genre:"Actaea",espece:"racemosa",nomFr:"Actée à grappes",nomEn:"Black cohosh",zone:"4",light:["◐","●"],water:["▅","█"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.6",largeur:"1.2",pollinisateurs:"G",medicinal:true,floraison:["É","A"],couleurFleur:["B","V"]},
+            {genre:"Actinidia",espece:"arguta",nomFr:"Vigne de kiwi",nomEn:"Hardy kiwi",zone:"4",light:["○","◐"],water:["▅","█"],soilTexture:["░","▒","▓"],forme:"G",hauteur:"4",largeur:"4",comestible:["Fr"],floraison:["P"],couleurFleur:["B","V"],notes:"Dioïque - besoin mâle et femelle"},
+            {genre:"Actinidia",espece:"kolomikta",nomFr:"Kiwi arctique",nomEn:"Superhardy kiwifruit",zone:"3",light:["○","◐"],water:["▅"],soilTexture:["▒","▓"],forme:"G",hauteur:"4",largeur:"4",comestible:["Fr"],floraison:["P"],couleurFleur:["B","V"],notes:"Dioïque"},
+            {genre:"Agastache",espece:"foeniculum",nomFr:"Agastache fenouil",nomEn:"Anise Hyssop",zone:"4",light:["○","◐"],water:["▅"],soilTexture:["░","▒"],forme:"H",hauteur:"0.9",largeur:"0.4",pollinisateurs:"G",comestible:["Fe"],floraison:["É","A"],couleurFleur:["B","V"],notes:"Saveur d'anis"},
+            {genre:"Ajuga",espece:"reptans",nomFr:"Bugle rampante",nomEn:"Carpetweed",zone:"3",light:["○","◐","●"],water:["▅","█"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.1",largeur:"0.2",pollinisateurs:"G",couvreSol:true,floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Alchemilla",espece:"vulgaris",nomFr:"Alchémille",nomEn:"Lady's mantle",zone:"3a",light:["○","◐","●"],water:["▅","█"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.4",largeur:"0.3",comestible:["Fe","R"],medicinal:true,floraison:["P","É","A"],couleurFleur:["J","V"]},
+            {genre:"Allium",espece:"schoenoprasum",nomFr:"Ciboulette",nomEn:"Chives",zone:"2",light:["○","◐"],water:["▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.15",largeur:"0.4",pollinisateurs:"G",comestible:["Fe","B"],floraison:["É"],couleurFleur:["M","V"]},
+            {genre:"Allium",espece:"sativum",nomFr:"Ail cultivé",nomEn:"Garlic",zone:"3",light:["○"],water:["▁","▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.6",largeur:"0.2",pollinisateurs:"G",comestible:["Fl","Fe","B","Gr"],floraison:["P","É"],couleurFleur:["P","V"]},
+            {genre:"Allium",espece:"tricoccum",nomFr:"Ail des bois",nomEn:"Ramps",zone:"4",light:["◐","●"],water:["▅"],soilTexture:["░","▒"],forme:"H",hauteur:"0.15",largeur:"0.25",pollinisateurs:"G",comestible:["Fe","B"],floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Allium",espece:"tuberosum",nomFr:"Ciboulette à l'ail",nomEn:"Garlic chives",zone:"3",light:["○"],water:["▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.5",largeur:"0.45",pollinisateurs:"G",comestible:["Fe","B"],floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Alnus",espece:"incana",nomFr:"Aulne blanc",nomEn:"Gray alder",zone:"2b",light:["○","◐"],water:["▁","▅","█"],soilTexture:["▒","▓"],forme:"A",hauteur:"15",largeur:"8",fixateurAzote:true,haie:true},
+            {genre:"Amelanchier",espece:"alnifolia",nomFr:"Amélanchier",nomEn:"Saskatoon",zone:"2",light:["○","◐"],water:["▅"],soilTexture:["░","▒","▓"],forme:"Ar",hauteur:"4",largeur:"3",pollinisateurs:"G",haie:true,comestible:["Fr"],vieSauvage:"N",floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Amelanchier",espece:"canadensis",nomFr:"Amélanchier du canada",nomEn:"Serviceberry",zone:"3",light:["○","◐"],water:["▅"],soilTexture:["░","▒","▓"],forme:"A",hauteur:"6",largeur:"4",pollinisateurs:"G",haie:true,comestible:["Fr"],vieSauvage:"N",floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Amorpha",espece:"fruticosa",nomFr:"Faux indigo",nomEn:"False Indigo",zone:"3b",light:["○","◐"],water:["▁","▅"],soilTexture:["░","▒","▓"],forme:"Ar",hauteur:"3",largeur:"2",fixateurAzote:true,pollinisateurs:"G",haie:true,floraison:["É"],couleurFleur:["B","J","O","P","V"]},
+            {genre:"Apios",espece:"americana",nomFr:"Patates en chapelet",nomEn:"Groundnut",zone:"3",light:["○","◐","●"],water:["▅","█"],soilTexture:["░","▒","▓"],forme:"G",hauteur:"1.2",largeur:"0.1",fixateurAzote:true,pollinisateurs:"G",couvreSol:true,comestible:["R"],floraison:["É","A"],couleurFleur:["P","V"]},
+            {genre:"Aralia",espece:"racemosa",nomFr:"Grande salsepareille",nomEn:"Spikenard",zone:"3",light:["◐","●"],water:["▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"1.8",largeur:"1.2",pollinisateurs:"S",vieSauvage:"N",comestible:["Fr","R"],medicinal:true,floraison:["É"],couleurFleur:["B","V"]},
+            {genre:"Arctostaphylos",espece:"uva-ursi",nomFr:"Raisin d'ours",nomEn:"Bearberry",zone:"2",light:["○"],water:["▁","▅"],soilTexture:["░","▒"],forme:"Ar",hauteur:"0.1",largeur:"1",pollinisateurs:"G",couvreSol:true,vieSauvage:"N",comestible:["Fr"],medicinal:true,floraison:["É","A"],couleurFleur:["B","Rs","V"]},
+            {genre:"Armoracia",espece:"rusticana",nomFr:"Raifort",nomEn:"Horseradish",zone:"2",light:["○","◐"],water:["▅"],soilTexture:["░","▒"],forme:"H",hauteur:"0.7",largeur:"0.8",comestible:["Fe","R","G"],medicinal:true,floraison:["P","É"],couleurFleur:["B","V"]},
+            {genre:"Aronia",espece:"melanocarpa",nomFr:"Aronie noire",nomEn:"Black chokeberry",zone:"3",light:["○","◐"],water:["▁","▅","█"],soilTexture:["░","▒","▓"],forme:"Ar",hauteur:"1.5",largeur:"1.5",pollinisateurs:"G",haie:true,vieSauvage:"NA",comestible:["Fr"],floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Artemisia",espece:"dracunculus",nomFr:"Estragon",nomEn:"Tarragon",zone:"3",light:["○"],water:["▅"],soilTexture:["░","▒"],forme:"H",hauteur:"0.6",largeur:"0.3",pollinisateurs:"S",comestible:["Fe"],floraison:["É"],couleurFleur:["B","V"]},
+            {genre:"Asarum",espece:"canadense",nomFr:"Gingembre sauvage",nomEn:"Wild ginger",zone:"3",light:["◐","●"],water:["▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.15",largeur:"0.25",couvreSol:true,comestible:["R"],medicinal:true,floraison:["P"],couleurFleur:["P","V"]},
+            {genre:"Asclepias",espece:"incarnata",nomFr:"Asclépiade incarnate",nomEn:"Swamp Milkweed",zone:"3",light:["◐","●"],water:["▅","█"],soilTexture:["░","▒"],forme:"H",hauteur:"1.2",largeur:"1",pollinisateurs:"G",vieSauvage:"N",comestible:["Fl","Fr"],medicinal:true,floraison:["É"],couleurFleur:["P","V"]},
+            {genre:"Asparagus",espece:"officinalis",nomFr:"Asperge",nomEn:"Asparagus",zone:"4",light:["○","◐"],water:["▁","▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"1.5",largeur:"0.8",pollinisateurs:"G",comestible:["T"],medicinal:true,floraison:["É"],couleurFleur:["B","V"]},
+            {genre:"Baptisia",espece:"australis",nomFr:"Baptisia",nomEn:"Wild indigo",zone:"3",light:["○","◐"],water:["▁","▅"],soilTexture:["░","▒"],forme:"H",hauteur:"1",largeur:"0.6",fixateurAzote:true,pollinisateurs:"G",floraison:["É"],couleurFleur:["P","V"]},
+            {genre:"Caragana",espece:"arborescens",nomFr:"Caraganier",nomEn:"Siberian pea shrub",zone:"2",light:["○"],water:["▁","▅"],soilTexture:["░","▒","▓"],forme:"Ar",hauteur:"2",largeur:"2",fixateurAzote:true,pollinisateurs:"G",vieSauvage:"N",haie:true,comestible:["Fl","G"]},
+            {genre:"Comptonia",espece:"peregrina",nomFr:"Comptonie voyageuse",nomEn:"Sweetfern",zone:"2",light:["○","◐"],water:["▅","█"],soilTexture:["░"],forme:"Ar",hauteur:"0.6",largeur:"1",fixateurAzote:true,couvreSol:true},
+            {genre:"Cornus",espece:"canadensis",nomFr:"Cornouiller du Canada",nomEn:"Bunchberry",zone:"2",light:["○","◐","●"],water:["▅","█"],soilTexture:["▒"],forme:"H",hauteur:"0.2",largeur:"0.3",couvreSol:true,vieSauvage:"N",haie:true,floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Cornus",espece:"mas",nomFr:"Cornouiller mâle",nomEn:"Cornelian cherry",zone:"4",light:["○","◐"],water:["▅","█"],soilTexture:["░","▒","▓"],forme:"Ar",hauteur:"5",largeur:"5",pollinisateurs:"S",haie:true,vieSauvage:"N",comestible:["Fr"],medicinal:true,floraison:["P"],couleurFleur:["J","V"]},
+            {genre:"Cornus",espece:"sericea",nomFr:"Cornouiller Stolonifère",nomEn:"Red-osier dogwood",zone:"2",light:["○","◐","●"],water:["▅","█"],soilTexture:["░","▒"],forme:"Ar",hauteur:"2",largeur:"3",pollinisateurs:"G",haie:true,vieSauvage:"N",comestible:["Fr"],medicinal:true,floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Corylus",espece:"americana",nomFr:"Noisetier d'Amérique",nomEn:"Hazelnut",zone:"4a",light:["○","◐"],water:["▅"],soilTexture:["░","▒"],forme:"Ar",hauteur:"3",largeur:"2",accumulateur:true,pollinisateurs:"V",haie:true,vieSauvage:"A",comestible:["G"],floraison:["P"]},
+            {genre:"Corylus",espece:"cornuta",nomFr:"Noisetier à long bec",nomEn:"Hazelnut",zone:"4a",light:["○","◐"],water:["▁","▅","█"],soilTexture:["░","▒","▓"],forme:"Ar",hauteur:"1.2",largeur:"1.2",accumulateur:true,pollinisateurs:"V",haie:true,vieSauvage:"N",comestible:["G"],floraison:["P"]},
+            {genre:"Crambe",espece:"maritima",nomFr:"Chou maritime",nomEn:"Sea kale",zone:"5b",light:["○","◐"],water:["▁","▅","█"],soilTexture:["░","▒"],forme:"H",hauteur:"0.6",largeur:"0.6",pollinisateurs:"G",comestible:["Fe","T","Fr","R"],medicinal:true,floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Crataegus",espece:"sp.",nomFr:"Aubépine",nomEn:"Hawthorne",zone:"3a",light:["○","◐"],water:["▁","▅","█"],soilTexture:["░","▒","▓"],forme:"A",hauteur:"9",largeur:"9",pollinisateurs:"S",haie:true,vieSauvage:"NA",comestible:["Fr"],floraison:["P"],couleurFleur:["Rs","V"]},
+            {genre:"Elaeagnus",espece:"commutata",nomFr:"Chalef argenté",nomEn:"Silverberry",zone:"2",light:["○"],water:["▁","▅"],soilTexture:["░","▒"],forme:"Ar",hauteur:"3",largeur:"2",fixateurAzote:true,pollinisateurs:"G",haie:true,vieSauvage:"NA",comestible:["G"],medicinal:true,floraison:["É"],couleurFleur:["J"]},
+            {genre:"Epilobium",espece:"angustifolium",nomFr:"Épilobe",nomEn:"Willow Herb",zone:"3",light:["○","◐"],water:["▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"2",largeur:"1",pollinisateurs:"G",vieSauvage:"N",comestible:["Fl","Fe","R","T","JP"],medicinal:true,floraison:["É"],couleurFleur:["Rs","V"]},
+            {genre:"Fragaria",espece:"vesca",nomFr:"Fraises sauvages",nomEn:"Alpine Strawberry",zone:"3",light:["○","◐","●"],water:["▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.2",largeur:"0.2",pollinisateurs:"G",couvreSol:true,comestible:["Fr"],medicinal:true,floraison:["É","A"],couleurFleur:["B","V"]},
+            {genre:"Fragaria",espece:"ananassa",nomFr:"Fraisier cultivé",nomEn:"Strawberry",zone:"3",light:["○","◐"],water:["▅"],soilTexture:["▒","▓"],forme:"H",hauteur:"0.3",largeur:"0.4",pollinisateurs:"G",couvreSol:true,comestible:["Fr"],floraison:["É","A"],couleurFleur:["B","Rs","V"]},
+            {genre:"Gaultheria",espece:"procumbens",nomFr:"Thé des bois",nomEn:"Wintergreen",zone:"3",light:["◐","●"],water:["▁","▅"],soilTexture:["▒","▓"],forme:"Ar",hauteur:"0.05",largeur:"0.15",accumulateur:true,pollinisateurs:"G",couvreSol:true,vieSauvage:"N",comestible:["Fr","Fe"],medicinal:true,floraison:["É"],couleurFleur:["B"]},
+            {genre:"Glechoma",espece:"hederacea",nomFr:"Lierre terrestre",nomEn:"Ground Ivy",zone:"3",light:["○","◐","●"],water:["▁","▅","█"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"0.3",largeur:"2",accumulateur:true,pollinisateurs:"G",couvreSol:true,vieSauvage:"NA",comestible:["Fl","Fr","Fe"],medicinal:true,floraison:["P"],couleurFleur:["P","V"]},
+            {genre:"Helianthus",espece:"tuberosus",nomFr:"Topinambour",nomEn:"Sunchokes",zone:"4",light:["○"],water:["▁","▅"],soilTexture:["░","▒","▓"],forme:"H",hauteur:"1.8",largeur:"0.9",pollinisateurs:"G",vieSauvage:"N",haie:true,comestible:["R"],medicinal:true,floraison:["É"],couleurFleur:["J","V"]},
+            {genre:"Hippophae",espece:"rhamnoides",nomFr:"Argousier",nomEn:"Sea buckthorn",zone:"2",light:["○","◐","●"],water:["▁","▅"],soilTexture:["░","▒","▓"],forme:"Ar",hauteur:"2.5",largeur:"2.5",fixateurAzote:true,accumulateur:true,pollinisateurs:"G",haie:true,vieSauvage:"N",comestible:["Fr","Fe"],medicinal:true,floraison:["P"],couleurFleur:["J"]},
+            {genre:"Lonicera",espece:"caerulea",nomFr:"Camerise",nomEn:"Haskap",zone:"2a",light:["○","◐"],water:["▅"],soilTexture:["░","▒","▓"],forme:"Ar",hauteur:"1.5",largeur:"1.5",pollinisateurs:"G",haie:true,comestible:["Fr"],floraison:["P"],couleurFleur:["B","V"]},
+            {genre:"Melissa",espece:"officinalis",
