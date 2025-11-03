@@ -1,15 +1,19 @@
 # PLDeb.github.io
 Sélecteur de Plantes Québec
-# Mon Projet HTML
+# Mon Projet Web – Transformation de Terrain
 
-Petit projet web pour tester un fichier HTML en ligne.
+Petit projet web pour visualiser et interagir avec la transformation d’un terrain. L’interface est construite en HTML, CSS et JavaScript, et permet de présenter le projet directement dans un navigateur.
 
-## Comment utiliser
-1. Télécharger les fichiers
-2. Ouvrir `index.html` dans un navigateur
+## Contenu du projet
 
-## Capture d'écran
-![Capture](screenshot.png)
+- `index.html` – page principale du projet
+- `style.css` – styles visuels
+- `script.js` – interactivité (si nécessaire)
+- `images/` – captures d’écran et illustrations du projet
+- `README.md` – ce fichier
 
-## Licence
-MIT
+## Installation et utilisation locale
+
+1. **Cloner le projet**  
+   ```bash
+   git clone https://github.com/votre-utilisateur/nom-du-repo.git
