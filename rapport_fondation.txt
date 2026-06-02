@@ -1,0 +1,16 @@
+RAPPORT DE FONDATION — PlantExpert Québec
+================================================
+
+Source : VASCAN (Canadensys) — domaine public / CC-BY-SA
+  Note : vascan_id = null (réseau cloud restreint)
+         Exécuter build_foundation_vascan.py localement
+         pour remplir les identifiants VASCAN.
+
+Espèces demandées : 63
+Fiches créées     : 63
+Indigènes au QC   : 49
+Introduits        : 13
+Disparus          : 1
+
+Prochaine étape : remplir les champs zone/sol/fonctions
+et rédiger tes propres descriptions (ta propriété).
