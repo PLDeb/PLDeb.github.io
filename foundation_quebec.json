@@ -8,12 +8,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "4.5-7.5",
+    "hauteur": 20.0,
+    "largeur": 13.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "sève comestible",
+      "ombre",
+      "brise-vent",
+      "mellifère printanier"
+    ],
     "description": "",
     "notes": ""
   },
@@ -26,12 +50,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.3",
+    "hauteur": 22.0,
+    "largeur": 12.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "production de sirop",
+      "ombre",
+      "mellifère",
+      "bois noble"
+    ],
     "description": "",
     "notes": ""
   },
@@ -44,12 +90,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "humide"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "4.5-7.5",
+    "hauteur": 8.0,
+    "largeur": 4.0,
+    "croissance": "rapide",
+    "comestible": false,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "fixation azote",
+      "brise-vent",
+      "haie",
+      "bord de cours d'eau",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -62,12 +131,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "6.0-7.0",
+    "hauteur": 3.0,
+    "largeur": 2.5,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "mellifère",
+      "haie",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -80,12 +172,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 6.0,
+    "largeur": 4.0,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "mellifère",
+      "haie",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -98,12 +214,33 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 7.0,
+    "largeur": 5.0,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "mellifère",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -116,12 +253,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-8.0",
+    "hauteur": 2.5,
+    "largeur": 2.0,
+    "croissance": "rapide",
+    "comestible": false,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "fixation azote",
+      "haie",
+      "brise-vent",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -134,12 +295,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "4.5-5.5",
+    "hauteur": 0.2,
+    "largeur": 1.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "couvre-sol",
+      "fruits comestibles",
+      "médicinal",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -152,12 +336,37 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "4.5-8.0",
+    "hauteur": 1.5,
+    "largeur": 1.5,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "haie",
+      "mellifère",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -170,12 +379,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 1.2,
+    "largeur": 0.7,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "mellifère",
+      "faune (monarque)",
+      "comestible",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -188,12 +419,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.0-6.5",
+    "hauteur": 18.0,
+    "largeur": 10.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "sève comestible",
+      "bois",
+      "faune",
+      "ombre",
+      "brise-vent",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -206,12 +461,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "6.0-8.0",
+    "hauteur": 4.0,
+    "largeur": 3.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "fixation azote",
+      "brise-vent",
+      "haie",
+      "graines comestibles",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -224,12 +502,32 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 22.0,
+    "largeur": 9.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": false,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "noix comestible",
+      "faune",
+      "bois"
+    ],
     "description": "",
     "notes": ""
   },
@@ -242,12 +540,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "4.5-6.5",
+    "hauteur": 15.0,
+    "largeur": 12.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "châtaignes comestibles",
+      "bois",
+      "restauration écologique",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -260,12 +580,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.0-8.0",
+    "hauteur": 0.9,
+    "largeur": 0.9,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fixation azote",
+      "mellifère",
+      "médicinal",
+      "feuilles en thé"
+    ],
     "description": "",
     "notes": ""
   },
@@ -278,12 +621,37 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "6.0-8.0",
+    "hauteur": 15.0,
+    "largeur": 15.0,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "faune",
+      "ombre",
+      "brise-vent"
+    ],
     "description": "",
     "notes": ""
   },
@@ -296,12 +664,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-8.0",
+    "hauteur": 6.0,
+    "largeur": 5.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "mellifère printanier précoce",
+      "haie",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -314,12 +704,37 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 2.0,
+    "largeur": 3.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "haie",
+      "faune",
+      "bord de cours d'eau",
+      "médicinal",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -332,12 +747,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 3.0,
+    "largeur": 3.0,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "noisettes comestibles",
+      "faune",
+      "haie",
+      "mellifère",
+      "accumulateur minéraux"
+    ],
     "description": "",
     "notes": ""
   },
@@ -350,12 +788,37 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.0-7.5",
+    "hauteur": 2.5,
+    "largeur": 2.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "noisettes comestibles",
+      "faune",
+      "sous-bois",
+      "haie",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -368,12 +831,37 @@
     "rang": "genus",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 7.0,
+    "largeur": 6.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "haie défensive",
+      "fruits comestibles",
+      "médicinal cardiaque",
+      "mellifère",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -386,12 +874,32 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 5,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "6.0-7.5",
+    "hauteur": 4.0,
+    "largeur": 4.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles (gelées, pâtes)",
+      "mellifère",
+      "ornement"
+    ],
     "description": "",
     "notes": ""
   },
@@ -404,12 +912,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "6.0-7.0",
+    "hauteur": 0.9,
+    "largeur": 0.5,
+    "croissance": "moyenne",
+    "comestible": false,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "médicinal immunostimulant",
+      "mellifère",
+      "faune (graines oiseaux)"
+    ],
     "description": "",
     "notes": ""
   },
@@ -422,12 +952,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "6.0-8.0",
+    "hauteur": 3.0,
+    "largeur": 2.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "fixation azote",
+      "brise-vent",
+      "haie",
+      "mellifère parfumé",
+      "fruits comestibles"
+    ],
     "description": "",
     "notes": ""
   },
@@ -440,12 +993,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "4.5-6.0",
+    "hauteur": 0.12,
+    "largeur": 0.4,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "couvre-sol",
+      "fruits comestibles",
+      "feuilles en thé",
+      "médicinal",
+      "sous-bois acide"
+    ],
     "description": "",
     "notes": ""
   },
@@ -458,12 +1034,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "6.0-8.0",
+    "hauteur": 20.0,
+    "largeur": 12.0,
+    "croissance": "lente",
+    "comestible": false,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "ombre",
+      "brise-vent",
+      "faune",
+      "mellifère",
+      "bois durable"
+    ],
     "description": "",
     "notes": ""
   },
@@ -476,12 +1074,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.0-6.5",
+    "hauteur": 4.5,
+    "largeur": 4.5,
+    "croissance": "lente",
+    "comestible": false,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "médicinal (extrait hamamélis)",
+      "mellifère automnal",
+      "haie",
+      "ornement"
+    ],
     "description": "",
     "notes": ""
   },
@@ -494,12 +1116,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.5-8.0",
+    "hauteur": 3.0,
+    "largeur": 3.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "fixation azote",
+      "fruits très riches vit. C",
+      "haie défensive",
+      "brise-vent",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -512,12 +1157,33 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "6.0-7.0",
+    "hauteur": 18.0,
+    "largeur": 13.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": false,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "noix comestible",
+      "bois",
+      "faune",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -530,12 +1196,32 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "6.0-7.5",
+    "hauteur": 25.0,
+    "largeur": 15.0,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": false,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "noix comestible",
+      "bois précieux",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -548,12 +1234,33 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 1.5,
+    "largeur": 1.2,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles riches antioxydants",
+      "mellifère printanier précoce"
+    ],
     "description": "",
     "notes": ""
   },
@@ -566,12 +1273,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 5,
+    "zone_max": 9,
+    "soleil": [
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 1.2,
+    "largeur": 1.2,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "couvre-sol ombragé",
+      "fruits comestibles",
+      "médicinal (berbérine)",
+      "mellifère printanier"
+    ],
     "description": "",
     "notes": ""
   },
@@ -584,12 +1314,32 @@
     "rang": "genus",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "6.0-7.0",
+    "hauteur": 6.0,
+    "largeur": 5.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "mellifère",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -602,12 +1352,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "limoneux"
+    ],
+    "ph": "6.0-7.0",
+    "hauteur": 0.9,
+    "largeur": 0.7,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "mellifère (colibris, bourdons)",
+      "médicinal",
+      "feuilles en thé",
+      "fleurs comestibles"
+    ],
     "description": "",
     "notes": ""
   },
@@ -620,12 +1392,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 12.0,
+    "largeur": 12.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "fruits comestibles abondants",
+      "ombre",
+      "faune",
+      "brise-vent"
+    ],
     "description": "",
     "notes": ""
   },
@@ -638,12 +1433,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 1,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "humide"
+    ],
+    "sol": [
+      "sableux",
+      "tourbeux"
+    ],
+    "ph": "4.0-6.0",
+    "hauteur": 1.0,
+    "largeur": 1.5,
+    "croissance": "lente",
+    "comestible": false,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fixation azote",
+      "zones humides/tourbières",
+      "répulsif insectes",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -656,12 +1473,39 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 2.0,
+    "largeur": 2.0,
+    "croissance": "rapide",
+    "comestible": false,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "haie",
+      "brise-vent",
+      "faune",
+      "mellifère",
+      "très adaptable"
+    ],
     "description": "",
     "notes": ""
   },
@@ -674,12 +1518,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "4.5-6.5",
+    "hauteur": 28.0,
+    "largeur": 8.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": false,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "brise-vent majeur",
+      "bois",
+      "faune",
+      "aiguilles en thé (vit. C)",
+      "ombre"
+    ],
     "description": "",
     "notes": ""
   },
@@ -692,12 +1559,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 3.5,
+    "largeur": 4.0,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "haie",
+      "faune",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -710,12 +1601,33 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.0-7.0",
+    "hauteur": 7.0,
+    "largeur": 5.0,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "faune",
+      "pionnier forestier",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -728,12 +1640,37 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.0-7.5",
+    "hauteur": 5.0,
+    "largeur": 3.5,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles (confitures)",
+      "faune",
+      "mellifère",
+      "haie",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -746,12 +1683,31 @@
     "rang": "genus",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "6.0-7.5",
+    "hauteur": 8.0,
+    "largeur": 5.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -764,12 +1720,37 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-8.0",
+    "hauteur": 20.0,
+    "largeur": 20.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": false,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "glands comestibles (faible tanin)",
+      "faune",
+      "bois",
+      "ombre",
+      "brise-vent",
+      "longévité"
+    ],
     "description": "",
     "notes": ""
   },
@@ -782,12 +1763,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "4.5-7.0",
+    "hauteur": 22.0,
+    "largeur": 17.0,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": false,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "glands (après lixiviation)",
+      "bois précieux",
+      "faune",
+      "ombre",
+      "brise-vent"
+    ],
     "description": "",
     "notes": ""
   },
@@ -800,12 +1805,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.0-7.5",
+    "hauteur": 4.5,
+    "largeur": 4.5,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "drupes pour boisson (sumac limonade)",
+      "faune (baies hivernales)",
+      "ornement automnal",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -818,12 +1845,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 1.2,
+    "largeur": 1.2,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "faune",
+      "sous-bois",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -836,12 +1886,33 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "limoneux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 1.5,
+    "largeur": 1.2,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits riches vit. C",
+      "médicinal",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -854,12 +1925,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 1.5,
+    "largeur": 1.5,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "cynorrhodons riches vit. C",
+      "haie défensive",
+      "brise-vent",
+      "mellifère",
+      "pétales comestibles"
+    ],
     "description": "",
     "notes": ""
   },
@@ -872,12 +1966,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 10,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.5-6.5",
+    "hauteur": 1.5,
+    "largeur": 0.7,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "mellifère",
+      "médicinal",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -890,12 +2006,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "humide"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.0-8.0",
+    "hauteur": 4.5,
+    "largeur": 4.0,
+    "croissance": "rapide",
+    "comestible": false,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "mellifère très précoce (printemps)",
+      "médicinal (salicine)",
+      "bord de cours d'eau",
+      "brise-vent"
+    ],
     "description": "",
     "notes": ""
   },
@@ -908,12 +2046,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-6.5",
+    "hauteur": 3.0,
+    "largeur": 2.5,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fleurs et fruits comestibles",
+      "médicinal antiviral",
+      "mellifère",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   },
@@ -926,12 +2087,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "6.0-8.5",
+    "hauteur": 3.5,
+    "largeur": 3.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "fixation azote",
+      "fruits comestibles",
+      "haie défensive",
+      "brise-vent",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -944,12 +2128,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "5.5-8.0",
+    "hauteur": 1.8,
+    "largeur": 1.5,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": true,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fixation azote",
+      "fruits comestibles",
+      "médicinal",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -962,12 +2169,37 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.0-8.0",
+    "hauteur": 1.0,
+    "largeur": 0.7,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "mellifère automnal essentiel",
+      "médicinal",
+      "faune",
+      "pionnier",
+      "fleurs et feuilles comestibles"
+    ],
     "description": "",
     "notes": ""
   },
@@ -980,12 +2212,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "4.5-6.5",
+    "hauteur": 7.0,
+    "largeur": 5.0,
+    "croissance": "moyenne",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles (gelées)",
+      "faune (oiseaux)",
+      "ornement automnal",
+      "médicinal"
+    ],
     "description": "",
     "notes": ""
   },
@@ -998,12 +2252,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 9,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.0",
+    "hauteur": 0.9,
+    "largeur": 0.7,
+    "croissance": "rapide",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "accumulateur minéraux (K, Ca)",
+      "paillis vert",
+      "médicinal (usage externe)",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -1016,12 +2293,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 22.0,
+    "largeur": 13.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": true,
+    "fonctions_perma": [
+      "mellifère exceptionnelle (miel de tilleul)",
+      "tisane médicinale",
+      "ombre",
+      "brise-vent",
+      "feuilles comestibles"
+    ],
     "description": "",
     "notes": ""
   },
@@ -1034,12 +2335,34 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux"
+    ],
+    "ph": "4.0-5.5",
+    "hauteur": 0.25,
+    "largeur": 0.6,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "couvre-sol",
+      "faune",
+      "mellifère",
+      "sol acide et pauvre"
+    ],
     "description": "",
     "notes": ""
   },
@@ -1052,12 +2375,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 4,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux"
+    ],
+    "ph": "4.5-5.5",
+    "hauteur": 2.0,
+    "largeur": 1.5,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "mellifère",
+      "faune",
+      "haie",
+      "sol acide"
+    ],
     "description": "",
     "notes": ""
   },
@@ -1070,12 +2417,35 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 6,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "tourbeux"
+    ],
+    "ph": "4.0-5.5",
+    "hauteur": 0.2,
+    "largeur": 0.3,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles",
+      "couvre-sol",
+      "médicinal",
+      "sol acide pauvre"
+    ],
     "description": "",
     "notes": ""
   },
@@ -1088,12 +2458,37 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 8,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre",
+      "ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-8.0",
+    "hauteur": 4.5,
+    "largeur": 4.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": false,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles sucrés",
+      "haie",
+      "faune",
+      "mellifère",
+      "très adaptable"
+    ],
     "description": "",
     "notes": ""
   },
@@ -1106,12 +2501,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 2,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "moyen",
+      "humide"
+    ],
+    "sol": [
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 3.0,
+    "largeur": 3.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "fruits comestibles (gelées)",
+      "haie",
+      "faune",
+      "médicinal antispasmodique",
+      "mellifère"
+    ],
     "description": "",
     "notes": ""
   },
@@ -1124,12 +2543,36 @@
     "rang": "species",
     "vascan_id": null,
     "source": "VASCAN (Canadensys, CC0/CC-BY-SA)",
-    "zone_min": null, "zone_max": null,
-    "soleil": null, "humidite": null, "sol": null, "ph": null,
-    "hauteur": null, "largeur": null, "croissance": null,
-    "comestible": null, "medicinal": null, "mellifere": null,
-    "fixe_azote": null, "brise_vent": null,
-    "fonctions_perma": [],
+    "zone_min": 3,
+    "zone_max": 7,
+    "soleil": [
+      "plein soleil",
+      "mi-ombre"
+    ],
+    "humidite": [
+      "sec",
+      "moyen"
+    ],
+    "sol": [
+      "sableux",
+      "limoneux",
+      "argileux"
+    ],
+    "ph": "5.5-7.5",
+    "hauteur": 3.5,
+    "largeur": 3.0,
+    "croissance": "lente",
+    "comestible": true,
+    "medicinal": true,
+    "mellifere": true,
+    "fixe_azote": false,
+    "brise_vent": false,
+    "fonctions_perma": [
+      "haie défensive (épines)",
+      "baies épice (type poivre Sichuan)",
+      "médicinal (anesthésiant)",
+      "faune"
+    ],
     "description": "",
     "notes": ""
   }
