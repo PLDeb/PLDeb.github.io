@@ -151,6 +151,42 @@
     width: 100%; padding: .3rem .45rem; font-size: .82rem; border-radius: 5px;
   }
   #import-tbody input[type="text"] { min-width: 0; }
+
+  /* ── SCAN REÇU ── */
+  .alert-amber { background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: .75rem 1rem; font-size: .88rem; color: #5d4037; margin-bottom: 1rem; }
+  .alert-amber strong { display: block; margin-bottom: .2rem; }
+
+  .receipt-dropzone {
+    border: 2px dashed var(--border); border-radius: var(--radius);
+    padding: 1.5rem; text-align: center; cursor: pointer;
+    color: var(--muted); font-size: .9rem; transition: all .2s; user-select: none;
+  }
+  .receipt-dropzone:hover { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+
+  .receipt-thumb {
+    width: 100%; max-height: 320px; object-fit: contain;
+    border-radius: 8px; border: 1px solid var(--border); background: #f8f8f8;
+  }
+
+  #receipt-lightbox {
+    position: fixed; inset: 0; background: rgba(0,0,0,.88);
+    z-index: 900; display: flex; align-items: center; justify-content: center;
+    cursor: zoom-out;
+  }
+  #receipt-lightbox img { max-width: 95vw; max-height: 92vh; object-fit: contain; border-radius: 6px; }
+  #receipt-lightbox .lb-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: rgba(255,255,255,.15); border: none; color: #fff;
+    font-size: 1.5rem; width: 40px; height: 40px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  #receipt-lightbox .lb-close:hover { background: rgba(255,255,255,.3); }
+
+  .big-spinner {
+    display: block; width: 44px; height: 44px; margin: 0 auto 1rem;
+    border: 4px solid var(--green-pale); border-top-color: var(--green);
+    border-radius: 50%; animation: spin .8s linear infinite;
+  }
 </style>
 </head>
 <body>
@@ -257,6 +293,17 @@
       <span id="pdf-dropzone-text">📄 Glisser le relevé PDF ici &nbsp;ou&nbsp; <u>cliquer pour sélectionner</u></span>
     </div>
     <input type="file" id="pdf-file-input" accept=".pdf" style="display:none" onchange="handlePdfFile(this.files[0])">
+  </div>
+
+  <!-- SCAN REÇU -->
+  <div class="card" style="margin-bottom:1rem;border:2px dashed #b7e4c7">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+      <div>
+        <h2 style="margin-bottom:.15rem">📷 Numériser un reçu</h2>
+        <p style="font-size:.82rem;color:var(--muted)">Prendre une photo ou uploader un reçu — extraction automatique par Claude Vision</p>
+      </div>
+      <button class="btn btn-primary" onclick="openReceiptModal()">📷 Ajouter un reçu</button>
+    </div>
   </div>
 
   <div class="card">
@@ -395,6 +442,118 @@
 </div>
 
 </main>
+
+<!-- ===== MODAL SCAN REÇU ===== -->
+<div id="receipt-modal" class="modal-overlay" style="display:none">
+  <div class="modal-box" style="max-width:700px">
+
+    <!-- En-tête -->
+    <div class="modal-header">
+      <h2 id="receipt-modal-title">📷 Numériser un reçu</h2>
+      <button class="btn btn-outline btn-sm" onclick="closeReceiptModal()">✕</button>
+    </div>
+
+    <!-- ÉTAPE 1 : Upload / caméra -->
+    <div id="receipt-step-upload">
+      <div class="receipt-dropzone" id="receipt-dropzone"
+          onclick="document.getElementById('receipt-input').click()"
+          ondragover="event.preventDefault();this.style.borderColor='var(--green)'"
+          ondragleave="this.style.borderColor=''"
+          ondrop="event.preventDefault();this.style.borderColor='';handleReceiptFileDrop(event)">
+        📷 Prendre une photo ou glisser une image ici<br>
+        <span style="font-size:.8rem;color:var(--muted)">(JPG, PNG, HEIC)</span>
+      </div>
+      <input type="file" id="receipt-input" accept="image/*" capture="environment"
+        style="display:none" onchange="handleReceiptFileSelect(this.files[0])">
+
+      <div id="receipt-preview-wrap" style="display:none;margin-top:1rem">
+        <img id="receipt-preview-img" class="receipt-thumb">
+        <div style="font-size:.8rem;color:var(--muted);margin-top:.4rem" id="receipt-size-note"></div>
+        <div class="flex-gap mt">
+          <button class="btn btn-primary" onclick="analyzeReceipt()">🔍 Analyser avec Claude</button>
+          <button class="btn btn-outline" onclick="resetReceiptUpload()">↩ Autre image</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 : Chargement -->
+    <div id="receipt-step-loading" style="display:none;text-align:center;padding:2.5rem 1rem">
+      <div class="big-spinner"></div>
+      <p style="color:var(--muted)" id="receipt-loading-msg">Analyse en cours...</p>
+    </div>
+
+    <!-- ÉTAPE 3 : Formulaire de révision -->
+    <div id="receipt-step-review" style="display:none">
+      <div id="receipt-confidence-warn" class="alert-amber" style="display:none">
+        <strong>⚠️ Lecture incertaine</strong>Vérifiez les informations — certaines données peuvent être incorrectes.
+      </div>
+
+      <div class="two-col" style="gap:1.25rem;align-items:start">
+        <div class="form-grid" style="gap:.75rem">
+          <label class="field" style="grid-column:1/-1">Fournisseur
+            <input type="text" id="rec-fournisseur" placeholder="Nom du magasin">
+          </label>
+          <label class="field">Date
+            <input type="date" id="rec-date">
+          </label>
+          <label class="field">Catégorie
+            <select id="rec-cat">
+              <option value="semences">Semences</option>
+              <option value="terreau">Terreau</option>
+              <option value="fertilisant">Fertilisant</option>
+              <option value="essence">Essence</option>
+              <option value="transport">Transport</option>
+              <option value="emballage">Emballage</option>
+              <option value="materiel-marche">Matériel marché</option>
+              <option value="frais-kiosque">Frais de kiosque</option>
+              <option value="branding">Étiquettes / Branding</option>
+              <option value="matieres-premieres">Matières premières</option>
+              <option value="frais-bancaires">Frais bancaires</option>
+              <option value="main-oeuvre">Main-d'œuvre</option>
+              <option value="equipement">Équipement</option>
+              <option value="intrants">Intrants</option>
+              <option value="frais-marche">Frais marché</option>
+              <option value="autre">Autre</option>
+            </select>
+          </label>
+          <label class="field">Montant total ($)
+            <input type="number" id="rec-montant" min="0" step="0.01">
+          </label>
+          <label class="field">TPS ($)
+            <input type="number" id="rec-tps" min="0" step="0.01" placeholder="0.00">
+          </label>
+          <label class="field">TVQ ($)
+            <input type="number" id="rec-tvq" min="0" step="0.01" placeholder="0.00">
+          </label>
+          <label class="field" style="grid-column:1/-1">Description / notes
+            <input type="text" id="rec-desc" placeholder="Détails additionnels...">
+          </label>
+          <label style="grid-column:1/-1;display:flex;align-items:center;gap:.5rem;font-size:.85rem;cursor:pointer;color:var(--muted)">
+            <input type="checkbox" id="rec-attach" checked style="width:auto">
+            Joindre la photo comme pièce justificative
+            <span id="rec-attach-note" style="font-size:.78rem"></span>
+          </label>
+        </div>
+        <div>
+          <img id="rec-thumb" class="receipt-thumb" style="display:none">
+          <div id="rec-items-list" style="margin-top:.75rem;font-size:.8rem;color:var(--muted)"></div>
+        </div>
+      </div>
+
+      <div class="flex-gap" style="justify-content:flex-end;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+        <button class="btn btn-outline" onclick="closeReceiptModal()">Annuler</button>
+        <button class="btn btn-primary" onclick="confirmReceipt()">✅ Enregistrer la dépense</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIGHTBOX reçu -->
+<div id="receipt-lightbox" style="display:none" onclick="closeLightbox()">
+  <button class="lb-close" onclick="event.stopPropagation();closeLightbox()">✕</button>
+  <img id="lightbox-img" alt="Pièce justificative">
+</div>
 
 <!-- ===== MODAL RÉVISION IMPORT ===== -->
 <div id="import-modal" class="modal-overlay" style="display:none">
@@ -636,7 +795,10 @@ function renderDepenses() {
         <td><span class="badge ${catDepBadge[d.cat] || 'gray'}">${catDepLabel[d.cat] || d.cat}</span></td>
         <td>${d.desc}</td>
         <td style="text-align:right;font-weight:600;color:var(--red)">${fmt(d.montant)}</td>
-        <td><button class="btn btn-danger" onclick="deleteDepense(${d.id})">✕</button></td>
+        <td style="white-space:nowrap">
+          ${d.image ? `<button class="btn btn-outline btn-sm" onclick="viewReceiptImage(${d.id})" title="Voir le reçu" style="margin-right:.3rem">📎</button>` : ''}
+          <button class="btn btn-danger" onclick="deleteDepense(${d.id})">✕</button>
+        </td>
       </tr>`).join('')
     : '<tr><td colspan="5" class="empty">Aucune dépense</td></tr>';
   document.getElementById('dep-total-display').textContent = `Total : ${fmt(total)}`;
@@ -1147,6 +1309,278 @@ function confirmImport() {
   populateMonthFilter('dep-filter-month', depenses);
   renderDepenses();
 }
+
+// ── SCAN REÇU ─────────────────────────────────────────────────────────────
+
+const RECEIPT_SYSTEM = `Tu es un assistant comptable pour une petite entreprise québécoise.
+On te donne la photo d'un reçu ou d'une facture fournisseur.
+Extrais les informations suivantes et retourne UNIQUEMENT un JSON valide, sans texte avant ou après :
+{
+  "fournisseur": "nom du magasin ou fournisseur",
+  "date": "YYYY-MM-DD",
+  "montant_total": 0.00,
+  "tps": 0.00,
+  "tvq": 0.00,
+  "montant_avant_taxes": 0.00,
+  "items": [{ "description": "nom item", "quantite": 1, "prix_unitaire": 0.00 }],
+  "categorie_suggeree": "une seule catégorie parmi la liste",
+  "confiance": "haute|moyenne|faible"
+}
+Catégories disponibles : Semences, Terreau, Fertilisant, Essence, Transport, Emballage, Matériel marché, Frais de kiosque, Étiquettes / Branding, Matières premières, Frais bancaires, Main-d'oeuvre, Équipement, Intrants, Frais marché, Autre
+Si une information est illisible ou absente, mets null.
+Si le reçu est flou ou illisible, retourne { "erreur": "Image illisible, veuillez reprendre la photo" }`;
+
+const RECEIPT_CAT_MAP = {
+  'semences': 'semences', 'terreau': 'terreau', 'fertilisant': 'fertilisant',
+  'essence': 'essence', 'transport': 'transport', 'emballage': 'emballage',
+  'matériel marché': 'materiel-marche', 'materiel marche': 'materiel-marche', 'matériel de marché': 'materiel-marche',
+  'frais de kiosque': 'frais-kiosque', 'kiosque': 'frais-kiosque',
+  'étiquettes': 'branding', 'branding': 'branding',
+  'matières premières': 'matieres-premieres', 'matieres premieres': 'matieres-premieres',
+  'frais bancaires': 'frais-bancaires',
+  "main-d'oeuvre": 'main-oeuvre', 'main': 'main-oeuvre',
+  'équipement': 'equipement', 'equipement': 'equipement',
+  'intrants': 'intrants',
+  'frais marché': 'frais-marche', 'frais marche': 'frais-marche',
+  'autre': 'autre'
+};
+
+function mapReceiptCat(label) {
+  if (!label) return 'autre';
+  const norm = label.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  for (const [k, v] of Object.entries(RECEIPT_CAT_MAP)) {
+    if (norm.includes(k.normalize('NFD').replace(/[̀-ͯ]/g, ''))) return v;
+  }
+  return 'autre';
+}
+
+let receiptBase64 = null;
+let receiptMediaType = 'image/jpeg';
+
+function openReceiptModal() {
+  resetReceiptUpload();
+  receiptBase64 = null;
+  showReceiptStep('upload');
+  document.getElementById('receipt-modal').style.display = 'flex';
+}
+
+function closeReceiptModal() {
+  document.getElementById('receipt-modal').style.display = 'none';
+  receiptBase64 = null;
+}
+
+function showReceiptStep(step) {
+  ['upload', 'loading', 'review'].forEach(s =>
+    document.getElementById(`receipt-step-${s}`).style.display = s === step ? '' : 'none'
+  );
+}
+
+function resetReceiptUpload() {
+  document.getElementById('receipt-preview-wrap').style.display = 'none';
+  document.getElementById('receipt-dropzone').style.display = '';
+  document.getElementById('receipt-input').value = '';
+  showReceiptStep('upload');
+}
+
+async function handleReceiptFileDrop(e) {
+  const file = e.dataTransfer.files[0];
+  if (file) await handleReceiptFileSelect(file);
+}
+
+async function handleReceiptFileSelect(file) {
+  if (!file || !file.type.startsWith('image/')) {
+    alert('Veuillez sélectionner une image (JPG, PNG, HEIC…)');
+    return;
+  }
+  const compressed = await compressImage(file);
+  receiptMediaType  = 'image/jpeg';
+  receiptBase64     = await blobToBase64(compressed);
+
+  const sizeKB = Math.round(compressed.size / 1024);
+  document.getElementById('receipt-size-note').textContent = `Taille compressée : ${sizeKB} Ko`;
+  document.getElementById('receipt-preview-img').src = 'data:image/jpeg;base64,' + receiptBase64;
+  document.getElementById('receipt-dropzone').style.display = 'none';
+  document.getElementById('receipt-preview-wrap').style.display = '';
+}
+
+async function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 1400;
+        let w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else       { w = Math.round(w * MAX / h); h = MAX; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(b => b ? resolve(b) : reject(new Error('Compression échouée')), 'image/jpeg', 0.75);
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function analyzeReceipt() {
+  const key = getApiKey();
+  if (!key) { alert('Clé API manquante — cliquez sur ⚙️ Clé API dans le bloc Desjardins pour la configurer.'); return; }
+  if (!receiptBase64) { alert('Aucune image sélectionnée.'); return; }
+
+  showReceiptStep('loading');
+  document.getElementById('receipt-loading-msg').textContent = 'Analyse du reçu par Claude Vision...';
+
+  try {
+    const resp = await fetch(CLAUDE_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-allow-browser': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1024,
+        system: RECEIPT_SYSTEM,
+        messages: [{
+          role: 'user',
+          content: [{
+            type: 'image',
+            source: { type: 'base64', media_type: receiptMediaType, data: receiptBase64 }
+          }, {
+            type: 'text',
+            text: 'Extrais les informations de ce reçu selon le format JSON demandé.'
+          }]
+        }]
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.error?.message || `Erreur API (${resp.status})`);
+    }
+
+    const data = await resp.json();
+    const raw  = data.content[0].text.trim();
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Réponse Claude invalide.');
+    const parsed = JSON.parse(match[0]);
+
+    if (parsed.erreur) throw new Error(parsed.erreur);
+
+    fillReceiptForm(parsed);
+    showReceiptStep('review');
+  } catch (err) {
+    showReceiptStep('upload');
+    alert('Erreur : ' + err.message);
+  }
+}
+
+function fillReceiptForm(data) {
+  document.getElementById('rec-fournisseur').value = data.fournisseur || '';
+  document.getElementById('rec-date').value        = data.date        || today();
+  document.getElementById('rec-montant').value     = data.montant_total != null ? data.montant_total : '';
+  document.getElementById('rec-tps').value         = data.tps  != null ? data.tps  : '';
+  document.getElementById('rec-tvq').value         = data.tvq  != null ? data.tvq  : '';
+  document.getElementById('rec-desc').value        = data.fournisseur || '';
+
+  const cat = mapReceiptCat(data.categorie_suggeree);
+  document.getElementById('rec-cat').value = cat;
+
+  const warn = document.getElementById('receipt-confidence-warn');
+  warn.style.display = data.confiance === 'faible' ? '' : 'none';
+
+  const thumb = document.getElementById('rec-thumb');
+  thumb.src = 'data:image/jpeg;base64,' + receiptBase64;
+  thumb.style.display = '';
+
+  const sizeKB = Math.round((receiptBase64.length * 3 / 4) / 1024);
+  const note   = document.getElementById('rec-attach-note');
+  if (sizeKB > 500) {
+    note.textContent = `(${sizeKB} Ko — peut remplir le stockage rapidement)`;
+    note.style.color = '#e65100';
+  } else {
+    note.textContent = `(${sizeKB} Ko)`;
+    note.style.color = '';
+  }
+
+  const list = document.getElementById('rec-items-list');
+  if (data.items && data.items.length) {
+    list.innerHTML = '<strong style="font-size:.8rem">Articles détectés :</strong><ul style="margin:.3rem 0 0 1rem">' +
+      data.items.filter(it => it.description).map(it =>
+        `<li>${escHtml(it.description)}${it.quantite > 1 ? ` ×${it.quantite}` : ''} — ${fmt(it.prix_unitaire || 0)}</li>`
+      ).join('') + '</ul>';
+  } else {
+    list.innerHTML = '';
+  }
+}
+
+function confirmReceipt() {
+  const montant = parseFloat(document.getElementById('rec-montant').value);
+  const desc    = document.getElementById('rec-fournisseur').value.trim() ||
+                  document.getElementById('rec-desc').value.trim();
+  if (!desc)            { alert('Veuillez indiquer le fournisseur.'); return; }
+  if (isNaN(montant) || montant <= 0) { alert('Veuillez entrer un montant valide.'); return; }
+
+  const attachImg = document.getElementById('rec-attach').checked;
+  const entry = {
+    id:      Date.now(),
+    date:    document.getElementById('rec-date').value || today(),
+    cat:     document.getElementById('rec-cat').value,
+    desc:    desc + (document.getElementById('rec-desc').value.trim() && document.getElementById('rec-desc').value.trim() !== desc
+               ? ' — ' + document.getElementById('rec-desc').value.trim() : ''),
+    montant,
+    tps:     parseFloat(document.getElementById('rec-tps').value) || null,
+    tvq:     parseFloat(document.getElementById('rec-tvq').value) || null,
+    image:   attachImg ? receiptBase64 : null
+  };
+
+  depenses.push(entry);
+  try {
+    save('agri_depenses', depenses);
+  } catch (e) {
+    if (e.name === 'QuotaExceededError') {
+      entry.image = null;
+      save('agri_depenses', depenses);
+      alert('⚠️ Stockage plein — la dépense a été sauvegardée sans la photo.');
+    } else throw e;
+  }
+
+  closeReceiptModal();
+  populateMonthFilter('dep-filter-month', depenses);
+  renderDepenses();
+  alert(`✅ Dépense enregistrée${entry.image ? ' avec pièce justificative 📎' : ''}.`);
+}
+
+function viewReceiptImage(id) {
+  const d = depenses.find(d => d.id === id);
+  if (!d?.image) return;
+  document.getElementById('lightbox-img').src = 'data:image/jpeg;base64,' + d.image;
+  document.getElementById('receipt-lightbox').style.display = 'flex';
+}
+
+function closeLightbox() {
+  document.getElementById('receipt-lightbox').style.display = 'none';
+  document.getElementById('lightbox-img').src = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 document.getElementById('rev-date').value = today();
