@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gestion Agri-Affaires</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
   :root {
     --green: #2d6a4f;
@@ -114,6 +115,42 @@
     .item-row .desc-col { grid-column: 1 / -1; }
     .item-row .del-col  { grid-column: 2; justify-self: end; }
   }
+
+  /* ── IMPORT DESJARDINS ── */
+  .import-card { border: 2px dashed var(--green-mid); }
+  .pdf-dropzone {
+    margin-top: 1rem; border: 2px dashed var(--border); border-radius: var(--radius);
+    padding: 1.75rem; text-align: center; cursor: pointer;
+    color: var(--muted); font-size: .9rem; transition: all .2s; user-select: none;
+  }
+  .pdf-dropzone:hover, .pdf-dropzone.drag-over { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+  .pdf-dropzone.loading { cursor: wait; pointer-events: none; opacity: .7; }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.55);
+    z-index: 500; display: flex; align-items: flex-start;
+    justify-content: center; padding: 1.5rem 1rem; overflow-y: auto;
+  }
+  .modal-box {
+    background: #fff; border-radius: var(--radius); padding: 1.5rem;
+    width: 100%; max-width: 960px; box-shadow: 0 12px 40px rgba(0,0,0,.25);
+    margin: auto;
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; }
+  .modal-header h2 { margin: 0; }
+
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid var(--green-pale); border-top-color: var(--green);
+    border-radius: 50%; animation: spin .7s linear infinite;
+    vertical-align: middle; margin-right: .4rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #import-tbody input[type="text"], #import-tbody select {
+    width: 100%; padding: .3rem .45rem; font-size: .82rem; border-radius: 5px;
+  }
+  #import-tbody input[type="text"] { min-width: 0; }
 </style>
 </head>
 <body>
@@ -192,6 +229,36 @@
 
 <!-- ===== DÉPENSES ===== -->
 <div class="section" id="section-depenses">
+
+  <!-- IMPORTER DESJARDINS -->
+  <div class="card import-card" style="margin-bottom:1rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+      <div>
+        <h2 style="margin-bottom:.15rem">🏦 Importer un relevé Desjardins</h2>
+        <p style="font-size:.82rem;color:var(--muted)">Extraction automatique des transactions via Claude AI</p>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="toggleApiKeyConfig()">⚙️ Clé API</button>
+    </div>
+
+    <div id="api-key-config" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <label class="field" style="max-width:420px">Clé API Anthropic (stockée localement, jamais envoyée ailleurs)
+        <div style="display:flex;gap:.5rem">
+          <input type="password" id="api-key-input" placeholder="sk-ant-...">
+          <button class="btn btn-primary btn-sm" onclick="saveApiKeyConfig()" style="white-space:nowrap">Sauvegarder</button>
+        </div>
+      </label>
+    </div>
+
+    <div id="pdf-dropzone" class="pdf-dropzone"
+        onclick="document.getElementById('pdf-file-input').click()"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="event.preventDefault();this.classList.remove('drag-over');handlePdfDrop(event)">
+      <span id="pdf-dropzone-text">📄 Glisser le relevé PDF ici &nbsp;ou&nbsp; <u>cliquer pour sélectionner</u></span>
+    </div>
+    <input type="file" id="pdf-file-input" accept=".pdf" style="display:none" onchange="handlePdfFile(this.files[0])">
+  </div>
+
   <div class="card">
     <h2>Ajouter une dépense</h2>
     <div class="form-grid">
@@ -201,8 +268,16 @@
       <label class="field">Catégorie
         <select id="dep-cat">
           <option value="semences">Semences</option>
+          <option value="terreau">Terreau</option>
+          <option value="fertilisant">Fertilisant</option>
+          <option value="essence">Essence</option>
           <option value="transport">Transport</option>
           <option value="emballage">Emballage</option>
+          <option value="materiel-marche">Matériel marché</option>
+          <option value="frais-kiosque">Frais de kiosque</option>
+          <option value="branding">Étiquettes / Branding</option>
+          <option value="matieres-premieres">Matières premières</option>
+          <option value="frais-bancaires">Frais bancaires</option>
           <option value="main-oeuvre">Main-d'œuvre</option>
           <option value="equipement">Équipement</option>
           <option value="intrants">Intrants</option>
@@ -320,6 +395,39 @@
 </div>
 
 </main>
+
+<!-- ===== MODAL RÉVISION IMPORT ===== -->
+<div id="import-modal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Révision des transactions importées</h2>
+      <button class="btn btn-outline btn-sm" onclick="closeImportModal()">✕ Fermer</button>
+    </div>
+    <p style="font-size:.84rem;color:var(--muted);margin-bottom:1rem">
+      Vérifiez chaque transaction, ajustez les catégories, décochez les lignes à ignorer (transferts, soldes…).
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="import-check-all" onchange="toggleAllImport(this.checked)" title="Tout cocher/décocher"></th>
+            <th>Date</th>
+            <th>Description</th>
+            <th style="text-align:right">Montant</th>
+            <th>Type</th>
+            <th>Catégorie</th>
+          </tr>
+        </thead>
+        <tbody id="import-tbody"></tbody>
+      </table>
+    </div>
+    <div class="flex-gap" style="justify-content:flex-end;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <span id="import-count" style="font-size:.85rem;color:var(--muted);margin-right:auto"></span>
+      <button class="btn btn-outline" onclick="closeImportModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="confirmImport()">✅ Confirmer l'import</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ── COMPANY INFO (modifier ici) ────────────────────────────────────────────
@@ -477,14 +585,22 @@ function renderRevenus() {
 
 // ── DÉPENSES ──────────────────────────────────────────────────────────────
 const catDepLabel = {
-  semences: 'Semences', transport: 'Transport', emballage: 'Emballage',
-  'main-oeuvre': "Main-d'œuvre", equipement: 'Équipement',
-  intrants: 'Intrants', 'frais-marche': 'Frais marché', autre: 'Autre'
+  semences: 'Semences', terreau: 'Terreau', fertilisant: 'Fertilisant',
+  essence: 'Essence', transport: 'Transport', emballage: 'Emballage',
+  'materiel-marche': 'Matériel marché', 'frais-kiosque': 'Frais de kiosque',
+  branding: 'Étiquettes / Branding', 'matieres-premieres': 'Matières premières',
+  'frais-bancaires': 'Frais bancaires', 'main-oeuvre': "Main-d'œuvre",
+  equipement: 'Équipement', intrants: 'Intrants',
+  'frais-marche': 'Frais marché', autre: 'Autre'
 };
 const catDepBadge = {
-  semences: 'green', transport: 'orange', emballage: 'blue',
-  'main-oeuvre': 'orange', equipement: 'gray',
-  intrants: 'green', 'frais-marche': 'blue', autre: 'gray'
+  semences: 'green', terreau: 'green', fertilisant: 'green',
+  essence: 'orange', transport: 'orange', emballage: 'blue',
+  'materiel-marche': 'blue', 'frais-kiosque': 'blue',
+  branding: 'gray', 'matieres-premieres': 'green',
+  'frais-bancaires': 'gray', 'main-oeuvre': 'orange',
+  equipement: 'gray', intrants: 'green',
+  'frais-marche': 'blue', autre: 'gray'
 };
 
 function addDepense() {
@@ -809,6 +925,227 @@ function exportCSV() {
     download: `factures-${new Date().toISOString().slice(0,10)}.csv`
   });
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+// ── IMPORT DESJARDINS ────────────────────────────────────────────────────
+
+const CLAUDE_API = 'https://api.anthropic.com/v1/messages';
+
+function buildSystemPrompt() {
+  return `Tu es un assistant comptable. On te donne le texte brut d'un relevé bancaire Desjardins.
+Le format Desjardins sépare souvent les descriptions et les montants en deux blocs distincts dans le PDF.
+Reconstitue chaque transaction en associant description + montant correct.
+Ignore les lignes "Solde reporté" et les soldes intermédiaires — garde seulement les vraies transactions.
+Retourne UNIQUEMENT un tableau JSON valide, sans texte avant ou après, au format :
+[{ "date": "2026-05-01", "description": "Canadian Tire #173", "montant": 18.39, "type": "depense", "categorie": "equipement" }]
+Types possibles : "revenu", "depense", "transfert"
+Utilise exactement ces clés pour les catégories :
+  Dépenses : semences, terreau, fertilisant, essence, transport, emballage, materiel-marche, frais-kiosque, branding, matieres-premieres, frais-bancaires, main-oeuvre, equipement, intrants, frais-marche, autre
+  Revenus  : marche, vente-directe, autre
+Si la date est absente, utilise la date du jour : ${today()}.
+Les virements Interac entrants sont des "revenu", les virements sortants et achats sont des "depense", les virements entre comptes propres sont des "transfert".`;
+}
+
+function getApiKey() { return localStorage.getItem('agri_claude_key') || ''; }
+
+function toggleApiKeyConfig() {
+  const el = document.getElementById('api-key-config');
+  const show = el.style.display === 'none';
+  el.style.display = show ? 'block' : 'none';
+  if (show) document.getElementById('api-key-input').value = getApiKey();
+}
+
+function saveApiKeyConfig() {
+  const key = document.getElementById('api-key-input').value.trim();
+  if (!key) { alert('Entrez une clé API valide.'); return; }
+  localStorage.setItem('agri_claude_key', key);
+  document.getElementById('api-key-config').style.display = 'none';
+  alert('Clé API sauvegardée !');
+}
+
+async function extractPDFText(file) {
+  if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js non chargé. Vérifiez votre connexion internet.');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const buffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+  let text = '';
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(item => item.str).join(' ') + '\n';
+  }
+  return text;
+}
+
+async function analyzeWithClaude(pdfText) {
+  const key = getApiKey();
+  if (!key) throw new Error('Clé API manquante — cliquez sur ⚙️ Clé API pour la configurer.');
+
+  const resp = await fetch(CLAUDE_API, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-allow-browser': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 4096,
+      system: buildSystemPrompt(),
+      messages: [{ role: 'user', content: `Texte extrait du relevé Desjardins :\n\n${pdfText}` }]
+    })
+  });
+
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.error?.message || `Erreur API Claude (${resp.status})`);
+  }
+
+  const data = await resp.json();
+  const raw = data.content[0].text.trim();
+  const match = raw.match(/\[[\s\S]*\]/);
+  if (!match) throw new Error('Réponse Claude invalide — JSON introuvable.');
+  return JSON.parse(match[0]);
+}
+
+function setDropzoneState(state, msg) {
+  const dz  = document.getElementById('pdf-dropzone');
+  const txt = document.getElementById('pdf-dropzone-text');
+  dz.className = 'pdf-dropzone' + (state === 'loading' ? ' loading' : '');
+  txt.innerHTML = state === 'loading'
+    ? `<span class="spinner"></span>${msg || 'Traitement...'}`
+    : '📄 Glisser le relevé PDF ici &nbsp;ou&nbsp; <u>cliquer pour sélectionner</u>';
+}
+
+async function handlePdfDrop(event) {
+  const file = event.dataTransfer.files[0];
+  if (file) await handlePdfFile(file);
+}
+
+async function handlePdfFile(file) {
+  if (!file || file.type !== 'application/pdf') { alert('Veuillez sélectionner un fichier PDF.'); return; }
+  try {
+    setDropzoneState('loading', 'Extraction du texte PDF...');
+    const text = await extractPDFText(file);
+    setDropzoneState('loading', 'Analyse par Claude AI...');
+    const transactions = await analyzeWithClaude(text);
+    setDropzoneState('idle');
+    showImportReview(transactions);
+  } catch (err) {
+    setDropzoneState('idle');
+    alert('Erreur : ' + err.message);
+  }
+  document.getElementById('pdf-file-input').value = '';
+}
+
+let importTransactions = [];
+
+const CAT_DEP_OPTIONS = Object.entries(catDepLabel).map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
+const CAT_REV_OPTIONS = Object.entries(catRevLabel).map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
+
+function showImportReview(transactions) {
+  importTransactions = transactions;
+
+  const tbody = document.getElementById('import-tbody');
+  tbody.innerHTML = importTransactions.map((t, i) => {
+    const isTransfer = t.type === 'transfert';
+    const catOpts    = t.type === 'revenu' ? CAT_REV_OPTIONS : CAT_DEP_OPTIONS;
+    const amtColor   = t.type === 'revenu' ? 'var(--green)' : t.type === 'depense' ? 'var(--red)' : 'var(--muted)';
+    return `<tr id="import-row-${i}" style="${isTransfer ? 'opacity:.45' : ''}">
+      <td><input type="checkbox" class="import-check" data-idx="${i}" ${isTransfer ? '' : 'checked'} onchange="updateImportCount()"></td>
+      <td><input type="text" value="${escHtml(t.date || today())}" oninput="importTransactions[${i}].date=this.value" style="width:108px"></td>
+      <td><input type="text" value="${escHtml(t.description || '')}" oninput="importTransactions[${i}].description=this.value" style="min-width:200px"></td>
+      <td style="text-align:right;font-weight:600;white-space:nowrap;color:${amtColor}">${fmt(Math.abs(t.montant))}</td>
+      <td>
+        <select onchange="updateImportType(${i},this.value)" style="width:105px">
+          <option value="depense"   ${t.type==='depense'   ?'selected':''}>Dépense</option>
+          <option value="revenu"    ${t.type==='revenu'    ?'selected':''}>Revenu</option>
+          <option value="transfert" ${t.type==='transfert' ?'selected':''}>Transfert</option>
+        </select>
+      </td>
+      <td>
+        <select id="import-cat-${i}" onchange="importTransactions[${i}].categorie=this.value" style="width:160px">
+          ${catOpts}
+        </select>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" class="empty">Aucune transaction détectée</td></tr>';
+
+  // Set selected category
+  importTransactions.forEach((t, i) => {
+    const sel = document.getElementById(`import-cat-${i}`);
+    if (sel && t.categorie) sel.value = t.categorie;
+  });
+
+  document.getElementById('import-check-all').checked = true;
+  document.getElementById('import-modal').style.display = 'flex';
+  updateImportCount();
+}
+
+function updateImportType(i, newType) {
+  importTransactions[i].type = newType;
+  const sel = document.getElementById(`import-cat-${i}`);
+  const row = document.getElementById(`import-row-${i}`);
+  if (sel) {
+    sel.innerHTML = newType === 'revenu' ? CAT_REV_OPTIONS : CAT_DEP_OPTIONS;
+    sel.value = 'autre';
+    importTransactions[i].categorie = 'autre';
+  }
+  if (row) row.style.opacity = newType === 'transfert' ? '.45' : '1';
+  updateImportCount();
+}
+
+function toggleAllImport(checked) {
+  document.querySelectorAll('.import-check').forEach(cb => cb.checked = checked);
+  updateImportCount();
+}
+
+function updateImportCount() {
+  const checked = document.querySelectorAll('.import-check:checked').length;
+  const total   = importTransactions.length;
+  document.getElementById('import-count').textContent = `${checked} / ${total} transaction${total>1?'s':''} sélectionnée${total>1?'s':''}`;
+}
+
+function closeImportModal() {
+  document.getElementById('import-modal').style.display = 'none';
+  importTransactions = [];
+}
+
+function confirmImport() {
+  const checks = document.querySelectorAll('.import-check');
+  let added = { revenus: 0, depenses: 0 };
+
+  checks.forEach(cb => {
+    if (!cb.checked) return;
+    const i = parseInt(cb.dataset.idx);
+    const t = importTransactions[i];
+    if (!t || t.type === 'transfert') return;
+
+    const entry = {
+      id:      Date.now() + i + Math.random(),
+      date:    t.date || today(),
+      desc:    t.description || '(importé)',
+      montant: Math.abs(+t.montant || 0),
+      cat:     t.categorie || 'autre'
+    };
+
+    if (t.type === 'revenu') { revenus.push(entry);  added.revenus++; }
+    else                     { depenses.push(entry); added.depenses++; }
+  });
+
+  save('agri_revenus',  revenus);
+  save('agri_depenses', depenses);
+  closeImportModal();
+
+  const parts = [];
+  if (added.depenses) parts.push(`${added.depenses} dépense${added.depenses>1?'s':''}`);
+  if (added.revenus)  parts.push(`${added.revenus} revenu${added.revenus>1?'s':''}`);
+  if (!parts.length) { alert('Aucune transaction importée.'); return; }
+  alert(`✅ Import réussi : ${parts.join(' et ')} ajouté${parts.length>1||added.depenses+added.revenus>1?'s':''}.`);
+
+  populateMonthFilter('dep-filter-month', depenses);
+  renderDepenses();
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────
