@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion Agri-Affaires</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --green: #2d6a4f;
+    --green-light: #40916c;
+    --green-pale: #d8f3dc;
+    --green-mid: #74c69d;
+    --amber: #e9c46a;
+    --red: #e63946;
+    --red-pale: #fde8e8;
+    --bg: #f4f7f4;
+    --card: #ffffff;
+    --text: #1b2124;
+    --muted: #6b7c7b;
+    --border: #d0ddd0;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* NAV */
+  nav { background: var(--green); color: #fff; display: flex; align-items: center; gap: 0; padding: 0 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.2); flex-wrap: wrap; }
+  nav .brand { font-weight: 700; font-size: 1.1rem; padding: 1rem .75rem 1rem 0; margin-right: .5rem; white-space: nowrap; }
+  nav button { background: none; border: none; color: rgba(255,255,255,.75); cursor: pointer; padding: .75rem .85rem; font-size: .88rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all .2s; white-space: nowrap; }
+  nav button:hover, nav button.active { color: #fff; border-bottom-color: var(--green-mid); }
+
+  /* LAYOUT */
+  main { max-width: 1060px; margin: 0 auto; padding: 1.5rem 1rem; }
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  /* CARDS */
+  .card { background: var(--card); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+  .card h2 { font-size: 1rem; font-weight: 600; color: var(--green); margin-bottom: 1rem; }
+
+  /* STAT GRID */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+  .stat-card { border-radius: var(--radius); padding: 1.1rem 1.25rem; }
+  .stat-card.revenue { background: #e8f5e9; border-left: 4px solid #4caf50; }
+  .stat-card.expense { background: #fff3e0; border-left: 4px solid #ff9800; }
+  .stat-card.profit { background: var(--green-pale); border-left: 4px solid var(--green); }
+  .stat-card.profit.neg { background: var(--red-pale); border-left-color: var(--red); }
+  .stat-card label { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); display: block; margin-bottom: .3rem; }
+  .stat-card .amount { font-size: 1.6rem; font-weight: 700; }
+  .stat-card .sub { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+
+  /* ALERT */
+  .alert { background: var(--red-pale); border: 1px solid #f5a5a5; border-radius: 8px; padding: .75rem 1rem; font-size: .88rem; color: #9b1d1d; margin-bottom: 1rem; }
+  .alert strong { display: block; margin-bottom: .2rem; }
+
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .85rem; }
+  label.field { display: flex; flex-direction: column; gap: .3rem; font-size: .85rem; font-weight: 500; color: var(--muted); }
+  input, select, textarea { padding: .55rem .75rem; border: 1px solid var(--border); border-radius: 7px; font-size: .9rem; font-family: inherit; color: var(--text); background: #fff; transition: border .2s; width: 100%; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--green-light); }
+  textarea { resize: vertical; min-height: 70px; }
+  .btn { display: inline-flex; align-items: center; gap: .4rem; padding: .6rem 1.2rem; border: none; border-radius: 7px; font-size: .9rem; font-weight: 600; cursor: pointer; transition: filter .15s; }
+  .btn:hover { filter: brightness(1.07); }
+  .btn-primary { background: var(--green); color: #fff; }
+  .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
+  .btn-danger { background: var(--red); color: #fff; font-size: .8rem; padding: .35rem .7rem; }
+  .btn-sm { padding: .35rem .75rem; font-size: .8rem; }
+  .mt { margin-top: 1rem; }
+  .mt2 { margin-top: 1.5rem; }
+  .flex-gap { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+  th { text-align: left; padding: .55rem .75rem; background: #f0f6f0; color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+  td { padding: .55rem .75rem; border-bottom: 1px solid #eef2ee; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fbf8; }
+  .empty { text-align: center; color: var(--muted); padding: 2rem; font-size: .9rem; }
+
+  /* BADGE */
+  .badge { display: inline-block; padding: .2rem .6rem; border-radius: 99px; font-size: .73rem; font-weight: 600; }
+  .badge.green  { background: var(--green-pale); color: var(--green); }
+  .badge.orange { background: #fff3e0; color: #e65100; }
+  .badge.blue   { background: #e3f2fd; color: #1565c0; }
+  .badge.gray   { background: #f0f0f0; color: #555; }
+
+  /* INVOICE PREVIEW */
+  .inv-preview { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; font-size: .88rem; background: #fff; }
+  .inv-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: .75rem; }
+  .inv-logo { font-size: 1.25rem; font-weight: 800; color: var(--green); }
+  .inv-meta { text-align: right; font-size: .82rem; color: var(--muted); }
+  .inv-meta strong { display: block; color: var(--text); font-size: .95rem; }
+  .inv-client { margin-bottom: 1rem; }
+  .inv-client h4 { font-size: .75rem; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+  .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+  .inv-table th { background: var(--green); color: #fff; padding: .45rem .6rem; text-align: left; font-size: .8rem; }
+  .inv-table td { padding: .4rem .6rem; border-bottom: 1px solid #eee; font-size: .85rem; }
+  .inv-table .right { text-align: right; }
+  .inv-total { text-align: right; font-size: 1rem; font-weight: 700; color: var(--green); }
+  .inv-footer { margin-top: 1.25rem; font-size: .78rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: .75rem; }
+
+  /* ITEM ROW */
+  .item-row { display: grid; grid-template-columns: 2fr 80px 110px 36px; gap: .5rem; align-items: end; margin-bottom: .5rem; }
+
+  /* TWO COL LAYOUT */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
+
+  @media (max-width: 720px) {
+    .two-col { grid-template-columns: 1fr; }
+    .item-row { grid-template-columns: 1fr 1fr; }
+    .item-row .desc-col { grid-column: 1 / -1; }
+    .item-row .del-col  { grid-column: 2; justify-self: end; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">🌾 Agri-Affaires</span>
+  <button onclick="showSection('dashboard')" class="active" id="nav-dashboard">Tableau de bord</button>
+  <button onclick="showSection('revenus')"   id="nav-revenus">Revenus</button>
+  <button onclick="showSection('depenses')"  id="nav-depenses">Dépenses</button>
+  <button onclick="showSection('factures')"  id="nav-factures">Factures</button>
+  <button onclick="showSection('rapports')"  id="nav-rapports">Rapports</button>
+</nav>
+
+<main>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="section visible" id="section-dashboard">
+  <div id="dash-alerts"></div>
+  <div class="stat-grid" id="dash-stats"></div>
+  <div class="two-col">
+    <div class="card">
+      <h2>Derniers revenus</h2>
+      <div id="dash-rev-list"></div>
+    </div>
+    <div class="card">
+      <h2>Dernières dépenses</h2>
+      <div id="dash-dep-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REVENUS ===== -->
+<div class="section" id="section-revenus">
+  <div class="card">
+    <h2>Ajouter un revenu</h2>
+    <div class="form-grid">
+      <label class="field">Date
+        <input type="date" id="rev-date">
+      </label>
+      <label class="field">Catégorie
+        <select id="rev-cat">
+          <option value="marche">Marché</option>
+          <option value="vente-directe">Vente directe</option>
+          <option value="autre">Autre</option>
+        </select>
+      </label>
+      <label class="field" style="grid-column:1/-1">Description
+        <input type="text" id="rev-desc" placeholder="ex : Marché de Montréal — tomates">
+      </label>
+      <label class="field">Montant ($)
+        <input type="number" id="rev-montant" min="0" step="0.01" placeholder="0.00">
+      </label>
+    </div>
+    <div class="mt">
+      <button class="btn btn-primary" onclick="addRevenu()">+ Ajouter</button>
+    </div>
+  </div>
+
+  <div class="card mt2">
+    <h2>Historique des revenus</h2>
+    <div class="flex-gap" style="margin-bottom:1rem">
+      <label class="field" style="margin:0;flex-direction:row;align-items:center;gap:.5rem">
+        Mois :
+        <select id="rev-filter-month" onchange="renderRevenus()" style="width:auto"></select>
+      </label>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Description</th><th>Catégorie</th><th style="text-align:right">Montant</th><th></th></tr></thead>
+        <tbody id="rev-tbody"></tbody>
+      </table>
+    </div>
+    <div style="text-align:right;margin-top:.75rem;font-weight:700;color:var(--green)" id="rev-total-display"></div>
+  </div>
+</div>
+
+<!-- ===== DÉPENSES ===== -->
+<div class="section" id="section-depenses">
+  <div class="card">
+    <h2>Ajouter une dépense</h2>
+    <div class="form-grid">
+      <label class="field">Date
+        <input type="date" id="dep-date">
+      </label>
+      <label class="field">Catégorie
+        <select id="dep-cat">
+          <option value="semences">Semences</option>
+          <option value="transport">Transport</option>
+          <option value="emballage">Emballage</option>
+          <option value="main-oeuvre">Main-d'œuvre</option>
+          <option value="equipement">Équipement</option>
+          <option value="intrants">Intrants</option>
+          <option value="frais-marche">Frais marché</option>
+          <option value="autre">Autre</option>
+        </select>
+      </label>
+      <label class="field" style="grid-column:1/-1">Description
+        <input type="text" id="dep-desc" placeholder="ex : Semences tomates Bio">
+      </label>
+      <label class="field">Montant ($)
+        <input type="number" id="dep-montant" min="0" step="0.01" placeholder="0.00">
+      </label>
+    </div>
+    <div class="mt">
+      <button class="btn btn-primary" onclick="addDepense()">+ Ajouter</button>
+    </div>
+  </div>
+
+  <div class="card mt2">
+    <h2>Historique des dépenses</h2>
+    <div class="flex-gap" style="margin-bottom:1rem">
+      <label class="field" style="margin:0;flex-direction:row;align-items:center;gap:.5rem">
+        Mois :
+        <select id="dep-filter-month" onchange="renderDepenses()" style="width:auto"></select>
+      </label>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Catégorie</th><th>Description</th><th style="text-align:right">Montant</th><th></th></tr></thead>
+        <tbody id="dep-tbody"></tbody>
+      </table>
+    </div>
+    <div style="text-align:right;margin-top:.75rem;font-weight:700;color:var(--red)" id="dep-total-display"></div>
+  </div>
+</div>
+
+<!-- ===== FACTURES ===== -->
+<div class="section" id="section-factures">
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <h2>Nouvelle facture</h2>
+        <div class="form-grid">
+          <label class="field">Nom du client
+            <input type="text" id="inv-client-name" placeholder="Jean Tremblay" oninput="updatePreview()">
+          </label>
+          <label class="field">Date
+            <input type="date" id="inv-date" oninput="updatePreview()">
+          </label>
+          <label class="field" style="grid-column:1/-1">Adresse
+            <input type="text" id="inv-client-addr" placeholder="123 rue des Érables, Montréal" oninput="updatePreview()">
+          </label>
+          <label class="field" style="grid-column:1/-1">Notes / conditions
+            <textarea id="inv-notes" rows="2" placeholder="Payable dans 30 jours..." oninput="updatePreview()"></textarea>
+          </label>
+        </div>
+
+        <div class="mt">
+          <h2 style="margin-bottom:.75rem">Articles</h2>
+          <div id="inv-items-container"></div>
+          <button class="btn btn-outline btn-sm mt" onclick="addItem()">+ Article</button>
+        </div>
+
+        <div class="mt flex-gap">
+          <button class="btn btn-primary" onclick="saveInvoice()">💾 Sauvegarder</button>
+          <button class="btn btn-outline" onclick="exportPDF()">📄 PDF</button>
+          <button class="btn btn-outline" onclick="resetInvoiceForm()">🗑 Nouveau</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h2>Aperçu</h2>
+        <div class="inv-preview" id="inv-preview"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RAPPORTS ===== -->
+<div class="section" id="section-rapports">
+  <div class="card" style="margin-bottom:1rem">
+    <h2>Résumé mensuel</h2>
+    <div class="flex-gap" style="margin-bottom:1rem">
+      <label class="field" style="margin:0;flex-direction:row;align-items:center;gap:.5rem">
+        Année :
+        <select id="rap-year" onchange="renderRapports()" style="width:auto"></select>
+      </label>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mois</th><th style="text-align:right">Revenus</th><th style="text-align:right">Dépenses</th><th style="text-align:right">Profit net</th></tr></thead>
+        <tbody id="rap-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Historique des factures</h2>
+    <div class="flex-gap" style="margin-bottom:1rem">
+      <label class="field" style="margin:0;flex-direction:row;align-items:center;gap:.5rem">
+        Mois :
+        <select id="inv-filter-month" onchange="renderInvoiceHistory()" style="width:auto"></select>
+      </label>
+      <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ CSV</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Date</th><th>Client</th><th style="text-align:right">Total</th><th></th></tr></thead>
+        <tbody id="inv-hist-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── COMPANY INFO (modifier ici) ────────────────────────────────────────────
+const COMPANY = {
+  name:    'Votre Ferme',
+  address: '123 chemin de la Terre, Québec, QC',
+  phone:   '(450) 555-1234',
+  email:   'info@votreferme.ca'
+};
+
+// ── STORAGE ───────────────────────────────────────────────────────────────
+function load(key, def) { try { return JSON.parse(localStorage.getItem(key)) ?? def; } catch { return def; } }
+function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+let revenus  = load('agri_revenus',  []);
+let depenses = load('agri_depenses', []);
+let factures = load('agri_factures', []);
+let invItems = [{ desc: '', qty: 1, price: 0 }];
+let editingInvId = null;
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('visible');
+  document.getElementById('nav-' + id).classList.add('active');
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'revenus')   { populateMonthFilter('rev-filter-month', revenus); renderRevenus(); }
+  if (id === 'depenses')  { populateMonthFilter('dep-filter-month', depenses); renderDepenses(); }
+  if (id === 'rapports')  { populateYearFilter(); renderRapports(); renderInvoiceHistory(); }
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+const fmt      = n => new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format(n);
+const today    = () => new Date().toISOString().slice(0, 10);
+const monthOf  = d => d ? d.slice(0, 7) : '';
+const monthLabel = m => {
+  if (!m) return '';
+  const [y, mo] = m.split('-');
+  return new Date(y, mo - 1).toLocaleString('fr-CA', { month: 'long', year: 'numeric' });
+};
+
+function populateMonthFilter(selId, data) {
+  const sel    = document.getElementById(selId);
+  const cur    = monthOf(today());
+  const months = [...new Set(data.map(r => monthOf(r.date)).filter(Boolean))].sort().reverse();
+  if (!months.includes(cur)) months.unshift(cur);
+  const prev   = sel.value;
+  sel.innerHTML = ['', ...months].map(m => `<option value="${m}">${m ? monthLabel(m) : 'Tous'}</option>`).join('');
+  if (prev) sel.value = prev;
+}
+
+function populateYearFilter() {
+  const sel   = document.getElementById('rap-year');
+  const cur   = new Date().getFullYear().toString();
+  const years = [...new Set([...revenus, ...depenses].map(r => r.date?.slice(0, 4)).filter(Boolean))].sort().reverse();
+  if (!years.includes(cur)) years.unshift(cur);
+  const prev  = sel.value;
+  sel.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join('');
+  if (prev) sel.value = prev;
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────
+function renderDashboard() {
+  const cur   = monthOf(today());
+  const revM  = revenus.filter(r  => monthOf(r.date)  === cur).reduce((s, r) => s + +r.montant, 0);
+  const depM  = depenses.filter(d => monthOf(d.date)  === cur).reduce((s, d) => s + +d.montant, 0);
+  const revT  = revenus.reduce((s, r)  => s + +r.montant, 0);
+  const depT  = depenses.reduce((s, d) => s + +d.montant, 0);
+  const profM = revM - depM;
+  const profT = revT - depT;
+  const label = monthLabel(cur);
+
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-card revenue">
+      <label>Revenus — ${label}</label>
+      <div class="amount">${fmt(revM)}</div>
+      <div class="sub">Cumulatif&nbsp;: ${fmt(revT)}</div>
+    </div>
+    <div class="stat-card expense">
+      <label>Dépenses — ${label}</label>
+      <div class="amount">${fmt(depM)}</div>
+      <div class="sub">Cumulatif&nbsp;: ${fmt(depT)}</div>
+    </div>
+    <div class="stat-card profit${profM < 0 ? ' neg' : ''}">
+      <label>Profit net — ${label}</label>
+      <div class="amount">${fmt(profM)}</div>
+      <div class="sub">Cumulatif&nbsp;: ${fmt(profT)}</div>
+    </div>`;
+
+  const alerts = [];
+  if (revM > 0 && depM > revM) alerts.push(`Les dépenses (${fmt(depM)}) dépassent les revenus (${fmt(revM)}) ce mois-ci.`);
+  if (profT < 0) alerts.push(`Profit cumulatif négatif&nbsp;: ${fmt(profT)}.`);
+  document.getElementById('dash-alerts').innerHTML =
+    alerts.map(a => `<div class="alert"><strong>⚠️ Alerte</strong>${a}</div>`).join('');
+
+  const lastRev = [...revenus].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5);
+  const lastDep = [...depenses].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5);
+
+  document.getElementById('dash-rev-list').innerHTML = lastRev.length
+    ? `<table style="width:100%;font-size:.85rem"><tbody>${lastRev.map(r =>
+        `<tr><td>${r.date}</td><td>${r.desc}</td><td style="text-align:right;color:var(--green);font-weight:600">${fmt(r.montant)}</td></tr>`
+      ).join('')}</tbody></table>`
+    : '<p class="empty">Aucun revenu enregistré</p>';
+
+  document.getElementById('dash-dep-list').innerHTML = lastDep.length
+    ? `<table style="width:100%;font-size:.85rem"><tbody>${lastDep.map(d =>
+        `<tr><td>${d.date}</td><td>${d.desc}</td><td style="text-align:right;color:var(--red);font-weight:600">${fmt(d.montant)}</td></tr>`
+      ).join('')}</tbody></table>`
+    : '<p class="empty">Aucune dépense enregistrée</p>';
+}
+
+// ── REVENUS ───────────────────────────────────────────────────────────────
+const catRevLabel = { marche: 'Marché', 'vente-directe': 'Vente directe', autre: 'Autre' };
+const catRevBadge = { marche: 'green', 'vente-directe': 'blue', autre: 'gray' };
+
+function addRevenu() {
+  const date  = document.getElementById('rev-date').value    || today();
+  const cat   = document.getElementById('rev-cat').value;
+  const desc  = document.getElementById('rev-desc').value.trim();
+  const mont  = parseFloat(document.getElementById('rev-montant').value);
+  if (!desc || isNaN(mont) || mont <= 0) { alert('Veuillez remplir tous les champs.'); return; }
+  revenus.push({ id: Date.now(), date, cat, desc, montant: mont });
+  save('agri_revenus', revenus);
+  document.getElementById('rev-desc').value    = '';
+  document.getElementById('rev-montant').value = '';
+  populateMonthFilter('rev-filter-month', revenus);
+  renderRevenus();
+}
+
+function deleteRevenu(id) {
+  if (!confirm('Supprimer ce revenu ?')) return;
+  revenus = revenus.filter(r => r.id !== id);
+  save('agri_revenus', revenus);
+  populateMonthFilter('rev-filter-month', revenus);
+  renderRevenus();
+}
+
+function renderRevenus() {
+  const month    = document.getElementById('rev-filter-month').value;
+  const filtered = month ? revenus.filter(r => monthOf(r.date) === month) : revenus;
+  const sorted   = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+  const total    = sorted.reduce((s, r) => s + +r.montant, 0);
+  document.getElementById('rev-tbody').innerHTML = sorted.length
+    ? sorted.map(r => `<tr>
+        <td>${r.date}</td>
+        <td>${r.desc}</td>
+        <td><span class="badge ${catRevBadge[r.cat] || 'gray'}">${catRevLabel[r.cat] || r.cat}</span></td>
+        <td style="text-align:right;font-weight:600;color:var(--green)">${fmt(r.montant)}</td>
+        <td><button class="btn btn-danger" onclick="deleteRevenu(${r.id})">✕</button></td>
+      </tr>`).join('')
+    : '<tr><td colspan="5" class="empty">Aucun revenu</td></tr>';
+  document.getElementById('rev-total-display').textContent = `Total : ${fmt(total)}`;
+}
+
+// ── DÉPENSES ──────────────────────────────────────────────────────────────
+const catDepLabel = {
+  semences: 'Semences', transport: 'Transport', emballage: 'Emballage',
+  'main-oeuvre': "Main-d'œuvre", equipement: 'Équipement',
+  intrants: 'Intrants', 'frais-marche': 'Frais marché', autre: 'Autre'
+};
+const catDepBadge = {
+  semences: 'green', transport: 'orange', emballage: 'blue',
+  'main-oeuvre': 'orange', equipement: 'gray',
+  intrants: 'green', 'frais-marche': 'blue', autre: 'gray'
+};
+
+function addDepense() {
+  const date  = document.getElementById('dep-date').value    || today();
+  const cat   = document.getElementById('dep-cat').value;
+  const desc  = document.getElementById('dep-desc').value.trim();
+  const mont  = parseFloat(document.getElementById('dep-montant').value);
+  if (!desc || isNaN(mont) || mont <= 0) { alert('Veuillez remplir tous les champs.'); return; }
+  depenses.push({ id: Date.now(), date, cat, desc, montant: mont });
+  save('agri_depenses', depenses);
+  document.getElementById('dep-desc').value    = '';
+  document.getElementById('dep-montant').value = '';
+  populateMonthFilter('dep-filter-month', depenses);
+  renderDepenses();
+}
+
+function deleteDepense(id) {
+  if (!confirm('Supprimer cette dépense ?')) return;
+  depenses = depenses.filter(d => d.id !== id);
+  save('agri_depenses', depenses);
+  populateMonthFilter('dep-filter-month', depenses);
+  renderDepenses();
+}
+
+function renderDepenses() {
+  const month    = document.getElementById('dep-filter-month').value;
+  const filtered = month ? depenses.filter(d => monthOf(d.date) === month) : depenses;
+  const sorted   = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+  const total    = sorted.reduce((s, d) => s + +d.montant, 0);
+  document.getElementById('dep-tbody').innerHTML = sorted.length
+    ? sorted.map(d => `<tr>
+        <td>${d.date}</td>
+        <td><span class="badge ${catDepBadge[d.cat] || 'gray'}">${catDepLabel[d.cat] || d.cat}</span></td>
+        <td>${d.desc}</td>
+        <td style="text-align:right;font-weight:600;color:var(--red)">${fmt(d.montant)}</td>
+        <td><button class="btn btn-danger" onclick="deleteDepense(${d.id})">✕</button></td>
+      </tr>`).join('')
+    : '<tr><td colspan="5" class="empty">Aucune dépense</td></tr>';
+  document.getElementById('dep-total-display').textContent = `Total : ${fmt(total)}`;
+}
+
+// ── FACTURES — ITEMS ──────────────────────────────────────────────────────
+function addItem() {
+  invItems.push({ desc: '', qty: 1, price: 0 });
+  renderItemRows();
+}
+
+function removeItem(i) {
+  if (invItems.length === 1) return;
+  invItems.splice(i, 1);
+  renderItemRows();
+  updatePreview();
+}
+
+function renderItemRows() {
+  document.getElementById('inv-items-container').innerHTML = invItems.map((it, i) => `
+    <div class="item-row">
+      <label class="field desc-col">Description
+        <input type="text" value="${escHtml(it.desc)}"
+          oninput="invItems[${i}].desc=this.value;updatePreview()"
+          placeholder="Produit ou service">
+      </label>
+      <label class="field">Qté
+        <input type="number" value="${it.qty}" min="1"
+          oninput="invItems[${i}].qty=+this.value;updatePreview()">
+      </label>
+      <label class="field">Prix unit. ($)
+        <input type="number" value="${it.price}" min="0" step="0.01"
+          oninput="invItems[${i}].price=+this.value;updatePreview()">
+      </label>
+      <div class="del-col" style="padding-bottom:.05rem">
+        <button class="btn btn-danger" onclick="removeItem(${i})" style="height:36px;margin-top:20px">✕</button>
+      </div>
+    </div>`).join('');
+  updatePreview();
+}
+
+const escHtml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const invTotal = () => invItems.reduce((s, it) => s + it.qty * it.price, 0);
+
+function nextInvoiceNumber() {
+  const nums = factures.map(f => parseInt(f.number || '0')).filter(n => !isNaN(n));
+  return String((nums.length ? Math.max(...nums) : 0) + 1).padStart(4, '0');
+}
+
+// ── INVOICE PREVIEW ───────────────────────────────────────────────────────
+function updatePreview() {
+  const num    = editingInvId ? (factures.find(f => f.id === editingInvId)?.number ?? '—') : nextInvoiceNumber();
+  const client = document.getElementById('inv-client-name').value || 'Client';
+  const addr   = document.getElementById('inv-client-addr').value || '';
+  const date   = document.getElementById('inv-date').value        || today();
+  const notes  = document.getElementById('inv-notes').value       || '';
+  const total  = invTotal();
+
+  const rows = invItems.map(it => {
+    const sub = it.qty * it.price;
+    return `<tr>
+      <td>${escHtml(it.desc || '—')}</td>
+      <td class="right">${it.qty}</td>
+      <td class="right">${fmt(it.price)}</td>
+      <td class="right">${fmt(sub)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('inv-preview').innerHTML = `
+    <div class="inv-header">
+      <div>
+        <div class="inv-logo">🌾 ${escHtml(COMPANY.name)}</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:.2rem">
+          ${escHtml(COMPANY.address)}<br>${escHtml(COMPANY.phone)} &middot; ${escHtml(COMPANY.email)}
+        </div>
+      </div>
+      <div class="inv-meta">
+        <strong>FACTURE #${num}</strong>
+        Date&nbsp;: ${date}
+      </div>
+    </div>
+    <div class="inv-client">
+      <h4>Facturer à&nbsp;:</h4>
+      <strong>${escHtml(client)}</strong><br>
+      <span style="font-size:.82rem;color:var(--muted)">${escHtml(addr)}</span>
+    </div>
+    <table class="inv-table">
+      <thead><tr><th>Description</th><th class="right">Qté</th><th class="right">Prix unit.</th><th class="right">Sous-total</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="inv-total">Total&nbsp;: ${fmt(total)}</div>
+    ${notes ? `<div class="inv-footer">${escHtml(notes)}</div>` : ''}`;
+}
+
+// ── SAVE INVOICE ──────────────────────────────────────────────────────────
+function saveInvoice() {
+  const client = document.getElementById('inv-client-name').value.trim();
+  if (!client) { alert('Veuillez entrer le nom du client.'); return; }
+  if (invItems.every(it => !it.desc.trim())) { alert('Ajoutez au moins un article avec une description.'); return; }
+
+  const inv = {
+    id:     editingInvId || Date.now(),
+    number: editingInvId ? (factures.find(f => f.id === editingInvId)?.number ?? nextInvoiceNumber()) : nextInvoiceNumber(),
+    date:   document.getElementById('inv-date').value || today(),
+    client,
+    addr:   document.getElementById('inv-client-addr').value,
+    notes:  document.getElementById('inv-notes').value,
+    items:  JSON.parse(JSON.stringify(invItems)),
+    total:  invTotal()
+  };
+
+  if (editingInvId) {
+    const idx = factures.findIndex(f => f.id === editingInvId);
+    if (idx >= 0) factures[idx] = inv; else factures.push(inv);
+  } else {
+    factures.push(inv);
+  }
+  save('agri_factures', factures);
+  alert(`Facture #${inv.number} sauvegardée !`);
+  resetInvoiceForm();
+}
+
+function resetInvoiceForm() {
+  editingInvId = null;
+  invItems = [{ desc: '', qty: 1, price: 0 }];
+  ['inv-client-name','inv-client-addr','inv-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('inv-date').value = today();
+  renderItemRows();
+}
+
+function loadInvoiceForEdit(id) {
+  const f = factures.find(f => f.id === id);
+  if (!f) return;
+  editingInvId = id;
+  invItems = JSON.parse(JSON.stringify(f.items));
+  document.getElementById('inv-client-name').value = f.client;
+  document.getElementById('inv-client-addr').value = f.addr  || '';
+  document.getElementById('inv-notes').value        = f.notes || '';
+  document.getElementById('inv-date').value         = f.date;
+  renderItemRows();
+  showSection('factures');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteInvoice(id) {
+  if (!confirm('Supprimer cette facture ?')) return;
+  factures = factures.filter(f => f.id !== id);
+  save('agri_factures', factures);
+  renderInvoiceHistory();
+}
+
+// ── PDF ───────────────────────────────────────────────────────────────────
+function exportPDF() {
+  if (typeof window.jspdf === 'undefined') { alert('La librairie PDF ne s\'est pas chargée. Vérifiez votre connexion.'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'letter' });
+
+  const client = document.getElementById('inv-client-name').value || 'Client';
+  const addr   = document.getElementById('inv-client-addr').value || '';
+  const date   = document.getElementById('inv-date').value        || today();
+  const notes  = document.getElementById('inv-notes').value       || '';
+  const num    = editingInvId ? (factures.find(f => f.id === editingInvId)?.number ?? '0000') : nextInvoiceNumber();
+  const total  = invTotal();
+
+  const W = 215.9, M = 18;
+  let y = 0;
+
+  // ── Header band
+  doc.setFillColor(45, 106, 79);
+  doc.rect(0, 0, W, 34, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
+  doc.text(COMPANY.name, M, 13);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+  doc.text(`${COMPANY.address}  |  ${COMPANY.phone}  |  ${COMPANY.email}`, M, 20);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
+  doc.text(`FACTURE #${num}`, W - M, 12, { align: 'right' });
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+  doc.text(`Date : ${date}`, W - M, 20, { align: 'right' });
+
+  y = 44;
+  doc.setTextColor(27, 33, 36);
+
+  // ── Client block
+  doc.setFontSize(7.5); doc.setTextColor(107, 124, 123);
+  doc.text('FACTURER À :', M, y); y += 5;
+  doc.setFontSize(10); doc.setFont('helvetica', 'bold'); doc.setTextColor(27, 33, 36);
+  doc.text(client, M, y); y += 5;
+  if (addr) {
+    doc.setFontSize(8.5); doc.setFont('helvetica', 'normal');
+    doc.text(addr, M, y); y += 5;
+  }
+  y += 4;
+
+  // ── Table header
+  const colDesc = M, colQty = 140, colPrice = 163, colSub = W - M;
+  doc.setFillColor(45, 106, 79);
+  doc.rect(M, y, W - M * 2, 8, 'F');
+  doc.setTextColor(255, 255, 255); doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+  doc.text('Description', colDesc + 2, y + 5.5);
+  doc.text('Qté', colQty, y + 5.5, { align: 'right' });
+  doc.text('Prix unit.', colPrice, y + 5.5, { align: 'right' });
+  doc.text('Sous-total', colSub, y + 5.5, { align: 'right' });
+  y += 10;
+
+  // ── Items
+  doc.setTextColor(27, 33, 36); doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+  invItems.forEach((it, i) => {
+    if (i % 2 === 0) { doc.setFillColor(244, 247, 244); doc.rect(M, y - 3.5, W - M * 2, 8, 'F'); }
+    doc.text(it.desc || '—', colDesc + 2, y + 1);
+    doc.text(String(it.qty), colQty, y + 1, { align: 'right' });
+    doc.text(fmt(it.price), colPrice, y + 1, { align: 'right' });
+    doc.text(fmt(it.qty * it.price), colSub, y + 1, { align: 'right' });
+    y += 8;
+  });
+
+  // ── Total
+  y += 2;
+  doc.setDrawColor(45, 106, 79); doc.setLineWidth(0.5);
+  doc.line(M, y, W - M, y); y += 6;
+  doc.setFontSize(12); doc.setFont('helvetica', 'bold'); doc.setTextColor(45, 106, 79);
+  doc.text(`Total : ${fmt(total)}`, W - M, y, { align: 'right' }); y += 10;
+
+  // ── Notes
+  if (notes) {
+    doc.setDrawColor(200, 210, 200); doc.setLineWidth(0.3);
+    doc.line(M, y, W - M, y); y += 5;
+    doc.setFontSize(8); doc.setFont('helvetica', 'italic'); doc.setTextColor(107, 124, 123);
+    doc.text(doc.splitTextToSize(notes, W - M * 2), M, y);
+  }
+
+  doc.save(`Facture-${num}-${client.replace(/\s+/g, '_')}.pdf`);
+}
+
+// ── RAPPORTS ──────────────────────────────────────────────────────────────
+function renderRapports() {
+  const year = document.getElementById('rap-year').value;
+  if (!year) return;
+  const MONTHS_FR = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  let rows = '';
+  for (let mo = 1; mo <= 12; mo++) {
+    const key = `${year}-${String(mo).padStart(2, '0')}`;
+    const rev = revenus.filter(r  => monthOf(r.date)  === key).reduce((s, r) => s + +r.montant, 0);
+    const dep = depenses.filter(d => monthOf(d.date)  === key).reduce((s, d) => s + +d.montant, 0);
+    const prf = rev - dep;
+    const cs  = prf < 0 ? 'color:var(--red)' : prf > 0 ? 'color:var(--green)' : '';
+    const any = rev || dep;
+    rows += `<tr>
+      <td style="text-transform:capitalize">${MONTHS_FR[mo - 1]} ${year}</td>
+      <td style="text-align:right;color:var(--green)">${any && rev ? fmt(rev) : '—'}</td>
+      <td style="text-align:right;color:var(--red)">${any && dep ? fmt(dep) : '—'}</td>
+      <td style="text-align:right;font-weight:600;${cs}">${any ? fmt(prf) : '—'}</td>
+    </tr>`;
+  }
+  document.getElementById('rap-tbody').innerHTML = rows;
+  populateMonthFilter('inv-filter-month', factures);
+  renderInvoiceHistory();
+}
+
+function renderInvoiceHistory() {
+  const month    = document.getElementById('inv-filter-month').value;
+  const filtered = month ? factures.filter(f => monthOf(f.date) === month) : factures;
+  const sorted   = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+  document.getElementById('inv-hist-tbody').innerHTML = sorted.length
+    ? sorted.map(f => `<tr>
+        <td><strong>#${f.number}</strong></td>
+        <td>${f.date}</td>
+        <td>${escHtml(f.client)}</td>
+        <td style="text-align:right;font-weight:600;color:var(--green)">${fmt(f.total)}</td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-outline btn-sm" onclick="loadInvoiceForEdit(${f.id})">✏️ Modifier</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteInvoice(${f.id})" style="margin-left:.3rem">✕</button>
+        </td>
+      </tr>`).join('')
+    : '<tr><td colspan="5" class="empty">Aucune facture</td></tr>';
+}
+
+function exportCSV() {
+  const rows = [['#', 'Date', 'Client', 'Adresse', 'Total CAD']];
+  [...factures].sort((a, b) => b.date.localeCompare(a.date)).forEach(f =>
+    rows.push([f.number, f.date, f.client, f.addr || '', f.total.toFixed(2)])
+  );
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })),
+    download: `factures-${new Date().toISOString().slice(0,10)}.csv`
+  });
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+document.getElementById('rev-date').value = today();
+document.getElementById('dep-date').value = today();
+document.getElementById('inv-date').value = today();
+renderDashboard();
+renderItemRows();
+</script>
+</body>
+</html>
