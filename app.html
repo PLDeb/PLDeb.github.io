@@ -455,6 +455,15 @@
 
     <!-- ÉTAPE 1 : Upload / caméra -->
     <div id="receipt-step-upload">
+      <div id="receipt-api-warn" style="display:none;background:#fff3cd;border:1px solid #e6ac00;border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem">
+        <strong>🔑 Clé API requise</strong> — Entrez votre clé Anthropic Claude pour analyser les reçus.
+        <div style="display:flex;gap:.5rem;margin-top:.6rem">
+          <input type="password" id="receipt-api-key-input" placeholder="sk-ant-…"
+            style="flex:1;font-family:monospace;font-size:.82rem">
+          <button class="btn btn-primary btn-sm" onclick="saveReceiptApiKey()">Enregistrer</button>
+        </div>
+      </div>
+      <div id="receipt-error-msg" style="display:none;background:#fce4e4;border:1px solid var(--red);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;color:var(--red);font-size:.9rem"></div>
       <div class="receipt-dropzone" id="receipt-dropzone"
           onclick="triggerReceiptInput()"
           ondragover="event.preventDefault();this.style.borderColor='var(--green)'"
@@ -1369,11 +1378,28 @@ function triggerReceiptInput() {
   input.click();
 }
 
+function showReceiptError(msg) {
+  const el = document.getElementById('receipt-error-msg');
+  if (!msg) { el.style.display = 'none'; return; }
+  el.textContent = msg;
+  el.style.display = '';
+}
+
+function saveReceiptApiKey() {
+  const key = document.getElementById('receipt-api-key-input').value.trim();
+  if (!key) { showReceiptError('Entrez une clé valide (commence par sk-ant-…)'); return; }
+  localStorage.setItem('agri_claude_key', key);
+  document.getElementById('receipt-api-warn').style.display = 'none';
+  showReceiptError('');
+}
+
 function openReceiptModal() {
   resetReceiptUpload();
   receiptBase64 = null;
   showReceiptStep('upload');
   document.getElementById('receipt-modal').style.display = 'flex';
+  document.getElementById('receipt-api-warn').style.display = getApiKey() ? 'none' : '';
+  showReceiptError('');
 }
 
 function closeReceiptModal() {
@@ -1392,6 +1418,7 @@ function resetReceiptUpload() {
   document.getElementById('receipt-dropzone').style.display = '';
   document.getElementById('receipt-input').value = '';
   showReceiptStep('upload');
+  showReceiptError('');
 }
 
 async function handleReceiptFileDrop(e) {
@@ -1401,18 +1428,23 @@ async function handleReceiptFileDrop(e) {
 
 async function handleReceiptFileSelect(file) {
   if (!file || !file.type.startsWith('image/')) {
-    alert('Veuillez sélectionner une image (JPG, PNG, HEIC…)');
+    showReceiptError('Veuillez sélectionner une image (JPG, PNG, HEIC…)');
     return;
   }
-  const compressed = await compressImage(file);
-  receiptMediaType  = 'image/jpeg';
-  receiptBase64     = await blobToBase64(compressed);
+  showReceiptError('');
+  try {
+    const compressed = await compressImage(file);
+    receiptMediaType  = 'image/jpeg';
+    receiptBase64     = await blobToBase64(compressed);
 
-  const sizeKB = Math.round(compressed.size / 1024);
-  document.getElementById('receipt-size-note').textContent = `Taille compressée : ${sizeKB} Ko`;
-  document.getElementById('receipt-preview-img').src = 'data:image/jpeg;base64,' + receiptBase64;
-  document.getElementById('receipt-dropzone').style.display = 'none';
-  document.getElementById('receipt-preview-wrap').style.display = '';
+    const sizeKB = Math.round(compressed.size / 1024);
+    document.getElementById('receipt-size-note').textContent = `Taille compressée : ${sizeKB} Ko`;
+    document.getElementById('receipt-preview-img').src = 'data:image/jpeg;base64,' + receiptBase64;
+    document.getElementById('receipt-dropzone').style.display = 'none';
+    document.getElementById('receipt-preview-wrap').style.display = '';
+  } catch (e) {
+    showReceiptError('Erreur traitement image : ' + e.message);
+  }
 }
 
 async function compressImage(file) {
@@ -1451,8 +1483,14 @@ function blobToBase64(blob) {
 
 async function analyzeReceipt() {
   const key = getApiKey();
-  if (!key) { alert('Clé API manquante — cliquez sur ⚙️ Clé API dans le bloc Desjardins pour la configurer.'); return; }
-  if (!receiptBase64) { alert('Aucune image sélectionnée.'); return; }
+  if (!key) {
+    document.getElementById('receipt-api-warn').style.display = '';
+    showReceiptError('🔑 Clé API manquante — entrez-la dans le bloc jaune ci-dessus.');
+    document.getElementById('receipt-api-key-input').focus();
+    return;
+  }
+  if (!receiptBase64) { showReceiptError('Aucune image sélectionnée.'); return; }
+  showReceiptError('');
 
   showReceiptStep('loading');
   document.getElementById('receipt-loading-msg').textContent = 'Analyse du reçu par Claude Vision...';
@@ -1500,7 +1538,7 @@ async function analyzeReceipt() {
     showReceiptStep('review');
   } catch (err) {
     showReceiptStep('upload');
-    alert('Erreur : ' + err.message);
+    showReceiptError('Erreur : ' + err.message);
   }
 }
 
