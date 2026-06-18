@@ -456,14 +456,14 @@
     <!-- ÉTAPE 1 : Upload / caméra -->
     <div id="receipt-step-upload">
       <div class="receipt-dropzone" id="receipt-dropzone"
-          onclick="document.getElementById('receipt-input').click()"
+          onclick="triggerReceiptInput()"
           ondragover="event.preventDefault();this.style.borderColor='var(--green)'"
           ondragleave="this.style.borderColor=''"
           ondrop="event.preventDefault();this.style.borderColor='';handleReceiptFileDrop(event)">
-        📷 Prendre une photo ou glisser une image ici<br>
+        📷 Prendre une photo ou sélectionner une image<br>
         <span style="font-size:.8rem;color:var(--muted)">(JPG, PNG, HEIC)</span>
       </div>
-      <input type="file" id="receipt-input" accept="image/*" capture="environment"
+      <input type="file" id="receipt-input" accept="image/*"
         style="display:none" onchange="handleReceiptFileSelect(this.files[0])">
 
       <div id="receipt-preview-wrap" style="display:none;margin-top:1rem">
@@ -1356,6 +1356,18 @@ function mapReceiptCat(label) {
 
 let receiptBase64 = null;
 let receiptMediaType = 'image/jpeg';
+
+const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+function triggerReceiptInput() {
+  const input = document.getElementById('receipt-input');
+  if (isMobile()) {
+    input.setAttribute('capture', 'environment');
+  } else {
+    input.removeAttribute('capture');
+  }
+  input.click();
+}
 
 function openReceiptModal() {
   resetReceiptUpload();
