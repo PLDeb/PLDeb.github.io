@@ -6,6 +6,7 @@
 <title>Gestion Agri-Affaires</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
   :root {
     --green: #2d6a4f;
@@ -125,6 +126,17 @@
   }
   .pdf-dropzone:hover, .pdf-dropzone.drag-over { border-color: var(--green); background: var(--green-pale); color: var(--green); }
   .pdf-dropzone.loading { cursor: wait; pointer-events: none; opacity: .7; }
+  .import-tab {
+    background: none; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: .38rem .85rem; font-size: .85rem; cursor: pointer; color: var(--muted); transition: all .18s;
+  }
+  .import-tab.import-tab-active, .import-tab:hover {
+    border-color: var(--green); background: var(--green-pale); color: var(--green); font-weight: 600;
+  }
+  .badge-green {
+    font-size: .7rem; background: var(--green-pale); color: var(--green);
+    padding: .08rem .38rem; border-radius: 20px; margin-left: .3rem; font-weight: 700;
+  }
 
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,.55);
@@ -268,31 +280,59 @@
 
   <!-- IMPORTER DESJARDINS -->
   <div class="card import-card" style="margin-bottom:1rem">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
-      <div>
-        <h2 style="margin-bottom:.15rem">🏦 Importer un relevé Desjardins</h2>
-        <p style="font-size:.82rem;color:var(--muted)">Extraction automatique des transactions via Claude AI</p>
+    <h2 style="margin-bottom:.75rem">🏦 Importer un relevé Desjardins</h2>
+
+    <!-- Onglets CSV / PDF -->
+    <div style="display:flex;gap:.4rem;margin-bottom:.9rem">
+      <button id="tab-csv-btn" class="import-tab import-tab-active" onclick="switchImportTab('csv')">
+        📊 CSV <span class="badge-green">Gratuit</span>
+      </button>
+      <button id="tab-pdf-btn" class="import-tab" onclick="switchImportTab('pdf')">
+        📄 PDF via Claude AI
+      </button>
+    </div>
+
+    <!-- ONGLET CSV -->
+    <div id="import-tab-csv">
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:.6rem">
+        Dans AccèsD : Mes comptes → ↓ Télécharger → Format CSV. Glissez ensuite le fichier ici.
+      </p>
+      <div id="csv-dropzone" class="pdf-dropzone"
+          onclick="document.getElementById('csv-file-input').click()"
+          ondragover="event.preventDefault();this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="event.preventDefault();this.classList.remove('drag-over');handleCsvDrop(event)">
+        <span id="csv-dropzone-text">📊 Glisser le CSV ici &nbsp;ou&nbsp; <u>cliquer pour sélectionner</u></span>
       </div>
-      <button class="btn btn-outline btn-sm" onclick="toggleApiKeyConfig()">⚙️ Clé API</button>
+      <input type="file" id="csv-file-input" accept=".csv,.txt" style="display:none" onchange="handleCsvFile(this.files[0])">
+      <p style="font-size:.76rem;color:var(--muted);margin-top:.5rem">
+        Catégories assignées automatiquement selon la description — ajustables avant import. Zéro coût, zéro clé API.
+      </p>
     </div>
 
-    <div id="api-key-config" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
-      <label class="field" style="max-width:420px">Clé API Anthropic (stockée localement, jamais envoyée ailleurs)
-        <div style="display:flex;gap:.5rem">
-          <input type="password" id="api-key-input" placeholder="sk-ant-...">
-          <button class="btn btn-primary btn-sm" onclick="saveApiKeyConfig()" style="white-space:nowrap">Sauvegarder</button>
-        </div>
-      </label>
+    <!-- ONGLET PDF -->
+    <div id="import-tab-pdf" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+        <p style="font-size:.82rem;color:var(--muted);margin:0">Extraction automatique des transactions via Claude AI</p>
+        <button class="btn btn-outline btn-sm" onclick="toggleApiKeyConfig()">⚙️ Clé API</button>
+      </div>
+      <div id="api-key-config" style="display:none;margin-bottom:.75rem;padding:.85rem;border:1px solid var(--border);border-radius:var(--radius)">
+        <label class="field" style="max-width:420px">Clé API Anthropic (stockée localement, jamais envoyée ailleurs)
+          <div style="display:flex;gap:.5rem">
+            <input type="password" id="api-key-input" placeholder="sk-ant-...">
+            <button class="btn btn-primary btn-sm" onclick="saveApiKeyConfig()" style="white-space:nowrap">Sauvegarder</button>
+          </div>
+        </label>
+      </div>
+      <div id="pdf-dropzone" class="pdf-dropzone"
+          onclick="document.getElementById('pdf-file-input').click()"
+          ondragover="event.preventDefault();this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="event.preventDefault();this.classList.remove('drag-over');handlePdfDrop(event)">
+        <span id="pdf-dropzone-text">📄 Glisser le relevé PDF ici &nbsp;ou&nbsp; <u>cliquer pour sélectionner</u></span>
+      </div>
+      <input type="file" id="pdf-file-input" accept=".pdf" style="display:none" onchange="handlePdfFile(this.files[0])">
     </div>
-
-    <div id="pdf-dropzone" class="pdf-dropzone"
-        onclick="document.getElementById('pdf-file-input').click()"
-        ondragover="event.preventDefault();this.classList.add('drag-over')"
-        ondragleave="this.classList.remove('drag-over')"
-        ondrop="event.preventDefault();this.classList.remove('drag-over');handlePdfDrop(event)">
-      <span id="pdf-dropzone-text">📄 Glisser le relevé PDF ici &nbsp;ou&nbsp; <u>cliquer pour sélectionner</u></span>
-    </div>
-    <input type="file" id="pdf-file-input" accept=".pdf" style="display:none" onchange="handlePdfFile(this.files[0])">
   </div>
 
   <!-- SCAN REÇU -->
@@ -1096,6 +1136,150 @@ function exportCSV() {
     download: `factures-${new Date().toISOString().slice(0,10)}.csv`
   });
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+// ── IMPORT CSV ────────────────────────────────────────────────────────────
+
+function switchImportTab(tab) {
+  document.getElementById('import-tab-csv').style.display = tab === 'csv' ? '' : 'none';
+  document.getElementById('import-tab-pdf').style.display = tab === 'pdf' ? '' : 'none';
+  document.getElementById('tab-csv-btn').classList.toggle('import-tab-active', tab === 'csv');
+  document.getElementById('tab-pdf-btn').classList.toggle('import-tab-active', tab === 'pdf');
+}
+
+async function handleCsvDrop(event) {
+  const file = event.dataTransfer.files[0];
+  if (file) await handleCsvFile(file);
+}
+
+async function handleCsvFile(file) {
+  if (!file) return;
+  const name = file.name.toLowerCase();
+  if (!name.endsWith('.csv') && !name.endsWith('.txt')) {
+    alert('Veuillez sélectionner un fichier CSV.');
+    return;
+  }
+  setCsvDropzoneState('loading', 'Lecture du CSV...');
+  try {
+    const result = await new Promise((resolve, reject) =>
+      Papa.parse(file, {
+        header: true, skipEmptyLines: true, encoding: 'UTF-8',
+        complete: resolve, error: (err) => reject(new Error(err.message))
+      })
+    );
+    const transactions = parseCsvTransactions(result.data, result.meta.fields || []);
+    setCsvDropzoneState('idle');
+    document.getElementById('csv-file-input').value = '';
+    if (!transactions.length) { alert('Aucune transaction trouvée dans ce CSV.'); return; }
+    showImportReview(transactions);
+  } catch (err) {
+    setCsvDropzoneState('idle');
+    document.getElementById('csv-file-input').value = '';
+    alert('Erreur lecture CSV : ' + err.message);
+  }
+}
+
+function setCsvDropzoneState(state, msg) {
+  const dz  = document.getElementById('csv-dropzone');
+  const txt = document.getElementById('csv-dropzone-text');
+  dz.className = 'pdf-dropzone' + (state === 'loading' ? ' loading' : '');
+  txt.innerHTML = state === 'loading'
+    ? `<span class="spinner"></span>${msg || 'Traitement...'}`
+    : '📊 Glisser le CSV ici &nbsp;ou&nbsp; <u>cliquer pour sélectionner</u>';
+}
+
+function parseCsvTransactions(rows, fields) {
+  const norm = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+  const normFields = fields.map(norm);
+
+  const findCol = (...candidates) => {
+    for (const c of candidates) {
+      const i = normFields.findIndex(h => h.includes(norm(c)));
+      if (i >= 0) return fields[i];
+    }
+    return null;
+  };
+
+  const dateCol   = findCol('date');
+  const descCol   = findCol('description', 'libelle', 'libellé', 'detail', 'détail', 'memo');
+  const debitCol  = findCol('retrait', 'debit', 'débit', 'sortie', 'withdrawal');
+  const creditCol = findCol('depot', 'dépôt', 'credit', 'crédit', 'entree', 'entrée', 'deposit');
+  const amtCol    = findCol('montant', 'amount'); // single signed column
+
+  const parseAmt = v => parseFloat((v || '').toString().replace(/\s/g,'').replace(',','.').replace(/[^0-9.\-]/g,'')) || 0;
+
+  const normalizeDate = raw => {
+    const s = (raw || '').trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    if (/^\d{2}[\/\-]\d{2}[\/\-]\d{4}$/.test(s)) {
+      const [a,b,y] = s.split(/[\/\-]/);
+      return `${y}-${b}-${a}`;
+    }
+    return today();
+  };
+
+  return rows.flatMap(row => {
+    const rawDesc  = descCol ? row[descCol] : Object.values(row).find(v => v && String(v).length > 2) || '';
+    const rawDate  = dateCol ? row[dateCol] : '';
+    let montant = 0, type = 'depense';
+
+    if (amtCol) {
+      const v = parseAmt(row[amtCol]);
+      if (!v) return [];
+      montant = Math.abs(v);
+      type = v >= 0 ? 'revenu' : 'depense';
+    } else {
+      const deb = parseAmt(debitCol  ? row[debitCol]  : '');
+      const cre = parseAmt(creditCol ? row[creditCol] : '');
+      if (!deb && !cre) return [];
+      if (cre > 0) { montant = cre; type = 'revenu'; }
+      else         { montant = deb; type = 'depense'; }
+    }
+
+    if (!montant) return [];
+
+    const desc = String(rawDesc).trim();
+    const { categorie, finalType } = autoCatFromDesc(desc, type);
+    return [{ date: normalizeDate(rawDate), description: desc, montant, type: finalType, categorie }];
+  });
+}
+
+const CSV_KEYWORDS = [
+  { keys: ['shell','petro-canada','petro canada','esso','ultramar','couche-tard','couche tard','irving oil','pioneer','carburant'], cat: 'essence' },
+  { keys: ['semence','stokes','william dam','lacombe','graines','bulbes','ritchie'], cat: 'semences' },
+  { keys: ['terreau','compost','promix','pro-mix'], cat: 'terreau' },
+  { keys: ['fertilisant','engrais','miracle-gro','miracle gro','fishmeal','plant-tone'], cat: 'fertilisant' },
+  { keys: ['canadian tire','rona','home depot','home hardware','lowe','pascal','quincaillerie'], cat: 'equipement' },
+  { keys: ['purolator','fedex','ups','canada post','postes canada','livraison','camionnage'], cat: 'transport' },
+  { keys: ['emballage','uline','u-line','packaging','contenant','caisse','sac ziplock'], cat: 'emballage' },
+  { keys: ['frais de service','frais bancaire','frais mensuel','frais annuel','interet','intérêt','frais admin'], cat: 'frais-bancaires' },
+  { keys: ['salaire','paie','payroll','remuneration','main-oeuvre','contractuel'], cat: 'main-oeuvre' },
+  { keys: ['etiquette','étiquette','vistaprint','impression','imprimerie','graphiste','logo'], cat: 'branding' },
+  { keys: ['farine','sucre','beurre','huile','ingredient','epicerie','épicerie'], cat: 'matieres-premieres' },
+];
+
+function autoCatFromDesc(desc, currentType) {
+  const d = desc.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+  // Virements / transferts
+  if (/virement|transfert/.test(d)) {
+    if (/recu|reçu|entrant|incoming|depot|dépôt/.test(d)) return { finalType: 'revenu', categorie: 'vente-directe' };
+    if (/interac/.test(d) && /envo/.test(d))               return { finalType: 'transfert', categorie: 'autre' };
+    return { finalType: 'transfert', categorie: 'autre' };
+  }
+  if (/interac/.test(d)) {
+    if (/recu|reçu|receive/.test(d)) return { finalType: 'revenu', categorie: 'vente-directe' };
+    if (/envo|sent/.test(d))         return { finalType: 'depense', categorie: 'autre' };
+  }
+
+  if (currentType === 'revenu') return { finalType: 'revenu', categorie: 'vente-directe' };
+
+  for (const { keys, cat } of CSV_KEYWORDS) {
+    if (keys.some(k => d.includes(k.normalize('NFD').replace(/[̀-ͯ]/g, '')))) {
+      return { finalType: 'depense', categorie: cat };
+    }
+  }
+  return { finalType: 'depense', categorie: 'autre' };
 }
 
 // ── IMPORT DESJARDINS ────────────────────────────────────────────────────
