@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur FIRE</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root {
+    --flame: #c8391a;
+    --flame-light: #e8622f;
+    --flame-pale: #fde3d8;
+    --gold: #c8952a;
+    --gold-pale: #faf0dc;
+    --teal: #2f6690;
+    --teal-pale: #dfeaf3;
+    --purple: #7c5ca8;
+    --green: #3a7d44;
+    --green-pale: #e1f0e2;
+    --bg: #f7f5f2;
+    --card: #ffffff;
+    --text: #1f2422;
+    --muted: #6b6f6d;
+    --border: #e4ded6;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  nav { background: var(--flame); color: #fff; display: flex; align-items: center; gap: 0; padding: 0 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.2); flex-wrap: wrap; }
+  nav .brand { font-weight: 700; font-size: 1.1rem; padding: 1rem .75rem 1rem 0; margin-right: .5rem; white-space: nowrap; }
+  nav button { background: none; border: none; color: rgba(255,255,255,.75); cursor: pointer; padding: .75rem .85rem; font-size: .88rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all .2s; white-space: nowrap; }
+  nav button:hover, nav button.active { color: #fff; border-bottom-color: var(--gold); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  .card { background: var(--card); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+  .card h2 { font-size: 1rem; font-weight: 600; color: var(--flame); margin-bottom: 1rem; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+  .stat-card { border-radius: var(--radius); padding: 1.1rem 1.25rem; }
+  .stat-card.fire { background: var(--flame-pale); border-left: 4px solid var(--flame); }
+  .stat-card.coast { background: var(--teal-pale); border-left: 4px solid var(--teal); }
+  .stat-card.barista { background: var(--gold-pale); border-left: 4px solid var(--gold); }
+  .stat-card.revenue { background: var(--teal-pale); border-left: 4px solid var(--teal); }
+  .stat-card.profit { background: var(--green-pale); border-left: 4px solid var(--green); }
+  .stat-card.expense { background: var(--flame-pale); border-left: 4px solid var(--flame-light); }
+  .stat-card label { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); display: block; margin-bottom: .3rem; }
+  .stat-card .amount { font-size: 1.5rem; font-weight: 700; }
+  .stat-card .sub { font-size: .78rem; color: var(--muted); margin-top: .3rem; line-height: 1.35; }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .85rem; }
+  label.field { display: flex; flex-direction: column; gap: .3rem; font-size: .85rem; font-weight: 500; color: var(--muted); }
+  input, select { padding: .55rem .75rem; border: 1px solid var(--border); border-radius: 7px; font-size: .9rem; font-family: inherit; color: var(--text); background: #fff; transition: border .2s; width: 100%; }
+  input:focus, select:focus { outline: none; border-color: var(--flame-light); }
+  .btn { display: inline-flex; align-items: center; gap: .4rem; padding: .6rem 1.2rem; border: none; border-radius: 7px; font-size: .9rem; font-weight: 600; cursor: pointer; transition: filter .15s; }
+  .btn:hover { filter: brightness(1.07); }
+  .btn-primary { background: var(--flame); color: #fff; }
+  .btn-outline { background: transparent; color: var(--flame); border: 1.5px solid var(--flame); }
+  .btn-danger { background: #c0392b; color: #fff; font-size: .8rem; padding: .35rem .7rem; }
+  .btn-sm { padding: .35rem .75rem; font-size: .8rem; }
+  .mt { margin-top: 1rem; }
+  .mt2 { margin-top: 1.5rem; }
+  .flex-gap { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
+  .muted-note { color: var(--muted); font-size: .82rem; margin-top: .85rem; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th { text-align: left; padding: .55rem .65rem; background: #f5f0ea; color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  td { padding: .55rem .65rem; border-bottom: 1px solid #f0ebe4; vertical-align: middle; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fbf8f5; }
+  .empty { text-align: center; color: var(--muted); padding: 2rem; font-size: .9rem; white-space: normal; }
+
+  .badge { display: inline-block; padding: .2rem .6rem; border-radius: 99px; font-size: .73rem; font-weight: 600; }
+  .badge.green  { background: var(--green-pale); color: var(--green); }
+  .badge.orange { background: var(--gold-pale); color: #8a6416; }
+  .badge.gray   { background: #f0f0f0; color: #555; }
+
+  footer.note { max-width: 1100px; margin: 0 auto; padding: 0 1rem 2rem; color: var(--muted); font-size: .8rem; }
+
+  @media (max-width: 640px) {
+    table { font-size: .78rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">🔥 Calculateur FIRE</div>
+  <button class="tab-btn active" data-tab="params">Paramètres</button>
+  <button class="tab-btn" data-tab="bilan">Bilan annuel</button>
+  <button class="tab-btn" data-tab="projections">Projections</button>
+</nav>
+
+<main>
+
+  <section id="tab-params" class="section visible">
+    <div class="card">
+      <h2>Paramètres de base</h2>
+      <div class="form-grid">
+        <label class="field">Coût de vie annuel cible ($)
+          <input type="number" id="p-coutVie" min="0" step="500">
+        </label>
+        <label class="field">Revenus Barista annuels ($)
+          <input type="number" id="p-revenuBarista" min="0" step="500">
+        </label>
+        <label class="field">Multiplicateur (règle de retrait)
+          <select id="p-multiplicateur">
+            <option value="25">25x (retrait 4,0%)</option>
+            <option value="30">30x (retrait 3,3%)</option>
+            <option value="33">33x (retrait 3,0%)</option>
+          </select>
+        </label>
+        <label class="field">Rendement annuel supposé (%)
+          <input type="number" id="p-rendement" min="0" max="20" step="0.1">
+        </label>
+        <label class="field">Horizon (années avant FIRE complet)
+          <input type="number" id="p-horizon" min="1" max="60" step="1">
+        </label>
+      </div>
+    </div>
+
+    <div class="stat-grid mt2" id="targets-grid"></div>
+  </section>
+
+  <section id="tab-bilan" class="section">
+    <div class="card">
+      <h2 id="bilan-form-title">Ajouter une année</h2>
+      <div class="form-grid">
+        <label class="field">Année <input type="number" id="b-annee" step="1"></label>
+        <label class="field">CELI ($) <input type="number" id="b-celi" min="0" step="100"></label>
+        <label class="field">REER ($) <input type="number" id="b-reer" min="0" step="100"></label>
+        <label class="field">Non enregistré — N. ENR ($) <input type="number" id="b-nonEnr" min="0" step="100"></label>
+        <label class="field">CELIAPP ($) <input type="number" id="b-celiapp" min="0" step="100"></label>
+        <label class="field">Immeuble — valeur nette ($) <input type="number" id="b-immeuble" min="0" step="500"></label>
+        <label class="field">Entreprise ($) <input type="number" id="b-entreprise" min="0" step="500"></label>
+        <label class="field">Compte courant ($) <input type="number" id="b-compteCourant" min="0" step="100"></label>
+      </div>
+      <div class="flex-gap mt">
+        <button class="btn btn-primary" id="btn-save-bilan">Enregistrer l'année</button>
+        <button class="btn btn-outline" id="btn-cancel-bilan" style="display:none">Annuler la modification</button>
+      </div>
+    </div>
+
+    <div class="stat-grid mt2" id="bilan-summary"></div>
+
+    <div class="card mt2">
+      <h2>Historique annuel</h2>
+      <div class="table-wrap">
+        <table id="bilan-table">
+          <thead>
+            <tr>
+              <th>Année</th><th>CELI</th><th>REER</th><th>N. ENR</th><th>CELIAPP</th>
+              <th>Immeuble</th><th>Entreprise</th><th>Compte courant</th>
+              <th>Actifs investis</th><th>Actif net</th><th>% Coast FIRE</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-projections" class="section">
+    <div class="card">
+      <h2>Scénarios d'épargne</h2>
+      <div class="form-grid">
+        <label class="field">Épargne annuelle — scénario max ($)
+          <input type="number" id="pr-epargneMax" min="0" step="500">
+        </label>
+        <label class="field">Épargne annuelle — scénario réduit ($)
+          <input type="number" id="pr-epargneReduit" min="0" step="500">
+        </label>
+      </div>
+      <p class="muted-note" id="capital-depart-note"></p>
+    </div>
+
+    <div class="card mt2">
+      <h2>Projection sur <span id="proj-horizon-label"></span> ans</h2>
+      <canvas id="proj-chart" height="110"></canvas>
+    </div>
+  </section>
+
+</main>
+
+<footer class="note">Vos données sont enregistrées uniquement dans votre navigateur (localStorage) — rien n'est envoyé à un serveur.</footer>
+
+<script>
+const STORAGE_KEY = 'fireCalcState_v1';
+
+const DEFAULTS = {
+  settings: { coutVie: 40000, revenuBarista: 20000, multiplicateur: 25, rendement: 6, horizon: 15 },
+  bilans: [],
+  projections: { epargneMax: 15000, epargneReduit: 6000 }
+};
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return JSON.parse(JSON.stringify(DEFAULTS));
+    const parsed = JSON.parse(raw);
+    return {
+      settings: Object.assign({}, DEFAULTS.settings, parsed.settings),
+      bilans: Array.isArray(parsed.bilans) ? parsed.bilans : [],
+      projections: Object.assign({}, DEFAULTS.projections, parsed.projections)
+    };
+  } catch (e) {
+    return JSON.parse(JSON.stringify(DEFAULTS));
+  }
+}
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+let state = loadState();
+let editingYear = null;
+let chart = null;
+
+const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+const fmt = n => (n || 0).toLocaleString('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 });
+const fmtPct = n => `${(n || 0).toFixed(1)}%`;
+
+function computeTargets() {
+  const { coutVie, revenuBarista, multiplicateur, rendement, horizon } = state.settings;
+  const fireNumber = coutVie * multiplicateur;
+  const baristaGap = Math.max(coutVie - revenuBarista, 0);
+  const baristaNumber = baristaGap * multiplicateur;
+  const r = rendement / 100;
+  const coastFireTarget = fireNumber / Math.pow(1 + r, horizon);
+  const tauxRetrait = 100 / multiplicateur;
+  return { fireNumber, baristaGap, baristaNumber, coastFireTarget, tauxRetrait };
+}
+
+function sortedBilans() { return [...state.bilans].sort((a, b) => b.annee - a.annee); }
+
+function getCapitalDepart() {
+  const rows = sortedBilans();
+  if (!rows.length) return 0;
+  const l = rows[0];
+  return l.celi + l.reer + l.nonEnr + l.celiapp;
+}
+function getStartYear() {
+  const rows = sortedBilans();
+  return rows.length ? rows[0].annee : new Date().getFullYear();
+}
+
+// ---------- Tabs ----------
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('visible');
+    if (btn.dataset.tab === 'projections') renderProjections();
+  });
+});
+
+// ---------- Paramètres ----------
+function bindParamsInputs() {
+  document.getElementById('p-coutVie').value = state.settings.coutVie;
+  document.getElementById('p-revenuBarista').value = state.settings.revenuBarista;
+  document.getElementById('p-multiplicateur').value = String(state.settings.multiplicateur);
+  document.getElementById('p-rendement').value = state.settings.rendement;
+  document.getElementById('p-horizon').value = state.settings.horizon;
+
+  document.getElementById('p-coutVie').addEventListener('input', e => { state.settings.coutVie = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('p-revenuBarista').addEventListener('input', e => { state.settings.revenuBarista = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('p-multiplicateur').addEventListener('change', e => { state.settings.multiplicateur = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('p-rendement').addEventListener('input', e => { state.settings.rendement = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('p-horizon').addEventListener('input', e => { state.settings.horizon = Math.max(1, num(e.target.value)); saveState(); renderAll(); });
+}
+
+function renderTargets() {
+  const t = computeTargets();
+  const grid = document.getElementById('targets-grid');
+  grid.innerHTML = `
+    <div class="stat-card fire">
+      <label>Cible FIRE complet</label>
+      <div class="amount">${fmt(t.fireNumber)}</div>
+      <div class="sub">Coût de vie × ${state.settings.multiplicateur} (retrait ${t.tauxRetrait.toFixed(1)}%/an)</div>
+    </div>
+    <div class="stat-card coast">
+      <label>Cible Coast FIRE (aujourd'hui)</label>
+      <div class="amount">${fmt(t.coastFireTarget)}</div>
+      <div class="sub">Capital requis maintenant pour croître seul jusqu'au FIRE complet dans ${state.settings.horizon} ans</div>
+    </div>
+    <div class="stat-card barista">
+      <label>Cible Barista FIRE</label>
+      <div class="amount">${fmt(t.baristaNumber)}</div>
+      <div class="sub">Couvre l'écart de ${fmt(t.baristaGap)}/an non payé par le revenu barista</div>
+    </div>
+  `;
+}
+
+// ---------- Bilan annuel ----------
+function resetBilanForm() {
+  editingYear = null;
+  document.getElementById('bilan-form-title').textContent = "Ajouter une année";
+  document.getElementById('btn-cancel-bilan').style.display = 'none';
+  document.getElementById('b-annee').value = getStartYear() + (state.bilans.length ? 1 : 0);
+  ['b-celi', 'b-reer', 'b-nonEnr', 'b-celiapp', 'b-immeuble', 'b-entreprise', 'b-compteCourant'].forEach(id => document.getElementById(id).value = '');
+}
+
+function startEditBilan(annee) {
+  const row = state.bilans.find(b => b.annee === annee);
+  if (!row) return;
+  editingYear = annee;
+  document.getElementById('bilan-form-title').textContent = `Modifier l'année ${annee}`;
+  document.getElementById('btn-cancel-bilan').style.display = '';
+  document.getElementById('b-annee').value = row.annee;
+  document.getElementById('b-celi').value = row.celi;
+  document.getElementById('b-reer').value = row.reer;
+  document.getElementById('b-nonEnr').value = row.nonEnr;
+  document.getElementById('b-celiapp').value = row.celiapp;
+  document.getElementById('b-immeuble').value = row.immeuble;
+  document.getElementById('b-entreprise').value = row.entreprise;
+  document.getElementById('b-compteCourant').value = row.compteCourant;
+  document.getElementById('tab-bilan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function saveBilan() {
+  const annee = parseInt(document.getElementById('b-annee').value, 10);
+  if (!annee) { alert("Veuillez indiquer une année valide."); return; }
+  const row = {
+    annee,
+    celi: num(document.getElementById('b-celi').value),
+    reer: num(document.getElementById('b-reer').value),
+    nonEnr: num(document.getElementById('b-nonEnr').value),
+    celiapp: num(document.getElementById('b-celiapp').value),
+    immeuble: num(document.getElementById('b-immeuble').value),
+    entreprise: num(document.getElementById('b-entreprise').value),
+    compteCourant: num(document.getElementById('b-compteCourant').value),
+  };
+  state.bilans = state.bilans.filter(b => b.annee !== (editingYear !== null ? editingYear : annee) && b.annee !== annee);
+  state.bilans.push(row);
+  saveState();
+  resetBilanForm();
+  renderAll();
+}
+
+function deleteBilan(annee) {
+  if (!confirm(`Supprimer les données de l'année ${annee} ?`)) return;
+  state.bilans = state.bilans.filter(b => b.annee !== annee);
+  saveState();
+  renderAll();
+}
+
+function renderBilanTable() {
+  const t = computeTargets();
+  const tbody = document.querySelector('#bilan-table tbody');
+  const rows = sortedBilans();
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="12" class="empty">Aucune année enregistrée. Ajoutez votre premier bilan ci-dessus.</td></tr>`;
+  } else {
+    tbody.innerHTML = rows.map(row => {
+      const investis = row.celi + row.reer + row.nonEnr + row.celiapp;
+      const net = investis + row.immeuble + row.entreprise + row.compteCourant;
+      const pct = t.coastFireTarget > 0 ? (investis / t.coastFireTarget * 100) : 0;
+      const badgeClass = pct >= 100 ? 'green' : pct >= 50 ? 'orange' : 'gray';
+      return `<tr>
+        <td><strong>${row.annee}</strong></td>
+        <td>${fmt(row.celi)}</td>
+        <td>${fmt(row.reer)}</td>
+        <td>${fmt(row.nonEnr)}</td>
+        <td>${fmt(row.celiapp)}</td>
+        <td>${fmt(row.immeuble)}</td>
+        <td>${fmt(row.entreprise)}</td>
+        <td>${fmt(row.compteCourant)}</td>
+        <td><strong>${fmt(investis)}</strong></td>
+        <td>${fmt(net)}</td>
+        <td><span class="badge ${badgeClass}">${fmtPct(pct)}</span></td>
+        <td class="flex-gap">
+          <button class="btn btn-sm btn-outline" data-edit="${row.annee}">Modifier</button>
+          <button class="btn btn-sm btn-danger" data-delete="${row.annee}">Suppr.</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => startEditBilan(parseInt(b.dataset.edit, 10))));
+  tbody.querySelectorAll('[data-delete]').forEach(b => b.addEventListener('click', () => deleteBilan(parseInt(b.dataset.delete, 10))));
+
+  const summary = document.getElementById('bilan-summary');
+  if (rows.length) {
+    const latest = rows[0];
+    const investis = latest.celi + latest.reer + latest.nonEnr + latest.celiapp;
+    const net = investis + latest.immeuble + latest.entreprise + latest.compteCourant;
+    const pct = t.coastFireTarget > 0 ? (investis / t.coastFireTarget * 100) : 0;
+    summary.innerHTML = `
+      <div class="stat-card revenue"><label>Actifs investis (${latest.annee})</label><div class="amount">${fmt(investis)}</div></div>
+      <div class="stat-card profit"><label>Actif net (${latest.annee})</label><div class="amount">${fmt(net)}</div></div>
+      <div class="stat-card ${pct >= 100 ? 'profit' : 'expense'}"><label>% Coast FIRE atteint</label><div class="amount">${fmtPct(pct)}</div></div>
+    `;
+  } else {
+    summary.innerHTML = '';
+  }
+}
+
+// ---------- Projections ----------
+function bindProjectionsInputs() {
+  document.getElementById('pr-epargneMax').value = state.projections.epargneMax;
+  document.getElementById('pr-epargneReduit').value = state.projections.epargneReduit;
+  document.getElementById('pr-epargneMax').addEventListener('input', e => { state.projections.epargneMax = num(e.target.value); saveState(); renderProjections(); });
+  document.getElementById('pr-epargneReduit').addEventListener('input', e => { state.projections.epargneReduit = num(e.target.value); saveState(); renderProjections(); });
+}
+
+function renderProjections() {
+  const t = computeTargets();
+  const { rendement, horizon } = state.settings;
+  const r = rendement / 100;
+  const capital = getCapitalDepart();
+  const startYear = getStartYear();
+
+  document.getElementById('proj-horizon-label').textContent = horizon;
+  document.getElementById('capital-depart-note').textContent = state.bilans.length
+    ? `Capital de départ (actifs investis, calculé depuis le bilan ${startYear}) : ${fmt(capital)}`
+    : `Capital de départ : ${fmt(0)} (aucun bilan enregistré — ajoutez une année dans l'onglet Bilan annuel)`;
+
+  const labels = [], scMax = [], scReduit = [], coast = [], fireLine = [], baristaLine = [];
+  let vMax = capital, vReduit = capital;
+  for (let i = 0; i <= horizon; i++) {
+    if (i > 0) {
+      vMax = vMax * (1 + r) + state.projections.epargneMax;
+      vReduit = vReduit * (1 + r) + state.projections.epargneReduit;
+    }
+    labels.push(startYear + i);
+    scMax.push(Math.round(vMax));
+    scReduit.push(Math.round(vReduit));
+    coast.push(Math.round(t.fireNumber / Math.pow(1 + r, horizon - i)));
+    fireLine.push(Math.round(t.fireNumber));
+    baristaLine.push(Math.round(t.baristaNumber));
+  }
+
+  const data = {
+    labels,
+    datasets: [
+      { label: 'Épargne max', data: scMax, borderColor: '#c8391a', backgroundColor: '#c8391a22', fill: false, tension: .2 },
+      { label: 'Épargne réduite', data: scReduit, borderColor: '#2f6690', backgroundColor: '#2f669022', fill: false, tension: .2 },
+      { label: 'Seuil Coast FIRE', data: coast, borderColor: '#c8952a', borderDash: [6, 4], pointRadius: 0, fill: false },
+      { label: 'FIRE complet', data: fireLine, borderColor: '#3a7d44', borderDash: [2, 2], pointRadius: 0, fill: false },
+      { label: 'Barista FIRE', data: baristaLine, borderColor: '#7c5ca8', borderDash: [1, 3], pointRadius: 0, fill: false },
+    ]
+  };
+  const options = {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+    },
+    scales: { y: { ticks: { callback: v => fmt(v) } } }
+  };
+
+  if (chart) {
+    chart.data = data;
+    chart.options = options;
+    chart.update();
+  } else {
+    chart = new Chart(document.getElementById('proj-chart').getContext('2d'), { type: 'line', data, options });
+  }
+}
+
+// ---------- Init ----------
+function renderAll() {
+  renderTargets();
+  renderBilanTable();
+  renderProjections();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  bindParamsInputs();
+  bindProjectionsInputs();
+  document.getElementById('btn-save-bilan').addEventListener('click', saveBilan);
+  document.getElementById('btn-cancel-bilan').addEventListener('click', resetBilanForm);
+  resetBilanForm();
+  renderAll();
+});
+</script>
+</body>
+</html>
