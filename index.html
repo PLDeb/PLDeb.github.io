@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<script>if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('js-anim')}</script>
 <title>Veelution — Studio de lancement</title>
 <meta name="description" content="Veelution bâtit l'image de marque, le site web et le lancement complet des entrepreneurs du Québec — domaine, hébergement et fichiers sources remis à 100%."/>
 <meta name="theme-color" content="#161009"/>
@@ -507,8 +508,8 @@ footer{background:var(--ink);padding:4rem 3rem 2rem}
   .menace-stats{grid-template-columns:1fr!important}
   #contact{padding-top:5rem;padding-bottom:5rem}
 }
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
-.reveal.is-visible{opacity:1;transform:none}
+.js-anim .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.js-anim .reveal.is-visible{opacity:1;transform:none}
 .mobile-sticky-cta{display:none}
 @media(max-width:560px){
   .mobile-sticky-cta{
@@ -1144,6 +1145,7 @@ footer{background:var(--ink);padding:4rem 3rem 2rem}
 
 <script>
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
+  const revealEls=document.querySelectorAll('.reveal');
   const revealObserver=new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
@@ -1152,7 +1154,10 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'Intersecti
       }
     });
   },{threshold:0.12,rootMargin:'0px 0px -60px 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+  revealEls.forEach(el=>revealObserver.observe(el));
+  /* Filet de sécurité : garantit que rien ne reste invisible si l'observateur
+     rate un élément (scroll instantané, ancre au chargement, etc.) */
+  setTimeout(()=>revealEls.forEach(el=>el.classList.add('is-visible')),2500);
 }else{
   document.querySelectorAll('.reveal').forEach(el=>el.classList.add('is-visible'));
 }
