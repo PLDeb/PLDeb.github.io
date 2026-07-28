@@ -463,6 +463,8 @@ footer{background:var(--ink);padding:4rem 3rem 2rem}
   .svc-row{grid-template-columns:1fr;padding:1.5rem}
   .svc-row-price{text-align:left}
   #realisations>div>div[style*="repeat(3"],#concepts>div>div[style*="repeat(3"]{grid-template-columns:1fr!important}
+  .menace-grid{grid-template-columns:1fr!important;gap:2.5rem!important}
+  .menace-section{padding:4rem 1.5rem!important}
 }
 @media(max-width:560px){
   nav{padding:0 1rem;height:64px}
@@ -484,6 +486,7 @@ footer{background:var(--ink);padding:4rem 3rem 2rem}
   .hero-proof-row{grid-template-columns:1fr 1fr;margin-top:1.4rem}
   .proof-item{min-height:68px}
   .about-left>div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  .menace-stats{grid-template-columns:1fr!important}
   #contact{padding-top:5rem;padding-bottom:5rem}
 }
 @media(prefers-reduced-motion:reduce){
@@ -990,15 +993,15 @@ footer{background:var(--ink);padding:4rem 3rem 2rem}
 
 
 <!-- MENACE — repositionnée, condensée, juste avant le CTA -->
-<section style="padding:5rem 3rem;background:#161009">
+<section class="menace-section" style="padding:5rem 3rem;background:#161009">
 <div style="max-width:1200px;margin:0 auto">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+  <div class="menace-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
     <div>
       <p style="font-size:0.68rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#E85D2A;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem">Pourquoi ça compte <span style="flex:0 0 32px;height:1px;background:#E85D2A;display:inline-block"></span></p>
       <h2 style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(1.8rem,3vw,2.5rem);letter-spacing:-0.02em;line-height:1.15;color:#FAF5EF;margin-bottom:1.25rem">Vos fichiers vous appartiennent.<br><em style="color:#E85D2A;font-style:italic">Toujours.</em></h2>
       <p style="font-size:0.92rem;color:#B8B2A6;line-height:1.9;font-weight:300">Trop d'entrepreneurs se retrouvent avec un site qu'ils ne peuvent pas modifier, des accès incomplets et personne pour répondre. Chez Veelution, chaque projet se termine avec une remise claire — domaine, hébergement, fichiers sources et accès. Une formation vous aide ensuite à rester autonome.</p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+    <div class="menace-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
       <div style="background:rgba(232,93,42,0.06);border:1px solid rgba(232,93,42,0.15);border-radius:4px;padding:1.5rem">
         <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;color:#E85D2A;line-height:1;margin-bottom:0.4rem">100%</div>
         <p style="font-size:0.8rem;color:#B8B2A6;line-height:1.5">De vos fichiers vous sont remis à la livraison</p>
