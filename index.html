@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Veelution — Studio de lancement</title>
+<meta name="description" content="Veelution bâtit l'image de marque, le site web et le lancement complet des entrepreneurs du Québec — domaine, hébergement et fichiers sources remis à 100%."/>
+<meta name="theme-color" content="#161009"/>
+<link rel="canonical" href="https://veelution.com/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="fr_CA"/>
+<meta property="og:site_name" content="Veelution"/>
+<meta property="og:title" content="Veelution — Studio de lancement"/>
+<meta property="og:description" content="Image de marque, site web et lancement complet pour les entrepreneurs du Québec. Vos fichiers vous appartiennent, toujours."/>
+<meta property="og:url" content="https://veelution.com/"/>
+<meta property="og:image" content="https://veelution.com/assets/veelution-logo.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Veelution — Studio de lancement"/>
+<meta name="twitter:description" content="Image de marque, site web et lancement complet pour les entrepreneurs du Québec."/>
+<meta name="twitter:image" content="https://veelution.com/assets/veelution-logo.png"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23161009'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-weight='900' font-size='38' fill='%23E85D2A' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FFF7E8;
+  --cream2:#EADCC6;
+  --ink:#111719;
+  --ink2:#0B1012;
+  --sand:#B8B2A6;
+  --mid:#6C665E;
+  --accent:#E85D2A;
+  --accent2:#F7E9D7;
+  --accent-warm:#DDF247;
+  --orange:#E85D2A;
+  --white:#FFF9F0;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;overflow-x:hidden}
+body::selection{background:var(--accent);color:var(--ink)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent-warm);outline-offset:3px}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 3rem;height:68px;
+  background:rgba(255,247,232,0.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(17,23,25,0.16);
+}
+.logo{
+  font-family:'Playfair Display',serif;
+  font-weight:900;font-size:1.4rem;
+  letter-spacing:-0.02em;color:var(--ink);text-decoration:none;
+}
+.logo em{color:var(--accent);font-style:italic}
+.brand-logo{display:block;width:auto;object-fit:contain}
+.brand-logo--nav{height:48px;max-width:min(250px,42vw)}
+.brand-logo--footer{height:64px;max-width:280px}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.82rem;font-weight:400;color:var(--mid);text-decoration:none;letter-spacing:0.04em;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{
+  font-size:0.82rem;font-weight:500;letter-spacing:0.06em;
+  color:var(--white);background:var(--ink);
+  padding:0.6rem 1.6rem;border-radius:2px;
+  text-decoration:none;transition:background .2s;
+  text-transform:uppercase;
+}
+.nav-cta:hover{background:var(--ink2)}
+.nav-cta{box-shadow:0 8px 24px rgba(30,23,16,.14)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  padding-top:68px;
+  overflow:hidden;
+}
+.hero-left{
+  background:var(--ink);
+  padding:5rem 4rem;
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.hero-left::before{
+  content:'V';
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:40vw;color:rgba(255,255,255,0.03);
+  position:absolute;top:-10%;left:-15%;line-height:1;
+  pointer-events:none;user-select:none;
+}
+.hero-eyebrow{
+  font-size:0.7rem;font-weight:500;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--sand);
+  display:flex;align-items:center;gap:1rem;
+}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--sand)}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3.5rem,6vw,6rem);
+  font-weight:900;
+  line-height:1.0;
+  letter-spacing:-0.02em;
+  color:var(--white);
+}
+.hero-h1 em{font-style:italic;color:var(--accent)}
+.hero-left-bottom{display:flex;flex-direction:column;gap:1.5rem}
+.hero-sub{font-size:0.95rem;color:var(--sand);line-height:1.85;max-width:420px;font-weight:300}
+.hero-proof{display:flex;align-items:center;gap:.75rem;color:var(--accent2);font-size:.76rem;letter-spacing:.04em}
+.hero-proof::before{content:'✓';display:grid;place-items:center;width:24px;height:24px;border:1px solid rgba(232,93,42,.45);border-radius:50%;color:var(--accent)}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-accent{
+  background:var(--accent);color:var(--white);
+  font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.9rem 2rem;border:none;border-radius:2px;cursor:pointer;
+  text-decoration:none;transition:opacity .2s;display:inline-block;
+}
+.btn-accent:hover{opacity:0.85}
+.btn-ghost-light{
+  background:transparent;color:var(--sand);
+  font-size:0.82rem;font-weight:400;letter-spacing:0.06em;
+  padding:0.9rem 2rem;border:1px solid rgba(201,191,168,0.3);border-radius:2px;
+  text-decoration:none;transition:border-color .2s;display:inline-block;
+}
+.btn-ghost-light:hover{border-color:var(--sand)}
+
+.hero-right{
+  position:relative;
+  background:
+    radial-gradient(circle at 72% 18%,rgba(221,242,71,.28),transparent 25%),
+    radial-gradient(circle at 15% 82%,rgba(232,93,42,.12),transparent 30%),
+    linear-gradient(145deg,#fff9ee 0%,var(--cream) 48%,#eadcc6 100%);
+  padding:4.25rem 3.5rem 2.2rem;
+  display:flex;flex-direction:column;justify-content:center;
+  overflow:hidden;
+}
+.hero-right::before{
+  content:'';position:absolute;inset:0;opacity:.22;pointer-events:none;
+  background-image:linear-gradient(rgba(23,19,15,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(23,19,15,.12) 1px,transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:linear-gradient(to bottom,black,transparent 82%);
+  mask-image:linear-gradient(to bottom,black,transparent 82%);
+}
+.studio-canvas{position:relative;z-index:1;width:min(100%,760px);margin:auto}
+.studio-kicker{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem}
+.studio-kicker span:first-child{font-size:.67rem;text-transform:uppercase;letter-spacing:.22em;color:var(--mid)}
+.studio-status{display:flex;align-items:center;gap:.5rem;font-size:.68rem;color:var(--mid)}
+.studio-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent-warm);box-shadow:0 0 0 5px rgba(221,242,71,.22)}
+.browser-card{
+  position:relative;background:var(--ink);color:var(--white);
+  border:1px solid rgba(255,255,255,.14);border-radius:10px;
+  box-shadow:0 35px 80px rgba(17,23,25,.24);overflow:hidden;
+  transform:rotate(-1.2deg);transition:transform .45s ease;
+}
+.studio-canvas:hover .browser-card{transform:rotate(0deg) translateY(-4px)}
+.browser-bar{height:36px;padding:0 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.09)}
+.browser-bar i{display:block;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.24)}
+.browser-url{margin-left:8px;font-size:.58rem;letter-spacing:.08em;color:rgba(255,255,255,.35)}
+.browser-work{min-height:330px;padding:2.8rem 2.6rem 2.25rem;position:relative;overflow:hidden}
+.browser-work::after{
+  content:'V';position:absolute;right:-1rem;bottom:-5rem;font:900 17rem/1 'Playfair Display',serif;
+  color:rgba(255,255,255,.035);pointer-events:none
+}
+.work-label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem}
+.work-title{max-width:510px;font:700 clamp(2.2rem,3.5vw,3.8rem)/.98 'Playfair Display',serif;letter-spacing:-.035em}
+.work-title em{color:var(--accent);font-style:italic}
+.work-line{width:44%;height:1px;background:linear-gradient(90deg,var(--accent),transparent);margin:1.65rem 0 1.25rem}
+.work-meta{display:flex;gap:2rem;color:rgba(255,255,255,.5);font-size:.67rem;letter-spacing:.06em}
+.brand-card{
+  position:absolute;right:-1.7rem;top:22%;
+  width:190px;padding:1.2rem;background:rgba(255,250,242,.96);
+  border:1px solid rgba(114,95,78,.25);border-radius:7px;
+  box-shadow:0 18px 45px rgba(17,23,25,.2);
+  transform:rotate(4deg);animation:floatCard 5s ease-in-out infinite;
+}
+@keyframes floatCard{50%{transform:rotate(2.5deg) translateY(-8px)}}
+.brand-card small{display:block;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:.8rem}
+.brand-monogram{font:900 3.2rem/1 'Playfair Display',serif;color:var(--ink);letter-spacing:-.1em}
+.brand-monogram em{color:var(--accent);font-style:normal}
+.swatches{display:flex;gap:.38rem;margin-top:1rem}
+.swatches i{width:24px;height:24px;border-radius:50%;border:2px solid var(--white);box-shadow:0 0 0 1px rgba(23,19,15,.12)}
+.swatches i:nth-child(1){background:var(--ink)}.swatches i:nth-child(2){background:var(--accent)}.swatches i:nth-child(3){background:var(--orange)}.swatches i:nth-child(4){background:var(--cream)}
+.idea-tag{
+  position:absolute;left:-1.4rem;bottom:4.5rem;background:var(--accent-warm);color:var(--ink);
+  padding:.75rem 1rem;border-radius:3px;font:500 .66rem/1.2 'DM Sans',sans-serif;
+  letter-spacing:.12em;text-transform:uppercase;transform:rotate(-3deg);box-shadow:0 12px 25px rgba(84,45,28,.18)
+}
+.hero-proof-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(114,95,78,.28);border:1px solid rgba(114,95,78,.28);margin-top:2rem}
+.proof-item{background:rgba(242,234,223,.86);padding:1rem .8rem;min-height:72px}
+.proof-item strong{display:block;font:700 .88rem/1.15 'Playfair Display',serif;color:var(--ink);margin-bottom:.3rem}
+.proof-item span{display:block;font-size:.58rem;line-height:1.4;color:var(--mid)}
+
+/* ── MARQUEE ── */
+.marquee-wrap{background:var(--ink);padding:1rem 0;overflow:hidden;border-top:1px solid #1E1E1A}
+.marquee-track{display:flex;gap:0;white-space:nowrap;animation:marquee 24s linear infinite}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1.1rem;color:var(--sand);padding:0 3rem;
+  border-right:1px solid #2A2A26;
+  display:inline-flex;align-items:center;gap:0.75rem;
+}
+.marquee-dot{width:6px;height:6px;border-radius:50%;background:#E85D2A;flex-shrink:0}
+
+/* ── SECTION BASE ── */
+.wrap{max-width:1200px;margin:0 auto;padding:0 3rem}
+.eyebrow{
+  font-size:0.68rem;font-weight:500;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--accent);
+  display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;
+}
+.eyebrow::after{content:'';flex:0 0 32px;height:1px;background:var(--accent)}
+h2.serif{
+  font-family:'Playfair Display',serif;
+  font-weight:900;letter-spacing:-0.02em;line-height:1.1;
+}
+
+/* ── SERVICES ── */
+#services{padding:8rem 3rem;background:var(--cream)}
+.services-layout{display:grid;grid-template-columns:1fr 340px;gap:5rem;align-items:start}
+.services-left{}
+.services-left h2{font-size:clamp(2.5rem,4vw,3.5rem);margin-bottom:1.5rem}
+.services-left p{font-size:0.95rem;color:var(--mid);line-height:1.85;font-weight:300;margin-bottom:2.5rem}
+.services-note{
+  background:var(--ink);color:var(--white);
+  border-radius:4px;padding:1.75rem;
+}
+.services-note p{font-size:0.85rem;line-height:1.75;color:var(--sand)}
+.services-note strong{color:var(--white);font-weight:500}
+.services-stack{display:flex;flex-direction:column;gap:1px;background:rgba(201,191,168,0.3)}
+.svc-row{
+  background:var(--cream);padding:2rem 2.5rem;
+  display:grid;grid-template-columns:1fr auto;align-items:start;gap:2rem;
+  transition:background .2s;cursor:default;
+  border-left:3px solid transparent;
+}
+.svc-row:hover{background:var(--white);border-left-color:var(--accent)}
+.svc-row-left h3{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:1.3rem;letter-spacing:-0.01em;margin-bottom:0.5rem;
+}
+.svc-row-desc{font-size:0.85rem;color:var(--mid);line-height:1.7;margin-bottom:1.25rem;max-width:480px}
+.svc-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
+.svc-tag{font-size:0.68rem;padding:0.2rem 0.65rem;border-radius:2px;background:var(--cream2);color:var(--mid);border:1px solid rgba(201,191,168,0.5)}
+.svc-row-price{text-align:right;white-space:nowrap}
+.svc-price-main{font-family:'Playfair Display',serif;font-weight:900;font-size:1.6rem;color:var(--ink);display:block}
+.svc-price-sub{font-size:0.72rem;color:var(--mid);margin-top:0.25rem;display:block}
+.svc-popular{
+  display:inline-block;font-size:0.65rem;font-weight:600;
+  letter-spacing:0.1em;text-transform:uppercase;
+  background:var(--accent);color:var(--white);
+  padding:0.25rem 0.65rem;border-radius:2px;margin-bottom:0.5rem;
+}
+.monthly-strip{
+  margin-top:1px;background:var(--ink2);
+  padding:1.75rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.monthly-strip p{font-size:0.88rem;color:var(--sand)}
+.monthly-strip strong{color:var(--white)}
+.plan-pills{display:flex;gap:0.5rem;flex-wrap:wrap}
+.plan-pill{
+  font-size:0.78rem;font-weight:500;
+  background:rgba(255,255,255,0.05);color:var(--sand);
+  border:1px solid rgba(201,191,168,0.15);
+  padding:0.4rem 1rem;border-radius:2px;
+}
+.plan-pill span{color:var(--accent)}
+
+/* ── CONCEPTS ── */
+#concepts{padding:8rem 3rem;background:var(--ink)}
+#concepts .eyebrow{color:var(--accent)}
+#concepts .eyebrow::after{background:var(--accent)}
+#concepts h2{color:var(--white)}
+.concepts-header{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end;margin-bottom:4rem}
+.concepts-header-right{padding-top:1rem}
+.concept-explainer{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:4px;padding:1.75rem;
+}
+.concept-explainer h4{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.75rem}
+.concept-explainer p{font-size:0.88rem;color:var(--sand);line-height:1.75}
+.concepts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.c-card{
+  border:1px solid rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;
+  background:rgba(255,255,255,0.03);
+  transition:background .25s,border-color .25s,transform .25s;cursor:default;
+}
+.c-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(232,93,42,0.4);transform:translateY(-4px)}
+.c-visual{
+  height:160px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.c1v{background:linear-gradient(135deg,#2A1A0A,#1A100600)}
+.c2v{background:linear-gradient(135deg,#0A1F0E,#06120800)}
+.c3v{background:linear-gradient(135deg,#1A0A2A,#10061600)}
+.c4v{background:linear-gradient(135deg,#0A1222,#06091400)}
+.c-visual-name{
+  font-family:'Playfair Display',serif;
+  font-weight:900;font-size:2rem;letter-spacing:-0.03em;
+  color:rgba(255,255,255,0.15);
+  user-select:none;
+}
+.c-visual-accent{color:var(--accent);opacity:0.6}
+.c-body{padding:1.75rem}
+.c-sector{font-size:0.67rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--sand);margin-bottom:0.75rem}
+.c-body h3{font-family:'Playfair Display',serif;font-weight:700;font-size:1.25rem;color:var(--white);margin-bottom:0.35rem;letter-spacing:-0.01em}
+.c-tagline{font-size:0.82rem;color:var(--accent);margin-bottom:0.85rem;font-style:italic}
+.c-desc{font-size:0.85rem;color:var(--sand);line-height:1.75}
+.c-footer{
+  padding:1rem 1.75rem;border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.c-chips{display:flex;gap:0.4rem;flex-wrap:wrap}
+.c-chip{font-size:0.65rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.05);color:var(--sand);border:1px solid rgba(255,255,255,0.08)}
+.c-link{font-size:0.78rem;font-weight:500;color:var(--accent);text-decoration:none;letter-spacing:0.04em;white-space:nowrap}
+.c-link:hover{text-decoration:underline}
+.concepts-cta{text-align:center;margin-top:3.5rem}
+.concepts-cta p{font-size:0.88rem;color:var(--sand);margin-bottom:1rem}
+
+/* ── PROCESSUS ── */
+#processus{padding:8rem 3rem;background:var(--cream2)}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:5rem}
+.p-step{position:relative;padding-left:0}
+.p-num{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:4rem;line-height:1;color:rgba(14,14,12,0.06);
+  margin-bottom:-0.5rem;
+}
+.p-line{width:32px;height:2px;background:#E85D2A;margin-bottom:1.25rem}
+.p-step h4{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;margin-bottom:0.6rem;color:var(--ink)}
+.p-step p{font-size:0.85rem;color:var(--mid);line-height:1.7}
+
+/* ── ABOUT ── */
+#apropos{padding:8rem 3rem;background:var(--cream)}
+.about-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+.about-left h2{font-size:clamp(2.5rem,4vw,3.5rem);margin-bottom:2rem}
+.about-left p{font-size:0.95rem;color:var(--mid);line-height:1.9;margin-bottom:1rem;font-weight:300}
+.about-left strong{color:var(--ink);font-weight:500}
+.values-list{margin-top:2.5rem;display:flex;flex-direction:column;gap:1rem}
+.v-item{display:flex;align-items:flex-start;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(201,191,168,0.4)}
+.v-item:last-child{border-bottom:none}
+.v-num{font-family:'Playfair Display',serif;font-weight:900;font-size:0.9rem;color:var(--accent);flex-shrink:0;width:20px}
+.v-text p{font-size:0.88rem;color:var(--mid);line-height:1.65}
+.v-text strong{color:var(--ink);font-weight:500}
+.about-right{display:flex;flex-direction:column;gap:1.5rem}
+.team-card{
+  background:var(--ink);border-radius:4px;padding:2rem;
+  position:relative;overflow:hidden;
+}
+.team-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:#E85D2A;
+}
+.team-initial-lg{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:3rem;line-height:1;color:rgba(255,255,255,0.08);
+  position:absolute;top:1.5rem;right:1.5rem;
+}
+.team-card h4{font-family:'Playfair Display',serif;font-weight:700;font-size:1.15rem;color:var(--white);margin-bottom:0.25rem}
+.team-role{font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.team-card p{font-size:0.85rem;color:var(--sand);line-height:1.7}
+.network-card{
+  background:var(--accent);border-radius:4px;padding:1.75rem;
+}
+.network-card p{font-size:0.88rem;color:var(--white);line-height:1.75}
+.network-card strong{font-weight:600}
+
+/* ── RÉALISATIONS ── */
+#realisations{padding:8rem 3rem;background:var(--ink2)}
+#realisations .eyebrow{color:var(--accent)}
+#realisations .eyebrow::after{background:var(--accent)}
+#realisations h2{color:var(--white)}
+#realisations .section-sub{color:var(--sand)}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem}
+.p-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;transition:transform .25s,border-color .25s;height:100%}
+.p-card:hover{transform:translateY(-4px);border-color:rgba(232,93,42,0.3)}
+.p-visual{height:140px;display:flex;align-items:center;justify-content:center;position:relative}
+.p-body{padding:1.5rem}
+.p-type{font-size:0.67rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem}
+.p-body h4{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--white);margin-bottom:0.4rem}
+.p-body p{font-size:0.82rem;color:var(--sand);line-height:1.65}
+.p-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:3rem 1.5rem;gap:1rem;text-align:center;
+  border:1.5px dashed rgba(255,255,255,0.1);
+}
+.p-empty p{font-size:0.85rem;color:var(--sand)}
+
+/* ── CTA BAND ── */
+.cta-band{
+  background:var(--accent);padding:5rem 3rem;
+  display:flex;align-items:center;
+}
+.cta-band-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center;width:100%}
+.cta-band h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4vw,3.2rem);font-weight:900;
+  letter-spacing:-0.02em;line-height:1.1;color:var(--white);
+}
+.cta-band h2 em{font-style:italic;color:rgba(255,255,255,0.7)}
+.cta-band-right{display:flex;flex-direction:column;gap:0.75rem;align-items:flex-end}
+.btn-white{
+  background:var(--white);color:var(--ink);
+  font-size:0.85rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
+  padding:1.1rem 2.5rem;border-radius:2px;text-decoration:none;
+  transition:opacity .2s;white-space:nowrap;display:inline-block;
+}
+.btn-white:hover{opacity:0.9}
+.cta-band-right p{font-size:0.78rem;color:rgba(255,255,255,0.6)}
+
+/* ── CONTACT ── */
+#contact{padding:8rem 3rem;background:var(--cream)}
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem}
+.contact-left h2{font-size:clamp(2rem,3.5vw,3rem);margin-bottom:1.5rem}
+.contact-left p{font-size:0.95rem;color:var(--mid);line-height:1.85;font-weight:300;margin-bottom:2.5rem}
+.contact-details{display:flex;flex-direction:column;gap:1rem}
+.c-detail{display:flex;gap:1.25rem;align-items:flex-start;padding:1rem 0;border-bottom:1px solid rgba(201,191,168,0.4)}
+.c-detail:last-child{border-bottom:none}
+.c-detail-label{font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);min-width:80px;flex-shrink:0;margin-top:2px}
+.c-detail-val{font-size:0.88rem;color:var(--mid)}
+.form{display:flex;flex-direction:column;gap:1.5rem}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.f-field{display:flex;flex-direction:column;gap:0.5rem}
+.f-label{font-size:0.67rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid)}
+.f-field input,.f-field select,.f-field textarea{
+  font-family:'DM Sans',sans-serif;font-size:0.9rem;
+  padding:0.9rem 1.1rem;
+  border:1px solid rgba(201,191,168,0.6);border-radius:2px;
+  background:var(--white);color:var(--ink);
+  outline:none;transition:border-color .2s;width:100%;
+}
+.f-field input:focus,.f-field select:focus,.f-field textarea:focus{border-color:var(--accent)}
+.f-field textarea{resize:vertical;min-height:120px}
+.f-submit{
+  background:var(--ink);color:var(--white);
+  font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:500;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:1.1rem;border:none;border-radius:2px;cursor:pointer;
+  transition:background .2s;width:100%;
+}
+.f-submit:hover{background:var(--ink2)}
+.form-intro{padding:1rem 1.1rem;background:rgba(232,93,42,.09);border-left:3px solid var(--accent);font-size:.82rem;color:var(--mid);line-height:1.6}
+.f-note{font-size:0.75rem;color:var(--mid);text-align:center}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:4rem 3rem 2rem}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3.5rem}
+.f-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.5rem;letter-spacing:-0.02em;color:var(--white);margin-bottom:1rem}
+.f-logo em{color:var(--accent);font-style:italic}
+.f-desc{font-size:0.85rem;color:var(--sand);line-height:1.75;max-width:280px}
+.f-col h5{font-size:0.67rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);margin-bottom:1.25rem;opacity:0.5}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:0.65rem}
+.f-col a{font-size:0.85rem;color:var(--sand);text-decoration:none;opacity:0.5;transition:opacity .2s}
+.f-col a:hover{opacity:1}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding-top:1.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:0.75rem;color:var(--sand);opacity:0.35}
+.f-tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:0.85rem;color:var(--accent)}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr}
+  .hero-left{min-height:70vh}
+  .hero-right{padding:3rem 2rem}
+  .services-layout,.about-layout,.contact-layout,.cta-band-inner,.concepts-header,.footer-top{grid-template-columns:1fr}
+  .process-grid,.concepts-grid,.portfolio-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .wrap,.section,.hero-left,.hero-right,#services,#concepts,#processus,#apropos,#realisations,#contact,footer,.cta-band,.marquee-wrap{padding-left:1.5rem;padding-right:1.5rem}
+  .f-row{grid-template-columns:1fr}
+  .cta-band-inner{grid-template-columns:1fr}
+  .cta-band-right{align-items:flex-start}
+  .hero{min-height:auto}
+  .hero-left{padding-top:4rem;padding-bottom:4rem;gap:3rem}
+  .hero-h1{font-size:clamp(3rem,14vw,4.5rem)}
+  .browser-work{min-height:300px}
+  .svc-row{grid-template-columns:1fr;padding:1.5rem}
+  .svc-row-price{text-align:left}
+  #realisations>div>div[style*="repeat(3"],#concepts>div>div[style*="repeat(3"]{grid-template-columns:1fr!important}
+  .menace-grid{grid-template-columns:1fr!important;gap:2.5rem!important}
+  .menace-section{padding:4rem 1.5rem!important}
+  .services-layout{gap:2.5rem!important}
+}
+@media(max-width:560px){
+  nav{padding:0 1rem;height:64px}
+  .brand-logo--nav{height:40px;max-width:55vw}
+  .nav-cta{padding:.55rem .9rem;font-size:.7rem}
+  .hero{padding-top:64px}
+  .hero-btns{flex-direction:column}
+  .hero-btns a{text-align:center;width:100%}
+  .hero-right{padding:3rem 1.25rem 2rem}
+  .studio-kicker{align-items:flex-start;gap:1rem}
+  .studio-status{font-size:.6rem}
+  .browser-card{transform:none}
+  .browser-work{min-height:280px;padding:2.2rem 1.45rem 7rem}
+  .work-title{font-size:2.35rem}
+  .work-meta{gap:1rem;flex-wrap:wrap}
+  .brand-card{width:145px;right:-.35rem;top:auto;bottom:7.1rem;padding:.9rem}
+  .brand-monogram{font-size:2.3rem}
+  .idea-tag{left:-.35rem;bottom:7.6rem;font-size:.56rem}
+  .hero-proof-row{grid-template-columns:1fr 1fr;margin-top:1.4rem}
+  .proof-item{min-height:68px}
+  .about-left>div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  .menace-stats{grid-template-columns:1fr!important}
+  #contact{padding-top:5rem;padding-bottom:5rem}
+}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.is-visible{opacity:1;transform:none}
+.mobile-sticky-cta{display:none}
+@media(max-width:560px){
+  .mobile-sticky-cta{
+    display:flex;position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:150;
+    justify-content:center;align-items:center;
+    background:var(--ink);color:var(--white);
+    padding:0.9rem 1.5rem;border-radius:4px;
+    font-size:0.82rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;
+    text-decoration:none;box-shadow:0 12px 30px rgba(17,23,25,.28);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#accueil" aria-label="Veelution — Accueil">
+        <img class="brand-logo brand-logo--nav" src="assets/veelution-logo.png" alt=""/>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#accueil">Accueil</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#processus">Processus</a></li>
+    <li><a href="#apropos">À propos</a></li>
+    <li><a href="#realisations">Réalisations</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Démarrer</a>
+</nav>
+
+<!-- HERO -->
+<section id="accueil">
+<div class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Studio créatif — Beauce & partout au Québec</p>
+    <h1 class="hero-h1">Donnez vie à <em>votre idée.</em></h1>
+    <div class="hero-left-bottom">
+      <p class="hero-sub">On bâtit une présence professionnelle qui rassemble votre image, votre message et vos outils — pour inspirer confiance et convertir l’intérêt en appels, réservations ou demandes de soumission.</p>
+      <p class="hero-proof">Vos fichiers, votre domaine et vos accès vous appartiennent.</p>
+      <div class="hero-btns">
+        <a class="btn-accent" href="#contact">Réserver votre appel</a>
+        <a class="btn-ghost-light" href="#realisations">Voir nos réalisations</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="studio-canvas">
+      <div class="studio-kicker">
+        <span>Une idée prend forme</span>
+        <span class="studio-status">Studio en création</span>
+      </div>
+      <div class="browser-card">
+        <div class="browser-bar"><i></i><i></i><i></i><span class="browser-url">votreentreprise.ca</span></div>
+        <div class="browser-work">
+          <p class="work-label">Positionnement · Identité · Web</p>
+          <p class="work-title">Une présence qui vous <em>ressemble</em> — et qui travaille.</p>
+          <div class="work-line"></div>
+          <div class="work-meta"><span>Clair</span><span>Crédible</span><span>Mémorable</span></div>
+        </div>
+      </div>
+      <div class="brand-card" aria-hidden="true">
+        <small>Identité de marque</small>
+        <div class="brand-monogram">V<em>.</em></div>
+        <div class="swatches"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="idea-tag">Votre idée →</div>
+      <div class="hero-proof-row">
+        <div class="proof-item"><strong>Image cohérente</strong><span>Une marque qui se tient.</span></div>
+        <div class="proof-item"><strong>Site efficace</strong><span>Conçu pour convertir.</span></div>
+        <div class="proof-item"><strong>Lancement complet</strong><span>Tout est mis en place.</span></div>
+        <div class="proof-item"><strong>Autonomie réelle</strong><span>Vos accès vous suivent.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="marquee-dot"></span>Image de marque</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Site web</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Impression & merch</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Concepts clés en main</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Lancement structuré</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Accompagnement mensuel</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Image de marque</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Site web</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Impression & merch</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Concepts clés en main</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Lancement structuré</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Accompagnement mensuel</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+<div class="reveal" style="max-width:1200px;margin:0 auto;padding:8rem 3rem">
+  <div class="services-intro" style="max-width:680px;margin-bottom:4rem">
+    <p class="eyebrow">Services</p>
+    <h2 class="serif" style="font-size:clamp(2.5rem,4vw,3.5rem);margin-bottom:1.5rem">Ce qu'on fait.</h2>
+    <p style="font-size:0.95rem;color:var(--mid);line-height:1.85;font-weight:300">Trois façons simples de professionnaliser votre entreprise. Chaque mandat est défini clairement avant de commencer : portée, livrables, prix et échéancier.</p>
+  </div>
+  <div class="services-layout">
+    <div>
+      <div class="services-stack">
+        <div class="svc-row">
+          <div class="svc-row-left">
+            <h3>Image de marque</h3>
+            <p class="svc-row-desc">Une identité visuelle que vous possédez à 100%. Du logo au guide d'utilisation — quelque chose de mémorable et distinctif.</p>
+            <div class="svc-tags">
+              <span class="svc-tag">Logo 3 variantes</span>
+              <span class="svc-tag">Palette officielle</span>
+              <span class="svc-tag">Typographie</span>
+              <span class="svc-tag">Guide d'usage</span>
+              <span class="svc-tag">Fichiers vectoriels</span>
+            </div>
+          </div>
+          <div class="svc-row-price">
+            <span class="svc-price-main">400$–900$</span>
+            <span class="svc-price-sub">selon la portée</span>
+          </div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-row-left">
+            <span class="svc-popular">Populaire</span>
+            <h3>Pack lancement</h3>
+            <p class="svc-row-desc">Image de marque + site web complet. Domaine, courriel pro, SEO, Google Maps, Analytics et formation de 30 minutes incluse.</p>
+            <div class="svc-tags">
+              <span class="svc-tag">Image de marque</span>
+              <span class="svc-tag">Site 1–5 pages</span>
+              <span class="svc-tag">Domaine + hébergement</span>
+              <span class="svc-tag">Courriel pro</span>
+              <span class="svc-tag">SEO de base</span>
+              <span class="svc-tag">Google Maps</span>
+              <span class="svc-tag">Analytics</span>
+              <span class="svc-tag">Formation 30 min</span>
+            </div>
+          </div>
+          <div class="svc-row-price">
+            <span class="svc-price-main">1 490$</span>
+            <span class="svc-price-sub">à partir de</span>
+          </div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-row-left">
+            <h3>Impression & merch</h3>
+            <p class="svc-row-desc">Cartes d'affaires, linge brandé, affiches — votre marque dans le monde réel. On coordonne la commande avec l'imprimeur.</p>
+            <div class="svc-tags">
+              <span class="svc-tag">Cartes d'affaires</span>
+              <span class="svc-tag">Vêtements brandés</span>
+              <span class="svc-tag">Affiches</span>
+              <span class="svc-tag">Autocollants</span>
+              <span class="svc-tag">Coordination incluse</span>
+            </div>
+          </div>
+          <div class="svc-row-price">
+            <span class="svc-price-main">Sur devis</span>
+            <span class="svc-price-sub">selon les quantités</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="services-left">
+      <p class="eyebrow" style="margin-bottom:1rem">Abonnements</p>
+      <div class="services-note">
+        <p><strong>Accompagnement mensuel disponible</strong> après le lancement — hébergement, modifications, support.</p>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:1rem">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="color:var(--sand)">Basic</span><span style="color:var(--accent);font-weight:500">49$/mois</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="color:var(--sand)">Pro</span><span style="color:var(--accent);font-weight:500">99$/mois</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.5rem 0"><span style="color:var(--sand)">Premium</span><span style="color:var(--accent);font-weight:500">199$+/mois</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CONCEPTS -->
+
+
+<!-- PROCESSUS -->
+<section id="processus" style="padding:8rem 3rem;background:var(--cream2)">
+<div class="reveal" style="max-width:1200px;margin:0 auto">
+  <p class="eyebrow">Comment ça marche</p>
+  <h2 class="serif" style="font-size:clamp(2.5rem,4vw,3.5rem)">Quatre étapes.<br><em style="color:var(--accent)">Un résultat.</em></h2>
+  <div class="process-grid">
+    <div class="p-step">
+      <div class="p-num">01</div>
+      <div class="p-line"></div>
+      <h4>Un appel, pas un pitch</h4>
+      <p>30 à 60 minutes pour qu'on comprenne votre réalité — pas pour vous vendre quelque chose. Vous repartez avec de la clarté, même si vous signez pas.</p>
+    </div>
+    <div class="p-step">
+      <div class="p-num">02</div>
+      <div class="p-line"></div>
+      <h4>Une soumission sans surprise</h4>
+      <p>Prix fixe, échéancier précis, livrable défini. Vous savez exactement ce que vous payez avant de signer. Aucun extra caché.</p>
+    </div>
+    <div class="p-step">
+      <div class="p-num">03</div>
+      <div class="p-line"></div>
+      <h4>On construit ensemble</h4>
+      <p>Vous voyez chaque bloc avant qu'il soit final. Vos retours comptent. On ajuste jusqu'à ce que ce soit exactement ce que vous vouliez.</p>
+    </div>
+    <div class="p-step">
+      <div class="p-num">04</div>
+      <div class="p-line"></div>
+      <h4>Les clés vous appartiennent</h4>
+      <p>Domaine, hébergement, fichiers sources, mots de passe — tout vous est remis. Formation incluse. On reste joignables. Pour vrai.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- À PROPOS -->
+<section id="apropos" style="padding:8rem 3rem;background:var(--cream)">
+<div class="reveal" style="max-width:1200px;margin:0 auto">
+  <div class="about-layout">
+    <div class="about-left">
+      <p class="eyebrow">À propos</p>
+      <h2 class="serif" style="font-size:clamp(2.2rem,3.5vw,3rem)">Deux gars de terrain qui ont appris à <em style="font-style:italic;color:var(--accent)">bâtir.</em></h2>
+      <p>Veelution, c'est <strong>Pierre-Luc Deblois</strong> et <strong>Maxime Flambert-Roy</strong>. Notre expérience vient du terrain : agriculture, foresterie, gestion d'opérations et création de projets concrets.</p>
+      <p>On connaît la réalité des entrepreneurs d’ici : il faut paraître professionnel, expliquer rapidement ce qu’on fait et faciliter le prochain appel — sans se perdre dans le jargon.</p>
+      <p>Notre rôle, c’est de mettre de l’ordre dans vos idées et de bâtir une présence qui vous ressemble, que vous pourrez réellement comprendre et utiliser.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem">
+        <div style="padding:1.5rem;background:#FFF7E8;border-radius:4px;border:1px solid #EADCC6">
+          <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.35rem;color:#111719;line-height:1.15">Clarté</div>
+          <div style="font-size:0.78rem;color:#6C665E;margin-top:0.4rem">Une offre comprise rapidement</div>
+        </div>
+        <div style="padding:1.5rem;background:#FFF7E8;border-radius:4px;border:1px solid #EADCC6">
+          <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.35rem;color:#111719;line-height:1.15">Confiance</div>
+          <div style="font-size:0.78rem;color:#6C665E;margin-top:0.4rem">Une image à la hauteur du travail</div>
+        </div>
+        <div style="padding:1.5rem;background:#FFF7E8;border-radius:4px;border:1px solid #EADCC6">
+          <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.35rem;color:#111719;line-height:1.15">Conversion</div>
+          <div style="font-size:0.78rem;color:#6C665E;margin-top:0.4rem">Un chemin clair vers le contact</div>
+        </div>
+        <div style="padding:1.5rem;background:#FFF7E8;border-radius:4px;border:1px solid #EADCC6">
+          <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.35rem;color:#111719;line-height:1.15">Autonomie</div>
+          <div style="font-size:0.78rem;color:#6C665E;margin-top:0.4rem">Vos outils et vos accès</div>
+        </div>
+      </div>
+      <div class="values-list" style="margin-top:1.5rem">
+        <div class="v-item"><div class="v-num">I</div><div class="v-text"><p><strong>Peu de clients à la fois</strong> — pour bien faire, pas pour faire vite.</p></div></div>
+        <div class="v-item"><div class="v-num">II</div><div class="v-text"><p><strong>Disponibles après le lancement</strong> — pour vous aider quand ça compte.</p></div></div>
+        <div class="v-item"><div class="v-num">III</div><div class="v-text"><p><strong>Directs</strong> — si on peut pas faire quelque chose, on vous le dit avant.</p></div></div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="team-card">
+        <div class="team-initial-lg">P</div>
+        <h4>Pierre-Luc Deblois</h4>
+        <div class="team-role">Relations & opérations</div>
+        <p>Background terrain, sens du contact et de l'organisation. Il comprend vos besoins, coordonne les projets et s'assure que rien ne tombe entre les craques.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-initial-lg">M</div>
+        <h4>Maxime Flambert-Roy</h4>
+        <div class="team-role">Création & production</div>
+        <p>Vision créative, sens du détail et de la structure. Il transforme votre idée en quelque chose de beau, de cohérent et de fonctionnel.</p>
+      </div>
+      <div class="network-card">
+        <p><strong>On a un réseau.</strong> Comptable, notaire, imprimeur, photographe — quand vous avez besoin de quelqu'un qu'on ne fait pas nous-mêmes, on vous réfère la bonne personne.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- RÉALISATIONS -->
+<section id="realisations" style="padding:8rem 3rem;background:var(--ink2)">
+<div class="reveal" style="max-width:1200px;margin:0 auto">
+  <p class="eyebrow" style="color:var(--accent)">Réalisations</p>
+  <h2 class="serif" style="font-size:clamp(2.5rem,4vw,3.5rem);color:var(--white);margin-bottom:1rem">Ce qu'on a livré.</h2>
+  <p style="font-size:0.95rem;color:var(--sand);font-weight:300;max-width:480px;line-height:1.8;margin-bottom:4rem">Chaque site est cliquable — voyez par vous-même ce qu'on fait.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+
+    <!-- MICK BLAIS -->
+    <a href="https://expe-moto.netlify.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none" title="Voir le site de Mick Blais">
+      <div class="p-card" style="cursor:pointer;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(206,75,30,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="p-visual" style="background:#12161A;position:relative;overflow:hidden">
+          <img src="moto.webp" alt="Expédition moto sur une route de montagne" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 58%;filter:saturate(.86) contrast(1.06)">
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,13,16,.72),transparent 62%)"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#CE4B1E"></div>
+          <div style="position:absolute;top:0.75rem;right:0.75rem;background:rgba(206,75,30,0.15);border:1px solid rgba(206,75,30,0.3);border-radius:2px;padding:0.2rem 0.5rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#CE4B1E">Voir le site ↗</div>
+        </div>
+        <div class="p-body">
+          <p class="p-type" style="color:#CE4B1E">Aventure & tourisme</p>
+          <h4 style="color:var(--white)">Mick Blais — Expéditions moto</h4>
+          <p style="color:var(--sand)">Guide d'expéditions moto en Amérique du Sud. 30 000 km de crédibilité derrière lui — site immersif, sombre, avec une route qui se trace au scroll.</p>
+        </div>
+        <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(206,75,30,0.1);color:#CE4B1E;border:1px solid rgba(206,75,30,0.2)">Site vitrine</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Copywriting</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Animation signature</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- LES SANGLIERS FORESTIERS -->
+    <a href="https://sangliers-forestiers.netlify.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none" title="Voir le site des Sangliers Forestiers">
+      <div class="p-card" style="cursor:pointer;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(58,107,69,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="p-visual" style="background:#101A14;position:relative;overflow:hidden">
+          <img src="sangliers.webp" alt="Travail de plantation en milieu forestier" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 54%;filter:saturate(.82) contrast(1.04)">
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,18,12,.68),transparent 62%)"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#3A6B45"></div>
+          <div style="position:absolute;top:0.75rem;right:0.75rem;background:rgba(58,107,69,0.15);border:1px solid rgba(58,107,69,0.3);border-radius:2px;padding:0.2rem 0.5rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#3A6B45">Voir le site ↗</div>
+        </div>
+        <div class="p-body">
+          <p class="p-type" style="color:#3A6B45">Foresterie & plantation</p>
+          <h4 style="color:var(--white)">Les Sangliers Forestiers Inc</h4>
+          <p style="color:var(--sand)">Plantation, débroussaillage et entretien de boisés dans les Cantons-de-l'Est. Site avec une rangée d'arbres SVG qui pousse au scroll — leur signature.</p>
+        </div>
+        <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(58,107,69,0.1);color:#3A6B45;border:1px solid rgba(58,107,69,0.2)">Site vitrine</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Animation SVG</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Copywriting</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- DAPHNE'S PANTRY -->
+    <a href="https://daphnespantry.netlify.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none" title="Voir le site de Daphné's Pantry">
+      <div class="p-card" style="cursor:pointer;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(61,90,62,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="p-visual" style="background:#1E2E1E;position:relative;overflow:hidden">
+          <img src="daphne.webp" alt="Kiosque floral et produits artisanaux de Daphné's Pantry" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 50%;filter:saturate(.88) contrast(1.03)">
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,34,21,.7),transparent 64%)"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E8853D"></div>
+          <div style="position:absolute;top:0.75rem;right:0.75rem;background:rgba(232,133,61,0.15);border:1px solid rgba(232,133,61,0.3);border-radius:2px;padding:0.2rem 0.5rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#E8853D">Voir le site ↗</div>
+        </div>
+        <div class="p-body">
+          <p class="p-type" style="color:#E8853D">Beauté naturelle & ferme</p>
+          <h4 style="color:var(--white)">Daphné's Pantry</h4>
+          <p style="color:var(--sand)">Cosmétiques artisanaux d'une ferme australienne. Site bilingue, esthétique botanique, avec une bande florale animée en continu entre les sections.</p>
+        </div>
+        <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(232,133,61,0.1);color:#E8853D;border:1px solid rgba(232,133,61,0.2)">Site bilingue</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Bande botanique</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">E-commerce ready</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- LE RHIZOME D'OR -->
+    <a href="https://lerhizomedor.com/" target="_blank" style="text-decoration:none" title="Voir le site du Rhizome d'Or">
+      <div class="p-card" style="cursor:pointer;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(232,93,42,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="p-visual" style="background:#1A1408;position:relative;overflow:hidden">
+          <img src="https://lerhizomedor.com/assets/inside-greenhouse.jpg" alt="Culture de gingembre dans la serre du Rhizome d'Or" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 58%;filter:saturate(.86) contrast(1.04)">
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(25,18,6,.72),transparent 62%)"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E85D2A"></div>
+          <div style="position:absolute;top:0.75rem;right:0.75rem;background:rgba(232,93,42,0.15);border:1px solid rgba(232,93,42,0.3);border-radius:2px;padding:0.2rem 0.5rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#E85D2A">Voir le site ↗</div>
+        </div>
+        <div class="p-body">
+          <p class="p-type" style="color:#E85D2A">Agriculture & transformation</p>
+          <h4 style="color:var(--white)">Le Rhizome d'Or</h4>
+          <p style="color:var(--sand)">Producteur de gingembre nordique en serre à Saint-Georges de Beauce. Site vitrine avec boutique en ligne, ancré dans l'identité agricole québécoise.</p>
+        </div>
+        <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(232,93,42,0.1);color:#E85D2A;border:1px solid rgba(232,93,42,0.2)">Site vitrine</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Boutique en ligne</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Branding complet</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- COIFFURE MARIE-SOLEIL -->
+    <a href="https://coiffure-marie-soleil.mflambert37.chatgpt.site/" target="_blank" rel="noopener noreferrer" style="text-decoration:none" title="Voir le site de Coiffure Marie-Soleil">
+      <div class="p-card" style="cursor:pointer;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(194,141,104,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="p-visual" style="background:#E7D5C6;position:relative;overflow:hidden">
+          <img src="coiffure.webp" alt="Identité visuelle de Coiffure Marie-Soleil" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.9) contrast(1.02)">
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(67,43,34,.35),transparent 58%)"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#B87857"></div>
+          <div style="position:absolute;top:0.75rem;right:0.75rem;background:rgba(98,72,58,0.1);border:1px solid rgba(98,72,58,0.2);border-radius:2px;padding:0.2rem 0.5rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#62483A">Voir le site ↗</div>
+        </div>
+        <div class="p-body">
+          <p class="p-type" style="color:#C88D68">Coiffure & réservation</p>
+          <h4 style="color:var(--white)">Coiffure Marie-Soleil</h4>
+          <p style="color:var(--sand)">Une présence douce et professionnelle qui présente les services, les disponibilités et simplifie la prise de rendez-vous.</p>
+        </div>
+        <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(200,141,104,0.1);color:#D6A182;border:1px solid rgba(200,141,104,0.2)">Site vitrine</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Réservation</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Mobile</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ENTRETIEN EXTÉRIEUR GAUTHIER -->
+    <a href="https://entretienexterieurgauthier.netlify.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none" title="Voir le site d'Entretien extérieur Gauthier">
+      <div class="p-card" style="cursor:pointer;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(211,163,74,0.55)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="p-visual" style="background:#171914;position:relative;overflow:hidden">
+          <img src="assets/gauthier.webp" alt="Pelle mécanique d'Entretien extérieur Gauthier sur un chantier" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 52%;filter:saturate(.86) contrast(1.05)">
+          <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,16,12,.78),rgba(14,16,12,.08) 70%),linear-gradient(0deg,rgba(14,16,12,.62),transparent 55%)"></div>
+          <div style="position:absolute;left:1.1rem;bottom:1rem;max-width:65%">
+            <span style="display:block;font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:#fff;line-height:1.05">Entretien extérieur</span>
+            <span style="display:block;margin-top:.25rem;font-size:.66rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#D3A34A">Gauthier</span>
+          </div>
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#D3A34A"></div>
+          <div style="position:absolute;top:0.75rem;right:0.75rem;background:rgba(20,22,17,.72);border:1px solid rgba(211,163,74,.5);border-radius:2px;padding:0.2rem 0.5rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#E5BB68">Voir le site ↗</div>
+        </div>
+        <div class="p-body">
+          <p class="p-type" style="color:#D3A34A">Excavation & aménagement</p>
+          <h4 style="color:var(--white)">Entretien extérieur Gauthier</h4>
+          <p style="color:var(--sand)">Une présence solide et humaine qui met en valeur Fred Gauthier, son équipe, leur machinerie et leur souci du travail bien fait.</p>
+        </div>
+        <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(211,163,74,0.12);color:#E5BB68;border:1px solid rgba(211,163,74,0.25)">Site vitrine</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">SEO local</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--sand);border:1px solid rgba(255,255,255,0.08)">Demandes de soumission</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CTA -->
+    <div class="p-card p-empty" style="border:1.5px dashed rgba(232,93,42,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem;gap:1rem;text-align:center">
+      <span style="font-family:'Playfair Display',serif;font-size:2.5rem;color:rgba(232,93,42,0.2)">✦</span>
+      <p style="color:var(--sand);font-size:0.88rem">Votre projet pourrait être ici.</p>
+      <a class="btn-accent" href="#contact" style="font-size:0.8rem;padding:0.7rem 1.5rem">Démarrer →</a>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- STUDIO DE CONCEPTS -->
+<section id="concepts" style="padding:8rem 3rem;background:var(--ink)">
+<div class="reveal" style="max-width:1200px;margin:0 auto">
+  <p class="eyebrow" style="color:var(--accent)">Studio de concepts</p>
+  <h2 class="serif" style="font-size:clamp(2.5rem,4vw,3.5rem);color:var(--white);margin-bottom:1rem">Des idées déjà développées.</h2>
+  <p style="font-size:0.95rem;color:var(--sand);font-weight:300;max-width:52ch;line-height:1.8;margin-bottom:4rem">On ne fait pas que livrer — on invente. Ces concepts sont clés en main, brandés et prêts à être lancés par le bon entrepreneur.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+
+    <!-- AILLEURS TERRITOIRE -->
+    <a href="https://ailleursterritoire.com/" target="_blank" style="text-decoration:none" title="Voir le site Ailleurs Territoire">
+      <div class="p-card" style="cursor:pointer;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(39,56,39,0.7)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="p-visual" style="background:linear-gradient(135deg,#111D11,#1A2A1A);position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem">
+            <svg viewBox="0 0 130 52" width="118" height="48" xmlns="http://www.w3.org/2000/svg">
+              <text x="65" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-style="italic" font-weight="400" fill="rgba(220,235,210,0.7)" letter-spacing="2">Ailleurs</text>
+              <line x1="20" y1="27" x2="110" y2="27" stroke="#5A8A5A" stroke-width="0.7" opacity="0.6"/>
+              <text x="65" y="39" text-anchor="middle" font-family="Georgia,serif" font-size="6.5" fill="#5A8A5A" letter-spacing="4.5">TERRITOIRE</text>
+            </svg>
+          </div>
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#273827"></div>
+          <div style="position:absolute;top:0.75rem;right:0.75rem;background:rgba(39,56,39,0.2);border:1px solid rgba(90,138,90,0.35);border-radius:2px;padding:0.2rem 0.5rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#5A8A5A">Voir le site ↗</div>
+        </div>
+        <div class="p-body">
+          <p class="p-type" style="color:#5A8A5A">Aménagement nourricier</p>
+          <h4 style="color:var(--white)">Ailleurs Territoire</h4>
+          <p style="color:var(--sand)">Potagers, vergers, forêts nourricières en Beauce. Concept complet — branding, site, positionnement — prêt à être repris par un entrepreneur du secteur.</p>
+        </div>
+        <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(232,93,42,0.12);color:#E85D2A;border:1px solid rgba(232,93,42,0.25)">Prêt à vendre</span>
+          <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(39,56,39,0.2);color:#5A8A5A;border:1px solid rgba(90,138,90,0.25)">Beauce · QC</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- KUPRUM — PLACEHOLDER -->
+    <div class="p-card" style="opacity:0.6;cursor:default">
+      <div class="p-visual" style="background:linear-gradient(135deg,#1A1008,#261808);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <svg viewBox="0 0 120 48" width="108" height="44" xmlns="http://www.w3.org/2000/svg">
+            <text x="60" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="700" fill="rgba(184,115,51,0.5)" letter-spacing="4">KUPRUM</text>
+          </svg>
+        </div>
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:rgba(184,115,51,0.4)"></div>
+        <div style="position:absolute;bottom:0.65rem;left:0.75rem;background:rgba(232,93,42,0.12);border:1px solid rgba(232,93,42,0.25);border-radius:2px;padding:0.18rem 0.6rem;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#E85D2A">Bientôt</div>
+      </div>
+      <div class="p-body">
+        <p class="p-type" style="color:rgba(184,115,51,0.6)">Bijouterie & artisanat</p>
+        <h4 style="color:var(--white)">Kuprum</h4>
+        <p style="color:var(--sand)">Bijouterie cuivre en ligne. "Le cuivre, porté autrement." Concept en cours de finalisation.</p>
+      </div>
+      <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+        <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(232,93,42,0.08);color:rgba(232,93,42,0.6);border:1px solid rgba(232,93,42,0.15)">En développement</span>
+      </div>
+    </div>
+
+    <!-- PLANT EXPERT — PLACEHOLDER -->
+    <div class="p-card" style="opacity:0.6;cursor:default">
+      <div class="p-visual" style="background:linear-gradient(135deg,#0E1A0E,#162416);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <svg viewBox="0 0 140 48" width="128" height="44" xmlns="http://www.w3.org/2000/svg">
+            <text x="70" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="rgba(100,160,80,0.5)" letter-spacing="2">PLANT EXPERT</text>
+          </svg>
+        </div>
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:rgba(100,160,80,0.4)"></div>
+        <div style="position:absolute;bottom:0.65rem;left:0.75rem;background:rgba(232,93,42,0.12);border:1px solid rgba(232,93,42,0.25);border-radius:2px;padding:0.18rem 0.6rem;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#E85D2A">Bientôt</div>
+      </div>
+      <div class="p-body">
+        <p class="p-type" style="color:rgba(100,160,80,0.6)">À définir</p>
+        <h4 style="color:var(--white)">Plant Expert</h4>
+        <p style="color:var(--sand)">Concept en cours de développement — détails à venir.</p>
+      </div>
+      <div style="padding:0.85rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;flex-wrap:wrap">
+        <span style="font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;background:rgba(232,93,42,0.08);color:rgba(232,93,42,0.6);border:1px solid rgba(232,93,42,0.15)">En développement</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+
+<!-- MENACE — repositionnée, condensée, juste avant le CTA -->
+<section class="menace-section" style="padding:5rem 3rem;background:#161009">
+<div class="reveal" style="max-width:1200px;margin:0 auto">
+  <div class="menace-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+    <div>
+      <p style="font-size:0.68rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#E85D2A;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem">Pourquoi ça compte <span style="flex:0 0 32px;height:1px;background:#E85D2A;display:inline-block"></span></p>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(1.8rem,3vw,2.5rem);letter-spacing:-0.02em;line-height:1.15;color:#FAF5EF;margin-bottom:1.25rem">Vos fichiers vous appartiennent.<br><em style="color:#E85D2A;font-style:italic">Toujours.</em></h2>
+      <p style="font-size:0.92rem;color:#B8B2A6;line-height:1.9;font-weight:300">Trop d'entrepreneurs se retrouvent avec un site qu'ils ne peuvent pas modifier, des accès incomplets et personne pour répondre. Chez Veelution, chaque projet se termine avec une remise claire — domaine, hébergement, fichiers sources et accès. Une formation vous aide ensuite à rester autonome.</p>
+    </div>
+    <div class="menace-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div style="background:rgba(232,93,42,0.06);border:1px solid rgba(232,93,42,0.15);border-radius:4px;padding:1.5rem">
+        <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;color:#E85D2A;line-height:1;margin-bottom:0.4rem">100%</div>
+        <p style="font-size:0.8rem;color:#B8B2A6;line-height:1.5">De vos fichiers vous sont remis à la livraison</p>
+      </div>
+      <div style="background:rgba(232,93,42,0.06);border:1px solid rgba(232,93,42,0.15);border-radius:4px;padding:1.5rem">
+        <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;color:#E85D2A;line-height:1;margin-bottom:0.4rem">0$</div>
+        <p style="font-size:0.8rem;color:#B8B2A6;line-height:1.5">De frais cachés ou d'extras non annoncés</p>
+      </div>
+      <div style="background:rgba(232,93,42,0.06);border:1px solid rgba(232,93,42,0.15);border-radius:4px;padding:1.5rem">
+        <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;color:#E85D2A;line-height:1;margin-bottom:0.4rem">30<span style="font-size:1rem">min</span></div>
+        <p style="font-size:0.8rem;color:#B8B2A6;line-height:1.5">De formation incluse pour gérer votre site vous-même</p>
+      </div>
+      <div style="background:rgba(232,93,42,0.06);border:1px solid rgba(232,93,42,0.15);border-radius:4px;padding:1.5rem">
+        <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;color:#E85D2A;line-height:1.15;margin-bottom:0.4rem">Humain</div>
+        <p style="font-size:0.8rem;color:#B8B2A6;line-height:1.5">Un contact direct avant, pendant et après la livraison</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-band-inner">
+    <h2>Votre projet mérite <em>un vrai départ.</em></h2>
+    <div class="cta-band-right">
+      <a class="btn-white" href="#contact">Nous contacter →</a>
+      <p>Réponse garantie en 24h</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact" style="padding:8rem 3rem;background:var(--cream)">
+<div class="reveal" style="max-width:1200px;margin:0 auto">
+  <div class="contact-layout">
+    <div class="contact-left">
+      <p class="eyebrow">Contact</p>
+      <h2 class="serif" style="font-size:clamp(2rem,3.5vw,3rem)">Parlez-nous de votre projet.</h2>
+      <p>Quelques détails suffisent pour commencer. On vous répond personnellement avec les prochaines étapes, sans pitch compliqué.</p>
+      <div class="contact-details">
+        <div class="c-detail"><span class="c-detail-label">Courriel</span><span class="c-detail-val">info@veelution.com</span></div>
+        <div class="c-detail"><span class="c-detail-label">Téléphone</span><span class="c-detail-val">581-372-7527</span></div>
+        <div class="c-detail"><span class="c-detail-label">Web</span><span class="c-detail-val">veelution.com</span></div>
+        <div class="c-detail"><span class="c-detail-label">Région</span><span class="c-detail-val">Québec — On travaille partout</span></div>
+      </div>
+    </div>
+    <form class="form" id="project-form">
+      <p class="form-intro">Ce formulaire prépare un courriel dans votre application de messagerie. Aucun renseignement n’est stocké sur cette page.</p>
+      <div class="f-row">
+        <div class="f-field"><label class="f-label" for="prenom">Prénom</label><input id="prenom" name="prenom" type="text" placeholder="Jean" required/></div>
+        <div class="f-field"><label class="f-label" for="courriel">Courriel</label><input id="courriel" name="courriel" type="email" placeholder="jean@exemple.com" required/></div>
+      </div>
+      <div class="f-field"><label class="f-label" for="projet">Votre projet en une phrase</label><input id="projet" name="projet" type="text" placeholder="Ex. : Je veux lancer une boutique de savons naturels…" required/></div>
+      <div class="f-field">
+        <label class="f-label" for="etape">Où en êtes-vous ?</label>
+        <select id="etape" name="etape">
+          <option>Idée — je commence à zéro</option>
+          <option>En démarrage — j'ai déjà quelques éléments</option>
+          <option>Déjà lancé — je veux refaire mon image</option>
+          <option>Je veux explorer un concept Veelution</option>
+        </select>
+      </div>
+      <div class="f-field"><label class="f-label" for="details">Dites-nous en plus (optionnel)</label><textarea id="details" name="details" placeholder="Budget approximatif, délai souhaité, questions…"></textarea></div>
+      <button class="f-submit" type="submit">Préparer mon message →</button>
+      <p class="f-note">Vous pourrez relire le message avant de l’envoyer.</p>
+    </form>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="f-logo">
+                    <img class="brand-logo brand-logo--footer" src="assets/veelution-logo.png" alt="Veelution"/>
+        </div>
+        <p class="f-desc">Studio de lancement pour jeunes entrepreneurs. Image de marque, site web, impression et concepts clés en main — partout au Québec et ailleurs.</p>
+      </div>
+      <div class="f-col">
+        <h5>Navigation</h5>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#concepts">Concepts</a></li>
+          <li><a href="#processus">Processus</a></li>
+          <li><a href="#apropos">À propos</a></li>
+          <li><a href="#realisations">Réalisations</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:info@veelution.com">info@veelution.com</a></li>
+          <li><a href="#contact">Instagram</a></li>
+          <li><a href="#contact">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Veelution Studio. Tous droits réservés.</p>
+      <span class="f-tagline">On donne vie à votre idée.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="mobile-sticky-cta" href="#contact">Réserver votre appel</a>
+
+<script>
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
+  const revealObserver=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+}else{
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('is-visible'));
+}
+
+document.getElementById('project-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  const data=new FormData(this);
+  const subject=encodeURIComponent('Nouveau projet — '+data.get('prenom'));
+  const body=encodeURIComponent(
+    'Prénom : '+data.get('prenom')+'\n'+
+    'Courriel : '+data.get('courriel')+'\n'+
+    'Projet : '+data.get('projet')+'\n'+
+    'Étape : '+data.get('etape')+'\n\n'+
+    'Détails :\n'+(data.get('details')||'Non précisé')
+  );
+  window.location.href='mailto:info@veelution.com?subject='+subject+'&body='+body;
+});
+</script>
+</body>
+</html>
