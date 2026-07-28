@@ -14,11 +14,11 @@
 <meta property="og:title" content="Veelution — Studio de lancement"/>
 <meta property="og:description" content="Image de marque, site web et lancement complet pour les entrepreneurs du Québec. Vos fichiers vous appartiennent, toujours."/>
 <meta property="og:url" content="https://veelution.com/"/>
-<meta property="og:image" content="https://veelution.com/assets/veelution-logo.png"/>
+<meta property="og:image" content="https://veelution.com/assets/veelution-logo-nav.webp"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Veelution — Studio de lancement"/>
 <meta name="twitter:description" content="Image de marque, site web et lancement complet pour les entrepreneurs du Québec."/>
-<meta name="twitter:image" content="https://veelution.com/assets/veelution-logo.png"/>
+<meta name="twitter:image" content="https://veelution.com/assets/veelution-logo-nav.webp"/>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23161009'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-weight='900' font-size='38' fill='%23E85D2A' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -62,8 +62,10 @@ nav{
 .brand-logo--nav{height:48px;max-width:min(250px,42vw)}
 .brand-logo--footer{height:64px;max-width:280px}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{font-size:0.82rem;font-weight:400;color:var(--mid);text-decoration:none;letter-spacing:0.04em;transition:color .2s}
+.nav-links a{position:relative;font-size:0.82rem;font-weight:400;color:var(--mid);text-decoration:none;letter-spacing:0.04em;transition:color .2s}
+.nav-links a::after{content:'';position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:var(--accent);transition:right .25s ease}
 .nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{right:0}
 .nav-cta{
   font-size:0.82rem;font-weight:500;letter-spacing:0.06em;
   color:var(--white);background:var(--ink);
@@ -88,10 +90,12 @@ nav{
   position:relative;overflow:hidden;
 }
 .hero-left::before{
-  content:'V';
-  font-family:'Playfair Display',serif;font-weight:900;
-  font-size:40vw;color:rgba(255,255,255,0.03);
-  position:absolute;top:-10%;left:-15%;line-height:1;
+  content:'';
+  position:absolute;top:-6%;left:-8%;
+  width:65%;aspect-ratio:543/369;
+  background-image:url('assets/vl-icon.webp');
+  background-size:contain;background-repeat:no-repeat;background-position:top left;
+  opacity:0.05;
   pointer-events:none;user-select:none;
 }
 .hero-eyebrow{
@@ -150,7 +154,8 @@ nav{
 .studio-kicker{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem}
 .studio-kicker span:first-child{font-size:.67rem;text-transform:uppercase;letter-spacing:.22em;color:var(--mid)}
 .studio-status{display:flex;align-items:center;gap:.5rem;font-size:.68rem;color:var(--mid)}
-.studio-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent-warm);box-shadow:0 0 0 5px rgba(221,242,71,.22)}
+.studio-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent-warm);box-shadow:0 0 6px 1px rgba(221,242,71,.55);animation:statusPulse 2.4s ease-in-out infinite}
+@keyframes statusPulse{0%,100%{box-shadow:0 0 6px 1px rgba(221,242,71,.55)}50%{box-shadow:0 0 10px 3px rgba(221,242,71,.85)}}
 .browser-card{
   position:relative;background:var(--ink);color:var(--white);
   border:1px solid rgba(255,255,255,.14);border-radius:10px;
@@ -533,7 +538,7 @@ footer{background:var(--ink);padding:4rem 3rem 2rem}
 <!-- NAV -->
 <nav>
   <a class="logo" href="#accueil" aria-label="Veelution — Accueil">
-        <img class="brand-logo brand-logo--nav" src="assets/veelution-logo.png" alt=""/>
+        <img class="brand-logo brand-logo--nav" src="assets/veelution-logo-nav.webp" alt=""/>
   </a>
   <ul class="nav-links">
     <li><a href="#accueil">Accueil</a></li>
@@ -1111,7 +1116,7 @@ footer{background:var(--ink);padding:4rem 3rem 2rem}
     <div class="footer-top">
       <div>
         <div class="f-logo">
-                    <img class="brand-logo brand-logo--footer" src="assets/veelution-logo.png" alt="Veelution"/>
+                    <img class="brand-logo brand-logo--footer" src="assets/veelution-logo-footer.webp" alt="Veelution"/>
         </div>
         <p class="f-desc">Studio de lancement pour jeunes entrepreneurs. Image de marque, site web, impression et concepts clés en main — partout au Québec et ailleurs.</p>
       </div>
