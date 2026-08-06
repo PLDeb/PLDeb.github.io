@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur FIRE</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root {
+    --flame: #c8391a;
+    --flame-light: #e8622f;
+    --flame-pale: #fde3d8;
+    --gold: #c8952a;
+    --gold-pale: #faf0dc;
+    --teal: #2f6690;
+    --teal-pale: #dfeaf3;
+    --purple: #7c5ca8;
+    --green: #3a7d44;
+    --green-pale: #e1f0e2;
+    --bg: #f7f5f2;
+    --card: #ffffff;
+    --text: #1f2422;
+    --muted: #6b6f6d;
+    --border: #e4ded6;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  nav { background: var(--flame); color: #fff; display: flex; align-items: center; gap: 0; padding: 0 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.2); flex-wrap: wrap; }
+  nav .brand { font-weight: 700; font-size: 1.1rem; padding: 1rem .75rem 1rem 0; margin-right: .5rem; white-space: nowrap; }
+  nav button { background: none; border: none; color: rgba(255,255,255,.75); cursor: pointer; padding: .75rem .85rem; font-size: .88rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all .2s; white-space: nowrap; }
+  nav button:hover, nav button.active { color: #fff; border-bottom-color: var(--gold); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  .card { background: var(--card); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+  .card h2 { font-size: 1rem; font-weight: 600; color: var(--flame); margin-bottom: 1rem; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+  .stat-card { border-radius: var(--radius); padding: 1.1rem 1.25rem; }
+  .stat-card.fire { background: var(--flame-pale); border-left: 4px solid var(--flame); }
+  .stat-card.coast { background: var(--teal-pale); border-left: 4px solid var(--teal); }
+  .stat-card.barista { background: var(--gold-pale); border-left: 4px solid var(--gold); }
+  .stat-card.revenue { background: var(--teal-pale); border-left: 4px solid var(--teal); }
+  .stat-card.profit { background: var(--green-pale); border-left: 4px solid var(--green); }
+  .stat-card.expense { background: var(--flame-pale); border-left: 4px solid var(--flame-light); }
+  .stat-card label { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); display: block; margin-bottom: .3rem; }
+  .stat-card .amount { font-size: 1.5rem; font-weight: 700; }
+  .stat-card .sub { font-size: .78rem; color: var(--muted); margin-top: .3rem; line-height: 1.35; }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .85rem; }
+  label.field { display: flex; flex-direction: column; gap: .3rem; font-size: .85rem; font-weight: 500; color: var(--muted); }
+  input, select { padding: .55rem .75rem; border: 1px solid var(--border); border-radius: 7px; font-size: .9rem; font-family: inherit; color: var(--text); background: #fff; transition: border .2s; width: 100%; }
+  input:focus, select:focus { outline: none; border-color: var(--flame-light); }
+  .btn { display: inline-flex; align-items: center; gap: .4rem; padding: .6rem 1.2rem; border: none; border-radius: 7px; font-size: .9rem; font-weight: 600; cursor: pointer; transition: filter .15s; }
+  .btn:hover { filter: brightness(1.07); }
+  .btn-primary { background: var(--flame); color: #fff; }
+  .btn-outline { background: transparent; color: var(--flame); border: 1.5px solid var(--flame); }
+  .btn-danger { background: #c0392b; color: #fff; font-size: .8rem; padding: .35rem .7rem; }
+  .btn-sm { padding: .35rem .75rem; font-size: .8rem; }
+  .mt { margin-top: 1rem; }
+  .mt2 { margin-top: 1.5rem; }
+  .flex-gap { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
+  .muted-note { color: var(--muted); font-size: .82rem; margin-top: .85rem; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th { text-align: left; padding: .55rem .65rem; background: #f5f0ea; color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  td { padding: .55rem .65rem; border-bottom: 1px solid #f0ebe4; vertical-align: middle; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fbf8f5; }
+  .empty { text-align: center; color: var(--muted); padding: 2rem; font-size: .9rem; white-space: normal; }
+
+  .badge { display: inline-block; padding: .2rem .6rem; border-radius: 99px; font-size: .73rem; font-weight: 600; }
+  .badge.green  { background: var(--green-pale); color: var(--green); }
+  .badge.orange { background: var(--gold-pale); color: #8a6416; }
+  .badge.gray   { background: #f0f0f0; color: #555; }
+  .badge.red    { background: var(--flame-pale); color: var(--flame); }
+
+  footer.note { max-width: 1100px; margin: 0 auto; padding: 0 1rem 2rem; color: var(--muted); font-size: .8rem; }
+
+  @media (max-width: 640px) {
+    table { font-size: .78rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">🔥 Calculateur FIRE</div>
+  <button class="tab-btn active" data-tab="params">Paramètres</button>
+  <button class="tab-btn" data-tab="portails">Portails</button>
+  <button class="tab-btn" data-tab="bilan">Bilan annuel</button>
+  <button class="tab-btn" data-tab="projections">Projections</button>
+</nav>
+
+<main>
+
+  <section id="tab-params" class="section visible">
+    <div class="card">
+      <h2>Paramètres de base</h2>
+      <div class="form-grid">
+        <label class="field">Coût de vie annuel cible ($)
+          <input type="number" id="p-coutVie" min="0" step="500">
+        </label>
+        <label class="field">Revenus Barista annuels ($)
+          <input type="number" id="p-revenuBarista" min="0" step="500">
+        </label>
+        <label class="field">Multiplicateur (règle de retrait)
+          <select id="p-multiplicateur">
+            <option value="25">25x (retrait 4,0%)</option>
+            <option value="30">30x (retrait 3,3%)</option>
+            <option value="33">33x (retrait 3,0%)</option>
+          </select>
+        </label>
+        <label class="field">Rendement annuel supposé (%)
+          <input type="number" id="p-rendement" min="0" max="20" step="0.1">
+        </label>
+        <label class="field">Horizon (années avant FIRE complet)
+          <input type="number" id="p-horizon" min="1" max="60" step="1">
+        </label>
+      </div>
+    </div>
+
+    <div class="stat-grid mt2" id="targets-grid"></div>
+  </section>
+
+  <section id="tab-portails" class="section">
+    <div class="card">
+      <h2>Fonds d'urgence &amp; de tranquillité</h2>
+      <div class="form-grid">
+        <label class="field">Statut d'emploi
+          <select id="u-statutEmploi">
+            <option value="salarie">Salarié avec assurances (emploi/invalidité) — 3 à 6 mois</option>
+            <option value="autonome">Travailleur autonome sans assurance — 9 à 12 mois</option>
+          </select>
+        </label>
+        <label class="field">Dépenses mensuelles à couvrir ($)
+          <input type="number" id="u-depensesMensuelles" min="0" step="50">
+        </label>
+      </div>
+      <div class="stat-grid mt2" id="urgence-grid"></div>
+      <p class="muted-note">Au-delà du plafond, le surplus de cash devient un frein plutôt qu'une protection — envisage de l'investir plutôt que de le laisser dormir.</p>
+    </div>
+
+    <div class="card mt2">
+      <h2 id="portail-form-title">Ajouter un portail</h2>
+      <div class="form-grid">
+        <label class="field">Nom <input type="text" id="pf-nom" placeholder="ex. Stabilité"></label>
+        <label class="field">Mode
+          <select id="pf-mode">
+            <option value="formule">Basé sur les dépenses (× multiplicateur)</option>
+            <option value="manuel">Montant fixe (défini librement)</option>
+          </select>
+        </label>
+        <label class="field">Dépense mensuelle ($) <input type="number" id="pf-depenseMensuelle" min="0" step="50"></label>
+        <label class="field">Capital visé — montant fixe ($) <input type="number" id="pf-capitalManuel" min="0" step="500"></label>
+      </div>
+      <div class="flex-gap mt">
+        <button class="btn btn-primary" id="btn-save-portail">Enregistrer le portail</button>
+        <button class="btn btn-outline" id="btn-cancel-portail" style="display:none">Annuler la modification</button>
+      </div>
+    </div>
+
+    <div class="card mt2">
+      <h2>Portails à paliers</h2>
+      <label class="field" style="max-width:260px">Épargne mensuelle actuelle ($)
+        <input type="number" id="po-epargneMensuelle" min="0" step="50">
+      </label>
+      <div class="table-wrap mt">
+        <table id="portails-table">
+          <thead>
+            <tr><th>Portail</th><th>Dépense mensuelle</th><th>Capital requis</th><th>% atteint</th><th>Temps estimé</th><th></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="muted-note">Le % atteint et le temps estimé sont calculés à partir des actifs investis (CELI + REER + N. ENR + CELIAPP) du dernier bilan et de l'épargne mensuelle ci-dessus, au rendement supposé défini dans Paramètres.</p>
+    </div>
+  </section>
+
+  <section id="tab-bilan" class="section">
+    <div class="card">
+      <h2 id="bilan-form-title">Ajouter une année</h2>
+      <div class="form-grid">
+        <label class="field">Année <input type="number" id="b-annee" step="1"></label>
+        <label class="field">CELI ($) <input type="number" id="b-celi" min="0" step="100"></label>
+        <label class="field">REER ($) <input type="number" id="b-reer" min="0" step="100"></label>
+        <label class="field">Non enregistré — N. ENR ($) <input type="number" id="b-nonEnr" min="0" step="100"></label>
+        <label class="field">CELIAPP ($) <input type="number" id="b-celiapp" min="0" step="100"></label>
+        <label class="field">Immeuble — valeur nette ($) <input type="number" id="b-immeuble" min="0" step="500"></label>
+        <label class="field">Entreprise ($) <input type="number" id="b-entreprise" min="0" step="500"></label>
+        <label class="field">Compte courant ($) <input type="number" id="b-compteCourant" min="0" step="100"></label>
+      </div>
+      <div class="flex-gap mt">
+        <button class="btn btn-primary" id="btn-save-bilan">Enregistrer l'année</button>
+        <button class="btn btn-outline" id="btn-cancel-bilan" style="display:none">Annuler la modification</button>
+      </div>
+    </div>
+
+    <div class="stat-grid mt2" id="bilan-summary"></div>
+
+    <div class="card mt2">
+      <h2>Historique annuel</h2>
+      <div class="table-wrap">
+        <table id="bilan-table">
+          <thead>
+            <tr>
+              <th>Année</th><th>CELI</th><th>REER</th><th>N. ENR</th><th>CELIAPP</th>
+              <th>Immeuble</th><th>Entreprise</th><th>Compte courant</th>
+              <th>Actifs investis</th><th>Actif net</th><th>% Coast FIRE</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-projections" class="section">
+    <div class="card">
+      <h2>Scénarios d'épargne</h2>
+      <div class="form-grid">
+        <label class="field">Épargne annuelle — scénario max ($)
+          <input type="number" id="pr-epargneMax" min="0" step="500">
+        </label>
+        <label class="field">Épargne annuelle — scénario réduit ($)
+          <input type="number" id="pr-epargneReduit" min="0" step="500">
+        </label>
+      </div>
+      <p class="muted-note" id="capital-depart-note"></p>
+    </div>
+
+    <div class="card mt2">
+      <h2>Projection sur <span id="proj-horizon-label"></span> ans</h2>
+      <canvas id="proj-chart" height="110"></canvas>
+    </div>
+  </section>
+
+</main>
+
+<footer class="note">Vos données sont enregistrées uniquement dans votre navigateur (localStorage) — rien n'est envoyé à un serveur.</footer>
+
+<script>
+const STORAGE_KEY = 'fireCalcState_v1';
+
+const DEFAULTS = {
+  settings: { coutVie: 40000, revenuBarista: 20000, multiplicateur: 25, rendement: 6, horizon: 15 },
+  bilans: [],
+  projections: { epargneMax: 15000, epargneReduit: 6000 },
+  urgence: { statutEmploi: 'salarie', depensesMensuelles: 1922 },
+  portails: {
+    epargneMensuelle: 1500,
+    liste: [
+      { id: 1, nom: 'Stabilité', mode: 'formule', depenseMensuelle: 1545, capitalManuel: 0 },
+      { id: 2, nom: 'Sécurité', mode: 'formule', depenseMensuelle: 1922, capitalManuel: 0 },
+      { id: 3, nom: 'Indépendance', mode: 'formule', depenseMensuelle: 3750, capitalManuel: 0 },
+      { id: 4, nom: 'Liberté', mode: 'manuel', depenseMensuelle: 0, capitalManuel: 0 },
+    ]
+  }
+};
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return JSON.parse(JSON.stringify(DEFAULTS));
+    const parsed = JSON.parse(raw);
+    return {
+      settings: Object.assign({}, DEFAULTS.settings, parsed.settings),
+      bilans: Array.isArray(parsed.bilans) ? parsed.bilans : [],
+      projections: Object.assign({}, DEFAULTS.projections, parsed.projections),
+      urgence: Object.assign({}, DEFAULTS.urgence, parsed.urgence),
+      portails: {
+        epargneMensuelle: (parsed.portails && parsed.portails.epargneMensuelle != null) ? parsed.portails.epargneMensuelle : DEFAULTS.portails.epargneMensuelle,
+        liste: (parsed.portails && Array.isArray(parsed.portails.liste)) ? parsed.portails.liste : JSON.parse(JSON.stringify(DEFAULTS.portails.liste))
+      }
+    };
+  } catch (e) {
+    return JSON.parse(JSON.stringify(DEFAULTS));
+  }
+}
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+let state = loadState();
+let editingYear = null;
+let editingPortailId = null;
+let chart = null;
+
+const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+const fmt = n => (n || 0).toLocaleString('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 });
+const fmtPct = n => `${(n || 0).toFixed(1)}%`;
+
+function computeTargets() {
+  const { coutVie, revenuBarista, multiplicateur, rendement, horizon } = state.settings;
+  const fireNumber = coutVie * multiplicateur;
+  const baristaGap = Math.max(coutVie - revenuBarista, 0);
+  const baristaNumber = baristaGap * multiplicateur;
+  const r = rendement / 100;
+  const coastFireTarget = fireNumber / Math.pow(1 + r, horizon);
+  const tauxRetrait = 100 / multiplicateur;
+  return { fireNumber, baristaGap, baristaNumber, coastFireTarget, tauxRetrait };
+}
+
+function sortedBilans() { return [...state.bilans].sort((a, b) => b.annee - a.annee); }
+
+function getCapitalDepart() {
+  const rows = sortedBilans();
+  if (!rows.length) return 0;
+  const l = rows[0];
+  return l.celi + l.reer + l.nonEnr + l.celiapp;
+}
+function getStartYear() {
+  const rows = sortedBilans();
+  return rows.length ? rows[0].annee : new Date().getFullYear();
+}
+
+function computeUrgence() {
+  const { statutEmploi, depensesMensuelles } = state.urgence;
+  const [moisMin, moisMax] = statutEmploi === 'autonome' ? [9, 12] : [3, 6];
+  const plancher = depensesMensuelles * moisMin;
+  const plafond = depensesMensuelles * moisMax;
+  const rows = sortedBilans();
+  const cashActuel = rows.length ? rows[0].compteCourant : 0;
+  let statut, badgeClass;
+  if (cashActuel < plancher) { statut = 'Sous le plancher — priorité #1'; badgeClass = 'orange'; }
+  else if (cashActuel <= plafond) { statut = 'Dans la zone cible'; badgeClass = 'green'; }
+  else { statut = `Cash paresseux : ${fmt(cashActuel - plafond)} au-delà du plafond`; badgeClass = 'red'; }
+  return { moisMin, moisMax, plancher, plafond, cashActuel, statut, badgeClass };
+}
+
+function capitalPortail(p) {
+  return p.mode === 'formule' ? p.depenseMensuelle * 12 * state.settings.multiplicateur : p.capitalManuel;
+}
+
+function anneesPourAtteindre(target, capitalActuel) {
+  if (capitalActuel >= target) return 0;
+  const r = state.settings.rendement / 100;
+  const pmt = state.portails.epargneMensuelle * 12;
+  let v = capitalActuel;
+  for (let n = 1; n <= 100; n++) {
+    v = v * (1 + r) + pmt;
+    if (v >= target) return n;
+  }
+  return null;
+}
+
+// ---------- Tabs ----------
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('visible');
+    if (btn.dataset.tab === 'projections') renderProjections();
+  });
+});
+
+// ---------- Paramètres ----------
+function bindParamsInputs() {
+  document.getElementById('p-coutVie').value = state.settings.coutVie;
+  document.getElementById('p-revenuBarista').value = state.settings.revenuBarista;
+  document.getElementById('p-multiplicateur').value = String(state.settings.multiplicateur);
+  document.getElementById('p-rendement').value = state.settings.rendement;
+  document.getElementById('p-horizon').value = state.settings.horizon;
+
+  document.getElementById('p-coutVie').addEventListener('input', e => { state.settings.coutVie = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('p-revenuBarista').addEventListener('input', e => { state.settings.revenuBarista = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('p-multiplicateur').addEventListener('change', e => { state.settings.multiplicateur = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('p-rendement').addEventListener('input', e => { state.settings.rendement = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('p-horizon').addEventListener('input', e => { state.settings.horizon = Math.max(1, num(e.target.value)); saveState(); renderAll(); });
+}
+
+function renderTargets() {
+  const t = computeTargets();
+  const grid = document.getElementById('targets-grid');
+  grid.innerHTML = `
+    <div class="stat-card fire">
+      <label>Cible FIRE complet</label>
+      <div class="amount">${fmt(t.fireNumber)}</div>
+      <div class="sub">Coût de vie × ${state.settings.multiplicateur} (retrait ${t.tauxRetrait.toFixed(1)}%/an)</div>
+    </div>
+    <div class="stat-card coast">
+      <label>Cible Coast FIRE (aujourd'hui)</label>
+      <div class="amount">${fmt(t.coastFireTarget)}</div>
+      <div class="sub">Capital requis maintenant pour croître seul jusqu'au FIRE complet dans ${state.settings.horizon} ans</div>
+    </div>
+    <div class="stat-card barista">
+      <label>Cible Barista FIRE</label>
+      <div class="amount">${fmt(t.baristaNumber)}</div>
+      <div class="sub">Couvre l'écart de ${fmt(t.baristaGap)}/an non payé par le revenu barista</div>
+    </div>
+  `;
+}
+
+// ---------- Fonds d'urgence ----------
+function bindUrgenceInputs() {
+  document.getElementById('u-statutEmploi').value = state.urgence.statutEmploi;
+  document.getElementById('u-depensesMensuelles').value = state.urgence.depensesMensuelles;
+  document.getElementById('u-statutEmploi').addEventListener('change', e => { state.urgence.statutEmploi = e.target.value; saveState(); renderAll(); });
+  document.getElementById('u-depensesMensuelles').addEventListener('input', e => { state.urgence.depensesMensuelles = num(e.target.value); saveState(); renderAll(); });
+}
+
+function renderUrgence() {
+  const u = computeUrgence();
+  const grid = document.getElementById('urgence-grid');
+  grid.innerHTML = `
+    <div class="stat-card coast">
+      <label>Plancher (${u.moisMin} mois)</label>
+      <div class="amount">${fmt(u.plancher)}</div>
+    </div>
+    <div class="stat-card barista">
+      <label>Plafond (${u.moisMax} mois)</label>
+      <div class="amount">${fmt(u.plafond)}</div>
+    </div>
+    <div class="stat-card ${u.badgeClass === 'red' ? 'expense' : 'revenue'}">
+      <label>Cash actuel (compte courant)</label>
+      <div class="amount">${fmt(u.cashActuel)}</div>
+      <div class="sub"><span class="badge ${u.badgeClass}">${u.statut}</span></div>
+    </div>
+  `;
+}
+
+// ---------- Portails à paliers ----------
+function togglePortailModeFields() {
+  const mode = document.getElementById('pf-mode').value;
+  document.getElementById('pf-depenseMensuelle').closest('label').style.display = mode === 'formule' ? '' : 'none';
+  document.getElementById('pf-capitalManuel').closest('label').style.display = mode === 'manuel' ? '' : 'none';
+}
+
+function resetPortailForm() {
+  editingPortailId = null;
+  document.getElementById('portail-form-title').textContent = 'Ajouter un portail';
+  document.getElementById('btn-cancel-portail').style.display = 'none';
+  document.getElementById('pf-nom').value = '';
+  document.getElementById('pf-mode').value = 'formule';
+  document.getElementById('pf-depenseMensuelle').value = '';
+  document.getElementById('pf-capitalManuel').value = '';
+  togglePortailModeFields();
+}
+
+function startEditPortail(id) {
+  const p = state.portails.liste.find(x => x.id === id);
+  if (!p) return;
+  editingPortailId = id;
+  document.getElementById('portail-form-title').textContent = `Modifier ${p.nom}`;
+  document.getElementById('btn-cancel-portail').style.display = '';
+  document.getElementById('pf-nom').value = p.nom;
+  document.getElementById('pf-mode').value = p.mode;
+  document.getElementById('pf-depenseMensuelle').value = p.depenseMensuelle;
+  document.getElementById('pf-capitalManuel').value = p.capitalManuel;
+  togglePortailModeFields();
+  document.getElementById('tab-portails').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function savePortail() {
+  const nom = document.getElementById('pf-nom').value.trim();
+  if (!nom) { alert("Veuillez nommer le portail."); return; }
+  const row = {
+    id: editingPortailId !== null ? editingPortailId : (state.portails.liste.reduce((m, x) => Math.max(m, x.id), 0) + 1),
+    nom,
+    mode: document.getElementById('pf-mode').value,
+    depenseMensuelle: num(document.getElementById('pf-depenseMensuelle').value),
+    capitalManuel: num(document.getElementById('pf-capitalManuel').value),
+  };
+  state.portails.liste = state.portails.liste.filter(x => x.id !== row.id);
+  state.portails.liste.push(row);
+  saveState();
+  resetPortailForm();
+  renderAll();
+}
+
+function deletePortail(id) {
+  const p = state.portails.liste.find(x => x.id === id);
+  if (!confirm(`Supprimer le portail "${p ? p.nom : ''}" ?`)) return;
+  state.portails.liste = state.portails.liste.filter(x => x.id !== id);
+  saveState();
+  renderAll();
+}
+
+function bindPortailsMiscInputs() {
+  document.getElementById('po-epargneMensuelle').value = state.portails.epargneMensuelle;
+  document.getElementById('po-epargneMensuelle').addEventListener('input', e => { state.portails.epargneMensuelle = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('pf-mode').addEventListener('change', togglePortailModeFields);
+}
+
+function renderPortails() {
+  const capitalActuel = getCapitalDepart();
+  const tbody = document.querySelector('#portails-table tbody');
+  const rows = state.portails.liste;
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty">Aucun portail défini. Ajoutez-en un ci-dessus.</td></tr>`;
+  } else {
+    tbody.innerHTML = rows.map(p => {
+      const capital = capitalPortail(p);
+      const pct = capital > 0 ? (capitalActuel / capital * 100) : 0;
+      const badgeClass = pct >= 100 ? 'green' : pct >= 50 ? 'orange' : 'gray';
+      const annees = anneesPourAtteindre(capital, capitalActuel);
+      const anneesLabel = annees === 0 ? 'Déjà atteint' : annees === null ? '—' : `~${annees} ans`;
+      return `<tr>
+        <td><strong>${p.nom}</strong></td>
+        <td>${p.mode === 'formule' ? fmt(p.depenseMensuelle) + '/mois' : '—'}</td>
+        <td><strong>${fmt(capital)}</strong></td>
+        <td><span class="badge ${badgeClass}">${fmtPct(pct)}</span></td>
+        <td>${anneesLabel}</td>
+        <td class="flex-gap">
+          <button class="btn btn-sm btn-outline" data-edit-portail="${p.id}">Modifier</button>
+          <button class="btn btn-sm btn-danger" data-delete-portail="${p.id}">Suppr.</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  tbody.querySelectorAll('[data-edit-portail]').forEach(b => b.addEventListener('click', () => startEditPortail(parseInt(b.dataset.editPortail, 10))));
+  tbody.querySelectorAll('[data-delete-portail]').forEach(b => b.addEventListener('click', () => deletePortail(parseInt(b.dataset.deletePortail, 10))));
+}
+
+// ---------- Bilan annuel ----------
+function resetBilanForm() {
+  editingYear = null;
+  document.getElementById('bilan-form-title').textContent = "Ajouter une année";
+  document.getElementById('btn-cancel-bilan').style.display = 'none';
+  document.getElementById('b-annee').value = getStartYear() + (state.bilans.length ? 1 : 0);
+  ['b-celi', 'b-reer', 'b-nonEnr', 'b-celiapp', 'b-immeuble', 'b-entreprise', 'b-compteCourant'].forEach(id => document.getElementById(id).value = '');
+}
+
+function startEditBilan(annee) {
+  const row = state.bilans.find(b => b.annee === annee);
+  if (!row) return;
+  editingYear = annee;
+  document.getElementById('bilan-form-title').textContent = `Modifier l'année ${annee}`;
+  document.getElementById('btn-cancel-bilan').style.display = '';
+  document.getElementById('b-annee').value = row.annee;
+  document.getElementById('b-celi').value = row.celi;
+  document.getElementById('b-reer').value = row.reer;
+  document.getElementById('b-nonEnr').value = row.nonEnr;
+  document.getElementById('b-celiapp').value = row.celiapp;
+  document.getElementById('b-immeuble').value = row.immeuble;
+  document.getElementById('b-entreprise').value = row.entreprise;
+  document.getElementById('b-compteCourant').value = row.compteCourant;
+  document.getElementById('tab-bilan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function saveBilan() {
+  const annee = parseInt(document.getElementById('b-annee').value, 10);
+  if (!annee) { alert("Veuillez indiquer une année valide."); return; }
+  const row = {
+    annee,
+    celi: num(document.getElementById('b-celi').value),
+    reer: num(document.getElementById('b-reer').value),
+    nonEnr: num(document.getElementById('b-nonEnr').value),
+    celiapp: num(document.getElementById('b-celiapp').value),
+    immeuble: num(document.getElementById('b-immeuble').value),
+    entreprise: num(document.getElementById('b-entreprise').value),
+    compteCourant: num(document.getElementById('b-compteCourant').value),
+  };
+  state.bilans = state.bilans.filter(b => b.annee !== (editingYear !== null ? editingYear : annee) && b.annee !== annee);
+  state.bilans.push(row);
+  saveState();
+  resetBilanForm();
+  renderAll();
+}
+
+function deleteBilan(annee) {
+  if (!confirm(`Supprimer les données de l'année ${annee} ?`)) return;
+  state.bilans = state.bilans.filter(b => b.annee !== annee);
+  saveState();
+  renderAll();
+}
+
+function renderBilanTable() {
+  const t = computeTargets();
+  const tbody = document.querySelector('#bilan-table tbody');
+  const rows = sortedBilans();
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="12" class="empty">Aucune année enregistrée. Ajoutez votre premier bilan ci-dessus.</td></tr>`;
+  } else {
+    tbody.innerHTML = rows.map(row => {
+      const investis = row.celi + row.reer + row.nonEnr + row.celiapp;
+      const net = investis + row.immeuble + row.entreprise + row.compteCourant;
+      const pct = t.coastFireTarget > 0 ? (investis / t.coastFireTarget * 100) : 0;
+      const badgeClass = pct >= 100 ? 'green' : pct >= 50 ? 'orange' : 'gray';
+      return `<tr>
+        <td><strong>${row.annee}</strong></td>
+        <td>${fmt(row.celi)}</td>
+        <td>${fmt(row.reer)}</td>
+        <td>${fmt(row.nonEnr)}</td>
+        <td>${fmt(row.celiapp)}</td>
+        <td>${fmt(row.immeuble)}</td>
+        <td>${fmt(row.entreprise)}</td>
+        <td>${fmt(row.compteCourant)}</td>
+        <td><strong>${fmt(investis)}</strong></td>
+        <td>${fmt(net)}</td>
+        <td><span class="badge ${badgeClass}">${fmtPct(pct)}</span></td>
+        <td class="flex-gap">
+          <button class="btn btn-sm btn-outline" data-edit="${row.annee}">Modifier</button>
+          <button class="btn btn-sm btn-danger" data-delete="${row.annee}">Suppr.</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => startEditBilan(parseInt(b.dataset.edit, 10))));
+  tbody.querySelectorAll('[data-delete]').forEach(b => b.addEventListener('click', () => deleteBilan(parseInt(b.dataset.delete, 10))));
+
+  const summary = document.getElementById('bilan-summary');
+  if (rows.length) {
+    const latest = rows[0];
+    const investis = latest.celi + latest.reer + latest.nonEnr + latest.celiapp;
+    const net = investis + latest.immeuble + latest.entreprise + latest.compteCourant;
+    const pct = t.coastFireTarget > 0 ? (investis / t.coastFireTarget * 100) : 0;
+    summary.innerHTML = `
+      <div class="stat-card revenue"><label>Actifs investis (${latest.annee})</label><div class="amount">${fmt(investis)}</div></div>
+      <div class="stat-card profit"><label>Actif net (${latest.annee})</label><div class="amount">${fmt(net)}</div></div>
+      <div class="stat-card ${pct >= 100 ? 'profit' : 'expense'}"><label>% Coast FIRE atteint</label><div class="amount">${fmtPct(pct)}</div></div>
+    `;
+  } else {
+    summary.innerHTML = '';
+  }
+}
+
+// ---------- Projections ----------
+function bindProjectionsInputs() {
+  document.getElementById('pr-epargneMax').value = state.projections.epargneMax;
+  document.getElementById('pr-epargneReduit').value = state.projections.epargneReduit;
+  document.getElementById('pr-epargneMax').addEventListener('input', e => { state.projections.epargneMax = num(e.target.value); saveState(); renderProjections(); });
+  document.getElementById('pr-epargneReduit').addEventListener('input', e => { state.projections.epargneReduit = num(e.target.value); saveState(); renderProjections(); });
+}
+
+function renderProjections() {
+  const t = computeTargets();
+  const { rendement, horizon } = state.settings;
+  const r = rendement / 100;
+  const capital = getCapitalDepart();
+  const startYear = getStartYear();
+
+  document.getElementById('proj-horizon-label').textContent = horizon;
+  document.getElementById('capital-depart-note').textContent = state.bilans.length
+    ? `Capital de départ (actifs investis, calculé depuis le bilan ${startYear}) : ${fmt(capital)}`
+    : `Capital de départ : ${fmt(0)} (aucun bilan enregistré — ajoutez une année dans l'onglet Bilan annuel)`;
+
+  const labels = [], scMax = [], scReduit = [], coast = [], fireLine = [], baristaLine = [];
+  let vMax = capital, vReduit = capital;
+  for (let i = 0; i <= horizon; i++) {
+    if (i > 0) {
+      vMax = vMax * (1 + r) + state.projections.epargneMax;
+      vReduit = vReduit * (1 + r) + state.projections.epargneReduit;
+    }
+    labels.push(startYear + i);
+    scMax.push(Math.round(vMax));
+    scReduit.push(Math.round(vReduit));
+    coast.push(Math.round(t.fireNumber / Math.pow(1 + r, horizon - i)));
+    fireLine.push(Math.round(t.fireNumber));
+    baristaLine.push(Math.round(t.baristaNumber));
+  }
+
+  const data = {
+    labels,
+    datasets: [
+      { label: 'Épargne max', data: scMax, borderColor: '#c8391a', backgroundColor: '#c8391a22', fill: false, tension: .2 },
+      { label: 'Épargne réduite', data: scReduit, borderColor: '#2f6690', backgroundColor: '#2f669022', fill: false, tension: .2 },
+      { label: 'Seuil Coast FIRE', data: coast, borderColor: '#c8952a', borderDash: [6, 4], pointRadius: 0, fill: false },
+      { label: 'FIRE complet', data: fireLine, borderColor: '#3a7d44', borderDash: [2, 2], pointRadius: 0, fill: false },
+      { label: 'Barista FIRE', data: baristaLine, borderColor: '#7c5ca8', borderDash: [1, 3], pointRadius: 0, fill: false },
+    ]
+  };
+  const options = {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+    },
+    scales: { y: { ticks: { callback: v => fmt(v) } } }
+  };
+
+  if (chart) {
+    chart.data = data;
+    chart.options = options;
+    chart.update();
+  } else {
+    chart = new Chart(document.getElementById('proj-chart').getContext('2d'), { type: 'line', data, options });
+  }
+}
+
+// ---------- Init ----------
+function renderAll() {
+  renderTargets();
+  renderUrgence();
+  renderPortails();
+  renderBilanTable();
+  renderProjections();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  bindParamsInputs();
+  bindUrgenceInputs();
+  bindPortailsMiscInputs();
+  bindProjectionsInputs();
+  document.getElementById('btn-save-bilan').addEventListener('click', saveBilan);
+  document.getElementById('btn-cancel-bilan').addEventListener('click', resetBilanForm);
+  document.getElementById('btn-save-portail').addEventListener('click', savePortail);
+  document.getElementById('btn-cancel-portail').addEventListener('click', resetPortailForm);
+  resetBilanForm();
+  resetPortailForm();
+  renderAll();
+});
+</script>
+</body>
+</html>
