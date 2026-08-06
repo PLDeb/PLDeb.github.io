@@ -79,6 +79,7 @@
   .badge.green  { background: var(--green-pale); color: var(--green); }
   .badge.orange { background: var(--gold-pale); color: #8a6416; }
   .badge.gray   { background: #f0f0f0; color: #555; }
+  .badge.red    { background: var(--flame-pale); color: var(--flame); }
 
   footer.note { max-width: 1100px; margin: 0 auto; padding: 0 1rem 2rem; color: var(--muted); font-size: .8rem; }
 
@@ -92,6 +93,7 @@
 <nav>
   <div class="brand">🔥 Calculateur FIRE</div>
   <button class="tab-btn active" data-tab="params">Paramètres</button>
+  <button class="tab-btn" data-tab="portails">Portails</button>
   <button class="tab-btn" data-tab="bilan">Bilan annuel</button>
   <button class="tab-btn" data-tab="projections">Projections</button>
 </nav>
@@ -125,6 +127,60 @@
     </div>
 
     <div class="stat-grid mt2" id="targets-grid"></div>
+  </section>
+
+  <section id="tab-portails" class="section">
+    <div class="card">
+      <h2>Fonds d'urgence &amp; de tranquillité</h2>
+      <div class="form-grid">
+        <label class="field">Statut d'emploi
+          <select id="u-statutEmploi">
+            <option value="salarie">Salarié avec assurances (emploi/invalidité) — 3 à 6 mois</option>
+            <option value="autonome">Travailleur autonome sans assurance — 9 à 12 mois</option>
+          </select>
+        </label>
+        <label class="field">Dépenses mensuelles à couvrir ($)
+          <input type="number" id="u-depensesMensuelles" min="0" step="50">
+        </label>
+      </div>
+      <div class="stat-grid mt2" id="urgence-grid"></div>
+      <p class="muted-note">Au-delà du plafond, le surplus de cash devient un frein plutôt qu'une protection — envisage de l'investir plutôt que de le laisser dormir.</p>
+    </div>
+
+    <div class="card mt2">
+      <h2 id="portail-form-title">Ajouter un portail</h2>
+      <div class="form-grid">
+        <label class="field">Nom <input type="text" id="pf-nom" placeholder="ex. Stabilité"></label>
+        <label class="field">Mode
+          <select id="pf-mode">
+            <option value="formule">Basé sur les dépenses (× multiplicateur)</option>
+            <option value="manuel">Montant fixe (défini librement)</option>
+          </select>
+        </label>
+        <label class="field">Dépense mensuelle ($) <input type="number" id="pf-depenseMensuelle" min="0" step="50"></label>
+        <label class="field">Capital visé — montant fixe ($) <input type="number" id="pf-capitalManuel" min="0" step="500"></label>
+      </div>
+      <div class="flex-gap mt">
+        <button class="btn btn-primary" id="btn-save-portail">Enregistrer le portail</button>
+        <button class="btn btn-outline" id="btn-cancel-portail" style="display:none">Annuler la modification</button>
+      </div>
+    </div>
+
+    <div class="card mt2">
+      <h2>Portails à paliers</h2>
+      <label class="field" style="max-width:260px">Épargne mensuelle actuelle ($)
+        <input type="number" id="po-epargneMensuelle" min="0" step="50">
+      </label>
+      <div class="table-wrap mt">
+        <table id="portails-table">
+          <thead>
+            <tr><th>Portail</th><th>Dépense mensuelle</th><th>Capital requis</th><th>% atteint</th><th>Temps estimé</th><th></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="muted-note">Le % atteint et le temps estimé sont calculés à partir des actifs investis (CELI + REER + N. ENR + CELIAPP) du dernier bilan et de l'épargne mensuelle ci-dessus, au rendement supposé défini dans Paramètres.</p>
+    </div>
   </section>
 
   <section id="tab-bilan" class="section">
@@ -195,7 +251,17 @@ const STORAGE_KEY = 'fireCalcState_v1';
 const DEFAULTS = {
   settings: { coutVie: 40000, revenuBarista: 20000, multiplicateur: 25, rendement: 6, horizon: 15 },
   bilans: [],
-  projections: { epargneMax: 15000, epargneReduit: 6000 }
+  projections: { epargneMax: 15000, epargneReduit: 6000 },
+  urgence: { statutEmploi: 'salarie', depensesMensuelles: 1922 },
+  portails: {
+    epargneMensuelle: 1500,
+    liste: [
+      { id: 1, nom: 'Stabilité', mode: 'formule', depenseMensuelle: 1545, capitalManuel: 0 },
+      { id: 2, nom: 'Sécurité', mode: 'formule', depenseMensuelle: 1922, capitalManuel: 0 },
+      { id: 3, nom: 'Indépendance', mode: 'formule', depenseMensuelle: 3750, capitalManuel: 0 },
+      { id: 4, nom: 'Liberté', mode: 'manuel', depenseMensuelle: 0, capitalManuel: 0 },
+    ]
+  }
 };
 
 function loadState() {
@@ -206,7 +272,12 @@ function loadState() {
     return {
       settings: Object.assign({}, DEFAULTS.settings, parsed.settings),
       bilans: Array.isArray(parsed.bilans) ? parsed.bilans : [],
-      projections: Object.assign({}, DEFAULTS.projections, parsed.projections)
+      projections: Object.assign({}, DEFAULTS.projections, parsed.projections),
+      urgence: Object.assign({}, DEFAULTS.urgence, parsed.urgence),
+      portails: {
+        epargneMensuelle: (parsed.portails && parsed.portails.epargneMensuelle != null) ? parsed.portails.epargneMensuelle : DEFAULTS.portails.epargneMensuelle,
+        liste: (parsed.portails && Array.isArray(parsed.portails.liste)) ? parsed.portails.liste : JSON.parse(JSON.stringify(DEFAULTS.portails.liste))
+      }
     };
   } catch (e) {
     return JSON.parse(JSON.stringify(DEFAULTS));
@@ -216,6 +287,7 @@ function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
 let state = loadState();
 let editingYear = null;
+let editingPortailId = null;
 let chart = null;
 
 const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
@@ -244,6 +316,36 @@ function getCapitalDepart() {
 function getStartYear() {
   const rows = sortedBilans();
   return rows.length ? rows[0].annee : new Date().getFullYear();
+}
+
+function computeUrgence() {
+  const { statutEmploi, depensesMensuelles } = state.urgence;
+  const [moisMin, moisMax] = statutEmploi === 'autonome' ? [9, 12] : [3, 6];
+  const plancher = depensesMensuelles * moisMin;
+  const plafond = depensesMensuelles * moisMax;
+  const rows = sortedBilans();
+  const cashActuel = rows.length ? rows[0].compteCourant : 0;
+  let statut, badgeClass;
+  if (cashActuel < plancher) { statut = 'Sous le plancher — priorité #1'; badgeClass = 'orange'; }
+  else if (cashActuel <= plafond) { statut = 'Dans la zone cible'; badgeClass = 'green'; }
+  else { statut = `Cash paresseux : ${fmt(cashActuel - plafond)} au-delà du plafond`; badgeClass = 'red'; }
+  return { moisMin, moisMax, plancher, plafond, cashActuel, statut, badgeClass };
+}
+
+function capitalPortail(p) {
+  return p.mode === 'formule' ? p.depenseMensuelle * 12 * state.settings.multiplicateur : p.capitalManuel;
+}
+
+function anneesPourAtteindre(target, capitalActuel) {
+  if (capitalActuel >= target) return 0;
+  const r = state.settings.rendement / 100;
+  const pmt = state.portails.epargneMensuelle * 12;
+  let v = capitalActuel;
+  for (let n = 1; n <= 100; n++) {
+    v = v * (1 + r) + pmt;
+    if (v >= target) return n;
+  }
+  return null;
 }
 
 // ---------- Tabs ----------
@@ -292,6 +394,129 @@ function renderTargets() {
       <div class="sub">Couvre l'écart de ${fmt(t.baristaGap)}/an non payé par le revenu barista</div>
     </div>
   `;
+}
+
+// ---------- Fonds d'urgence ----------
+function bindUrgenceInputs() {
+  document.getElementById('u-statutEmploi').value = state.urgence.statutEmploi;
+  document.getElementById('u-depensesMensuelles').value = state.urgence.depensesMensuelles;
+  document.getElementById('u-statutEmploi').addEventListener('change', e => { state.urgence.statutEmploi = e.target.value; saveState(); renderAll(); });
+  document.getElementById('u-depensesMensuelles').addEventListener('input', e => { state.urgence.depensesMensuelles = num(e.target.value); saveState(); renderAll(); });
+}
+
+function renderUrgence() {
+  const u = computeUrgence();
+  const grid = document.getElementById('urgence-grid');
+  grid.innerHTML = `
+    <div class="stat-card coast">
+      <label>Plancher (${u.moisMin} mois)</label>
+      <div class="amount">${fmt(u.plancher)}</div>
+    </div>
+    <div class="stat-card barista">
+      <label>Plafond (${u.moisMax} mois)</label>
+      <div class="amount">${fmt(u.plafond)}</div>
+    </div>
+    <div class="stat-card ${u.badgeClass === 'red' ? 'expense' : 'revenue'}">
+      <label>Cash actuel (compte courant)</label>
+      <div class="amount">${fmt(u.cashActuel)}</div>
+      <div class="sub"><span class="badge ${u.badgeClass}">${u.statut}</span></div>
+    </div>
+  `;
+}
+
+// ---------- Portails à paliers ----------
+function togglePortailModeFields() {
+  const mode = document.getElementById('pf-mode').value;
+  document.getElementById('pf-depenseMensuelle').closest('label').style.display = mode === 'formule' ? '' : 'none';
+  document.getElementById('pf-capitalManuel').closest('label').style.display = mode === 'manuel' ? '' : 'none';
+}
+
+function resetPortailForm() {
+  editingPortailId = null;
+  document.getElementById('portail-form-title').textContent = 'Ajouter un portail';
+  document.getElementById('btn-cancel-portail').style.display = 'none';
+  document.getElementById('pf-nom').value = '';
+  document.getElementById('pf-mode').value = 'formule';
+  document.getElementById('pf-depenseMensuelle').value = '';
+  document.getElementById('pf-capitalManuel').value = '';
+  togglePortailModeFields();
+}
+
+function startEditPortail(id) {
+  const p = state.portails.liste.find(x => x.id === id);
+  if (!p) return;
+  editingPortailId = id;
+  document.getElementById('portail-form-title').textContent = `Modifier ${p.nom}`;
+  document.getElementById('btn-cancel-portail').style.display = '';
+  document.getElementById('pf-nom').value = p.nom;
+  document.getElementById('pf-mode').value = p.mode;
+  document.getElementById('pf-depenseMensuelle').value = p.depenseMensuelle;
+  document.getElementById('pf-capitalManuel').value = p.capitalManuel;
+  togglePortailModeFields();
+  document.getElementById('tab-portails').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function savePortail() {
+  const nom = document.getElementById('pf-nom').value.trim();
+  if (!nom) { alert("Veuillez nommer le portail."); return; }
+  const row = {
+    id: editingPortailId !== null ? editingPortailId : (state.portails.liste.reduce((m, x) => Math.max(m, x.id), 0) + 1),
+    nom,
+    mode: document.getElementById('pf-mode').value,
+    depenseMensuelle: num(document.getElementById('pf-depenseMensuelle').value),
+    capitalManuel: num(document.getElementById('pf-capitalManuel').value),
+  };
+  state.portails.liste = state.portails.liste.filter(x => x.id !== row.id);
+  state.portails.liste.push(row);
+  saveState();
+  resetPortailForm();
+  renderAll();
+}
+
+function deletePortail(id) {
+  const p = state.portails.liste.find(x => x.id === id);
+  if (!confirm(`Supprimer le portail "${p ? p.nom : ''}" ?`)) return;
+  state.portails.liste = state.portails.liste.filter(x => x.id !== id);
+  saveState();
+  renderAll();
+}
+
+function bindPortailsMiscInputs() {
+  document.getElementById('po-epargneMensuelle').value = state.portails.epargneMensuelle;
+  document.getElementById('po-epargneMensuelle').addEventListener('input', e => { state.portails.epargneMensuelle = num(e.target.value); saveState(); renderAll(); });
+  document.getElementById('pf-mode').addEventListener('change', togglePortailModeFields);
+}
+
+function renderPortails() {
+  const capitalActuel = getCapitalDepart();
+  const tbody = document.querySelector('#portails-table tbody');
+  const rows = state.portails.liste;
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty">Aucun portail défini. Ajoutez-en un ci-dessus.</td></tr>`;
+  } else {
+    tbody.innerHTML = rows.map(p => {
+      const capital = capitalPortail(p);
+      const pct = capital > 0 ? (capitalActuel / capital * 100) : 0;
+      const badgeClass = pct >= 100 ? 'green' : pct >= 50 ? 'orange' : 'gray';
+      const annees = anneesPourAtteindre(capital, capitalActuel);
+      const anneesLabel = annees === 0 ? 'Déjà atteint' : annees === null ? '—' : `~${annees} ans`;
+      return `<tr>
+        <td><strong>${p.nom}</strong></td>
+        <td>${p.mode === 'formule' ? fmt(p.depenseMensuelle) + '/mois' : '—'}</td>
+        <td><strong>${fmt(capital)}</strong></td>
+        <td><span class="badge ${badgeClass}">${fmtPct(pct)}</span></td>
+        <td>${anneesLabel}</td>
+        <td class="flex-gap">
+          <button class="btn btn-sm btn-outline" data-edit-portail="${p.id}">Modifier</button>
+          <button class="btn btn-sm btn-danger" data-delete-portail="${p.id}">Suppr.</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  tbody.querySelectorAll('[data-edit-portail]').forEach(b => b.addEventListener('click', () => startEditPortail(parseInt(b.dataset.editPortail, 10))));
+  tbody.querySelectorAll('[data-delete-portail]').forEach(b => b.addEventListener('click', () => deletePortail(parseInt(b.dataset.deletePortail, 10))));
 }
 
 // ---------- Bilan annuel ----------
@@ -466,16 +691,23 @@ function renderProjections() {
 // ---------- Init ----------
 function renderAll() {
   renderTargets();
+  renderUrgence();
+  renderPortails();
   renderBilanTable();
   renderProjections();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   bindParamsInputs();
+  bindUrgenceInputs();
+  bindPortailsMiscInputs();
   bindProjectionsInputs();
   document.getElementById('btn-save-bilan').addEventListener('click', saveBilan);
   document.getElementById('btn-cancel-bilan').addEventListener('click', resetBilanForm);
+  document.getElementById('btn-save-portail').addEventListener('click', savePortail);
+  document.getElementById('btn-cancel-portail').addEventListener('click', resetPortailForm);
   resetBilanForm();
+  resetPortailForm();
   renderAll();
 });
 </script>
