@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audit web gratuit · Veelution</title>
+<meta name="description" content="Entrez l'adresse de votre site. Vous recevez une note sur 100, trois points à regarder et par où commencer. Gratuit, sans obligation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111719;--ink2:#0B1012;--cream:#FFF7E8;--cream2:#EADCC6;--white:#FFF9F0;--sand:#B8B2A6;--mid:#6C665E;--accent:#E85D2A;--rule:rgba(17,23,25,.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font:300 16px/1.75 "DM Sans",-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.mono{font:500 12px/1.4 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+h1,h2{font-family:"Playfair Display",Georgia,serif;letter-spacing:-.02em;line-height:1.05;font-weight:900}
+h1 em,h2 em{font-style:italic;color:var(--accent)}
+.mast{background:var(--ink);color:var(--white);padding:26px 0 64px}
+.mast .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px}
+.mast img{height:30px;width:auto;display:block}
+.mast .k{color:var(--sand);margin-bottom:16px;display:block}
+.mast h1{font-size:clamp(38px,9vw,60px);margin-bottom:18px;color:var(--white)}
+.mast p{color:var(--sand);max-width:46ch}
+form{background:var(--white);border:1px solid var(--rule);padding:26px 20px;margin-top:-34px;position:relative;box-shadow:0 24px 70px rgba(17,23,25,.08)}
+label.f{display:block;margin-bottom:16px}
+label.f span{display:block;font-weight:500;font-size:14px;margin-bottom:6px}
+input[type=text],input[type=email],input[type=url]{width:100%;font:400 16px "DM Sans",sans-serif;padding:13px 12px;border:1px solid var(--rule);background:#fff;color:var(--ink);border-radius:2px}
+input:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.ck{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;margin:12px 0;color:#2b3133}
+.ck input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--ink)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+button{margin-top:20px;background:var(--accent);color:var(--white);font:500 13px/1 "DM Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:17px 30px;border:0;border-radius:2px;cursor:pointer;width:100%;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+button:hover{transform:scale(1.02)}
+button:disabled{opacity:.6;cursor:wait;transform:none}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.err{color:#9b2c0e;font-size:14px;margin-top:12px;min-height:1em}
+.small{color:var(--mid);font-size:13px;margin-top:14px}
+.done{display:none;background:var(--white);border:1px solid var(--rule);padding:34px 22px;margin-top:-34px;position:relative}
+.done h2{font-size:clamp(28px,6vw,38px);margin-bottom:12px}
+section{padding:56px 0 0}
+section h2{font-size:clamp(26px,6vw,36px);margin:10px 0 18px}
+.eyebrow{color:var(--mid);display:block}
+.cats{list-style:none;counter-reset:c}
+.cats li{counter-increment:c;position:relative;padding:14px 0 14px 46px;border-bottom:1px solid rgba(17,23,25,.07)}
+.cats li::before{content:counter(c,decimal-leading-zero);position:absolute;left:0;top:17px;font:500 13px/1 "IBM Plex Mono",monospace}
+.cats b{font-weight:500}
+.cats span{display:block;color:var(--mid);font-size:14px}
+footer{background:var(--ink2);margin-top:72px;padding:26px 0;color:var(--sand);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="mast"><div class="wrap">
+  <div class="top"><img src="https://veelution.com/brand-logo-footer.webp" alt="Veelution"><span class="mono" style="color:var(--sand)">Beauce, Québec</span></div>
+  <span class="k mono">Audit web gratuit</span>
+  <h1>Votre site, <em>mesuré.</em></h1>
+  <p>Entrez l'adresse de votre site. Vous recevez une note sur 100, trois points à regarder et par où commencer. Gratuit, sans obligation.</p>
+</div></header>
+
+<main class="wrap">
+  <form id="f" novalidate>
+    <label class="f"><span>Adresse de votre site</span><input type="text" name="url" inputmode="url" autocomplete="url" placeholder="monentreprise.com" required></label>
+    <label class="f"><span>Votre prénom</span><input type="text" name="name" autocomplete="given-name" required></label>
+    <label class="f"><span>Votre courriel</span><input type="email" name="email" autocomplete="email" required></label>
+    <label class="f"><span>Nom de l'entreprise</span><input type="text" name="business" autocomplete="organization" required></label>
+    <div class="hp" aria-hidden="true"><label>Ne pas remplir <input type="text" name="website2" tabindex="-1" autocomplete="off"></label></div>
+    <label class="ck"><input type="checkbox" name="owner" required><span>Je suis propriétaire de ce site ou je représente l'entreprise.</span></label>
+    <label class="ck"><input type="checkbox" name="consent" required><span>J'accepte que Veelution analyse ce site et m'envoie le rapport par courriel.</span></label>
+    <label class="ck"><input type="checkbox" name="followup"><span>J'accepte de recevoir des suivis de Veelution au sujet de mon audit. Je peux me désabonner en tout temps. (facultatif)</span></label>
+    <div id="ts"></div>
+    <button type="submit" id="go">Recevoir mon audit</button>
+    <div class="err" id="err" role="alert"></div>
+    <p class="small">Vos renseignements servent uniquement à produire et à vous envoyer ce rapport. Écrivez-nous pour les faire supprimer.</p>
+  </form>
+
+  <div class="done" id="done">
+    <span class="eyebrow mono">C'est reçu</span>
+    <h2>On regarde <em>votre site.</em></h2>
+    <p id="doneText"></p>
+  </div>
+
+  <section>
+    <span class="eyebrow mono">Ce qu'on mesure</span>
+    <h2>Cinq <em>catégories.</em></h2>
+    <ol class="cats">
+      <li><b>Vitesse et sécurité</b><span>Rapidité sur cellulaire, connexion sécurisée, liens qui fonctionnent.</span></li>
+      <li><b>Visibilité Google</b><span>Titre, description, ville, images décrites, fiche d'entreprise.</span></li>
+      <li><b>Clarté</b><span>On comprend ce que vous faites, on sait où cliquer, on peut vous joindre.</span></li>
+      <li><b>Cohérence et contenu à jour</b><span>Même nom partout, aucune information périmée, vraies photos.</span></li>
+      <li><b>Prêt à grandir</b><span>Les outils en place : infolettre, site que vous modifiez vous-même, suivi, réseaux.</span></li>
+    </ol>
+    <p class="small">Les mesures de vitesse viennent de PageSpeed Insights (Google), en médiane de trois passages, et sont datées dans le rapport.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">Veelution · Beauce (Québec)</div></footer>
+
+<script>
+(async function(){
+  const f = document.getElementById("f"), err = document.getElementById("err"), go = document.getElementById("go");
+  let cfg = { turnstileSiteKey: "", auto: false, delayText: "" }, tsToken = "";
+  try { cfg = await (await fetch("/api/config")).json(); } catch {}
+  if (cfg.turnstileSiteKey) {
+    window.onTs = () => window.turnstile.render("#ts", { sitekey: cfg.turnstileSiteKey, callback: t => { tsToken = t; } });
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTs&render=explicit"; s.async = true; document.head.appendChild(s);
+  }
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    err.textContent = "";
+    const d = Object.fromEntries(new FormData(f));
+    const body = {
+      url: (d.url || "").trim(), name: (d.name || "").trim(), email: (d.email || "").trim(), business: (d.business || "").trim(),
+      website2: d.website2 || "", owner: !!d.owner, consent: !!d.consent, followup: !!d.followup, turnstile: tsToken,
+    };
+    if (!body.url || !body.name || !body.email || !body.business) { err.textContent = "Veuillez remplir tous les champs."; return; }
+    if (!body.owner || !body.consent) { err.textContent = "Veuillez cocher les deux cases obligatoires."; return; }
+    go.disabled = true; go.textContent = "Envoi en cours";
+    try {
+      const r = await fetch("/api/audit", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j.ok) throw new Error(j.error || "Un problème est survenu. Réessayez dans un moment.");
+      f.style.display = "none";
+      document.getElementById("doneText").textContent = j.auto
+        ? "Votre rapport arrive par courriel d'ici quelques minutes."
+        : "Votre rapport sera envoyé à " + body.email + ". " + (cfg.delayText || "");
+      document.getElementById("done").style.display = "block";
+      document.getElementById("done").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (x) {
+      err.textContent = x.message;
+      go.disabled = false; go.textContent = "Recevoir mon audit";
+      if (window.turnstile) try { window.turnstile.reset(); tsToken = ""; } catch {}
+    }
+  });
+})();
+</script>
+</body>
+</html>

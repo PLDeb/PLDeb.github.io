@@ -1,0 +1,40 @@
+{
+  "name": "audit-veelution",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+
+  // Formulaire (public/) servi en Static Assets. Seules ces routes passent par le Worker.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/r/*", "/admin/*"]
+  },
+
+  // Le gabarit du rapport (src/template.html) est importé comme texte : règle par défaut de Wrangler.
+
+  "browser": { "binding": "BROWSER" },
+
+  // Remplacer les database_id / bucket_name après les commandes du README.
+  "d1_databases": [{ "binding": "DB", "database_name": "audit-veelution", "database_id": "REMPLACER_APRES_CREATION" }],
+  "r2_buckets": [{ "binding": "REPORTS", "bucket_name": "audit-veelution-rapports" }],
+  "queues": {
+    "producers": [{ "binding": "AUDIT_QUEUE", "queue": "audit-veelution" }],
+    "consumers": [{ "queue": "audit-veelution", "max_batch_size": 1, "max_retries": 0 }]
+  },
+
+  "vars": {
+    "PUBLIC_BASE_URL": "https://audit.veelution.com",
+    "ADMIN_EMAIL": "pierreluc.deb@gmail.com",
+    "FROM_EMAIL": "Veelution <audit@veelution.com>",
+    "REPLY_TO": "pierreluc.deb@gmail.com",
+    "AUTO_SEND": "false",
+    "ANTHROPIC_MODEL": "claude-sonnet-5-5",
+    "TURNSTILE_SITEKEY": "",
+    "CALL_PHONE": "581-372-7527",
+    "CALL_LINK": "tel:+15813727527",
+    "CALL_BUTTON": "Appeler Pierre-Luc"
+  }
+  // Secrets (wrangler secret put) : ANTHROPIC_API_KEY, PSI_API_KEY, RESEND_API_KEY, TURNSTILE_SECRET, IP_SALT, WEBHOOK_URL (optionnel)
+}

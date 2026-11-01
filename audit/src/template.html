@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Audit web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Système Veelution : encre, crème, un seul accent orange par écran, lime rare. */
+:root{--ink:#111719;--ink2:#0B1012;--cream:#FFF7E8;--cream2:#EADCC6;--white:#FFF9F0;--sand:#B8B2A6;--mid:#6C665E;--accent:#E85D2A;--lime:#DDF247;--rule:rgba(17,23,25,.12);--rule-soft:rgba(17,23,25,.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font:300 16px/1.75 "DM Sans",-apple-system,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden}
+.wrap{max-width:780px;margin:0 auto;padding:0 16px}
+b,strong{font-weight:500}
+.mono{font:500 12px/1.4 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;letter-spacing:-.02em;line-height:1.08}
+h2{font-weight:900;font-size:clamp(28px,6vw,40px);margin:0 0 18px;text-wrap:balance}
+h2 em,h1 em{font-style:italic;color:var(--accent)}
+h3{font-weight:700;font-size:20px;letter-spacing:-.01em;margin-bottom:8px}
+section{padding:64px 0 0}
+.eyebrow{display:block;color:var(--mid);margin-bottom:12px}
+.banner{background:var(--accent);color:var(--white);text-align:center;padding:10px 16px}
+
+/* En-tête encre */
+.mast{background:var(--ink);color:var(--white);padding:28px 0 44px}
+.mast .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:44px}
+.mast .logo{height:30px;width:auto;display:block}
+.mast .date{color:var(--sand)}
+.mast .kicker{color:var(--sand);display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.mast .kicker i{width:8px;height:8px;border-radius:50%;background:var(--lime);display:inline-block}
+.mast h1{font-weight:900;font-size:clamp(38px,9vw,64px);line-height:1.02;margin-bottom:10px;color:var(--white)}
+.mast .url{color:var(--sand);word-break:break-all;font-size:15px}
+.score{display:flex;align-items:flex-end;gap:22px;margin-top:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.14);flex-wrap:wrap}
+.score .big{font:900 clamp(72px,18vw,104px)/.9 "Playfair Display",serif;color:var(--white)}
+.score .big small{font-size:.28em;color:var(--sand);font-weight:700;letter-spacing:0}
+.score .v{padding-bottom:8px}
+.score .v strong{display:block;font-size:20px;color:var(--white)}
+.score .v span{color:var(--sand);font-size:14px;line-height:1.6;display:block;max-width:34ch}
+
+/* Cartes de catégories */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:-26px;position:relative}
+.card{background:var(--white);border:1px solid var(--rule);border-radius:4px;padding:16px 10px 14px;text-align:center;box-shadow:0 24px 70px rgba(17,23,25,.08)}
+.card svg{width:84px;height:84px;display:block;margin:0 auto}
+.card .l{font-weight:500;font-size:14px;line-height:1.3;margin-top:8px}
+.card .s{color:var(--mid);margin-top:6px;font-size:11px}
+
+/* Ce qui va bien */
+.good{list-style:none}
+.good li{position:relative;padding:14px 0 14px 34px;border-bottom:1px solid var(--rule-soft)}
+.good li:last-child{border-bottom:0}
+.good li::before{content:"";position:absolute;left:4px;top:22px;width:14px;height:8px;border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(-45deg)}
+
+/* Capture annotée */
+.shot{margin:0 0 28px}
+.frame{position:relative;max-width:300px;margin:0 auto;border:8px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:0 24px 70px rgba(17,23,25,.12)}
+.frame img{display:block;width:100%;height:auto}
+.pin{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--white);font:500 13px/28px "IBM Plex Mono",monospace;text-align:center;box-shadow:0 0 0 3px var(--white)}
+figcaption{text-align:center;color:var(--mid);font-size:13px;margin-top:10px}
+
+/* Constats : la barre orange du site */
+.row{background:var(--white);border-left:4px solid transparent;padding:22px 20px;margin-bottom:10px;border-radius:2px;transition:border-left-color .28s ease,background .2s ease}
+.row:hover,.row:focus-within{border-left-color:var(--accent);background:#FFFDF8}
+.row .k{color:var(--mid);margin-bottom:10px;display:block}
+.row p{margin-top:10px;max-width:64ch}
+.row .why,.row .work{font-size:15px;color:#2b3133}
+
+/* Plan */
+.plan{list-style:none;counter-reset:p}
+.plan li{counter-increment:p;position:relative;padding:16px 0 16px 48px;border-bottom:1px solid var(--rule-soft)}
+.plan li:last-child{border-bottom:0}
+.plan li::before{content:counter(p,decimal-leading-zero);position:absolute;left:0;top:19px;font:500 13px/1 "IBM Plex Mono",monospace;color:var(--ink)}
+.plan .cible{display:block;color:var(--mid);font-size:14px;margin-top:4px}
+
+/* Réalisation */
+.ref{display:block;background:var(--white);border:1px solid var(--rule);padding:22px 20px;border-radius:2px;text-decoration:none;color:var(--ink)}
+.ref .mono{color:var(--mid);display:block;margin-bottom:6px}
+.ref:hover{border-color:var(--ink)}
+
+/* Comparaison */
+.cmp tr.me td{font-weight:500;background:var(--white)}
+.cmp td:first-child{padding-left:8px}
+
+/* Croissance */
+.grow{background:var(--cream2);padding:26px 22px;border-radius:2px}
+.grow p{max-width:64ch}
+.grow p+p{margin-top:12px}
+
+/* Appel */
+.cta{background:var(--ink);color:var(--white);padding:40px 24px;border-radius:2px;margin-top:64px}
+.cta h2{color:var(--white)}
+.cta p{color:var(--sand);max-width:52ch}
+.cta .tel{margin-top:14px;color:var(--sand)}
+.btn{display:inline-block;margin-top:24px;background:var(--accent);color:var(--white);font:500 13px/1 "DM Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:16px 30px;border-radius:2px;text-decoration:none;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.btn:hover{transform:scale(1.04)}
+.btn:focus-visible{outline:2px solid var(--white);outline-offset:3px}
+
+/* Méthode */
+.method{color:var(--mid);font-size:15px;max-width:64ch;margin-bottom:18px}
+details{border-top:1px solid var(--rule);padding:16px 0}
+details:last-of-type{border-bottom:1px solid var(--rule)}
+summary{cursor:pointer;font-weight:500;display:flex;justify-content:space-between;gap:12px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-weight:300;color:var(--mid)}
+details[open] summary::after{content:"\2212"}
+summary .n{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--mid);margin-left:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}
+td{padding:9px 6px 9px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.p{white-space:nowrap;text-align:right;font-family:"IBM Plex Mono",monospace;font-size:13px}
+td .note{display:block;color:var(--mid);font-size:13px;line-height:1.5;margin-top:2px}
+.na{color:var(--mid)}
+
+/* Interne */
+.int{background:var(--white);border:1.5px dashed var(--ink);border-radius:2px;padding:20px;margin-top:12px}
+.int ul{margin-left:18px}
+.int li{margin:6px 0}
+
+/* Pied de page avec la signature Veelution */
+footer{background:var(--ink2);margin-top:72px;padding:26px 0}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+footer .c{font-size:13px;color:var(--sand);opacity:.7}
+.attribution{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);text-decoration:none}
+.attribution span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sand);opacity:.7;white-space:nowrap}
+.attribution img{height:18px;width:auto;display:block}
+.attribution svg{width:14px;height:14px;color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.mast,.cta,footer,.pin,.cmp tr.me td{-webkit-print-color-adjust:exact;print-color-adjust:exact}details,.row,.shot{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ========= DONNÉES DE L'AUDIT : la seule partie à remplir =========
+   points : nombre de points obtenus, ou null si non vérifié.
+   Un critère null est exclu du calcul et affiché « non vérifié ».     */
+const AUDIT = __AUDIT_JSON__;
+</script>
+
+<script>
+(function(){
+const A = AUDIT, interne = A.mode === "interne";
+const LOGO = "https://veelution.com/brand-logo-footer.webp";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const verdict = s => s >= 80 ? "Solide" : s >= 50 ? "À retravailler" : "Prioritaire";
+const resume = s => s >= 80 ? "Le site fait bien son travail. Quelques ajustements le garderont à jour."
+  : s >= 50 ? "Une base correcte, avec des gains clairs à aller chercher."
+  : "Des points importants freinent le site. Ils se corrigent, un à la fois.";
+const cmp = Array.isArray(A.comparaison) ? A.comparaison : [];
+const plan = Array.isArray(A.plan) ? A.plan.filter(p => p && p.etape) : [];
+const ref = A.realisation && A.realisation.url ? A.realisation : null;
+const passes = A.mesure && Array.isArray(A.mesure.passes_mobile) ? A.mesure.passes_mobile.filter(n => typeof n === "number") : [];
+const cl = A.mesure && Array.isArray(A.mesure.classement) ? A.mesure.classement.filter(c => c && c.requete) : [];
+const mediane = a => { const s = [...a].sort((x,y) => x - y), m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : Math.round((s[m-1] + s[m]) / 2); };
+
+// Score d'une catégorie : points obtenus / points vérifiables, sur 100.
+// Si moins de 60 % des points sont vérifiés, on n'affiche pas de score.
+function score(cat){
+  let got = 0, max = 0, total = 0;
+  cat.criteres.forEach(k => { total += k.max; if (k.points !== null) { got += k.points; max += k.max; } });
+  if (!total || max / total < 0.6) return null;
+  return Math.round(got / max * 100);
+}
+const scores = A.categories.map(score);
+const ok = scores.filter(s => s !== null);
+const finale = ok.length ? Math.round(ok.reduce((a,b)=>a+b,0) / ok.length) : null;
+
+function ring(s){
+  const C = 2 * Math.PI * 34, v = s === null ? 0 : s;
+  return `<svg viewBox="0 0 84 84" role="img" aria-label="${s === null ? "à compléter" : s + " sur 100"}">
+    <circle cx="42" cy="42" r="34" fill="none" stroke="#EADCC6" stroke-width="6"/>
+    <circle cx="42" cy="42" r="34" fill="none" stroke="#111719" stroke-width="6" stroke-linecap="round"
+      stroke-dasharray="${C * v / 100} ${C}" transform="rotate(-90 42 42)"/>
+    <text x="42" y="50" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-weight="900" font-size="24" fill="#111719">${s === null ? "n/d" : s}</text></svg>`;
+}
+
+let h = "";
+if (interne) h += `<div class="banner mono">Version interne · ne pas envoyer au client</div>`;
+h += `<header class="mast"><div class="wrap">
+  <div class="top"><img class="logo" src="${LOGO}" alt="Veelution"><span class="date mono">${esc(A.date)}</span></div>
+  <div class="kicker mono"><i></i>Audit web gratuit</div>
+  <h1>${esc(A.entreprise)}.<br><em>Votre site, mesuré.</em></h1>
+  <div class="url">${esc(A.url)}</div>
+  <div class="score">
+    <div class="big">${finale ?? "n/d"}<small>/100</small></div>
+    <div class="v"><strong>${finale === null ? "Audit incomplet" : verdict(finale)}</strong>
+    <span>${finale === null ? "Trop de points restent à vérifier." : resume(finale)}</span></div>
+  </div>
+</div></header>
+<main class="wrap">
+  <div class="grid">${A.categories.map((c,i) => `<div class="card">${ring(scores[i])}<div class="l">${esc(c.nom)}</div><div class="s mono">${scores[i] === null ? "À compléter" : verdict(scores[i])}</div></div>`).join("")}</div>
+
+  <section><span class="eyebrow mono">Ce qui va bien</span>
+  <h2>Une base <em>sur laquelle bâtir.</em></h2>
+  <ul class="good">${A.bonnes_nouvelles.map(b => `<li>${esc(b)}</li>`).join("")}</ul></section>
+
+  <section><span class="eyebrow mono">${A.constats.length} constats</span>
+  <h2>Ce qui vous <em>freine.</em></h2>
+  ${A.capture ? `<figure class="shot"><div class="frame"><img src="${esc(A.capture)}" alt="Premier écran du site de ${esc(A.entreprise)} sur cellulaire">${A.constats.map((n,i) => n.repere ? `<span class="pin" style="left:${Number(n.repere.x)}%;top:${Number(n.repere.y)}%">${i+1}</span>` : "").join("")}</div><figcaption>Votre accueil sur cellulaire. Les numéros renvoient aux constats.</figcaption></figure>` : ""}
+  ${A.constats.map((n,i) => `<div class="row" tabindex="0"><span class="k mono">${String(i+1).padStart(2,"0")} · ${esc(n.categorie)}</span>
+    <h3>${esc(n.titre)}</h3>
+    <p>${esc(n.constat)}</p>
+    <p class="why"><b>Pourquoi ça compte.</b> ${esc(n.pourquoi)}</p>
+    <p class="work"><b>Ce que ça demande.</b> ${esc(n.travail)}</p></div>`).join("")}</section>`;
+
+if (plan.length) {
+  h += `<section><span class="eyebrow mono">Par où commencer</span>
+  <h2>Ce qu'on ferait <em>en premier.</em></h2>
+  <ol class="plan">${plan.map(p => `<li><b>${esc(p.etape)}</b>${p.cible ? `<span class="cible">Cible : ${esc(p.cible)}</span>` : ""}</li>`).join("")}</ol></section>`;
+}
+
+if (cmp.length) {
+  const v = x => (x === null || x === undefined) ? "n/d" : esc(x);
+  h += `<section><span class="eyebrow mono">Repères</span>
+  <h2>Vous et <em>votre marché.</em></h2>
+  <p class="method">Mêmes mesures PageSpeed (Google), en mode cellulaire, le même jour, médiane de 3 passages. Sur 100.</p>
+  <table class="cmp"><tr><td class="mono">Site</td><td class="p mono">Vitesse</td><td class="p mono">Google</td><td class="p mono">Accès</td></tr>
+  ${cmp.map(r => `<tr class="${r.client ? "me" : ""}"><td>${esc(r.nom)}</td><td class="p">${v(r.vitesse)}</td><td class="p">${v(r.seo)}</td><td class="p">${v(r.accessibilite)}</td></tr>`).join("")}</table></section>`;
+}
+
+h += `<section><span class="eyebrow mono">Plus loin</span>
+  <h2>${esc(A.croissance.titre)}</h2>
+  <div class="grow">${A.croissance.paragraphes.map(p => `<p>${esc(p)}</p>`).join("")}</div></section>`;
+
+if (ref) {
+  h += `<section><span class="eyebrow mono">Un exemple</span>
+  <h2>Un site <em>qu'on a bâti.</em></h2>
+  <a class="ref" href="${esc(ref.url)}" rel="noopener"><span class="mono">${esc(ref.nom)}</span>${esc(ref.texte)}</a></section>`;
+}
+
+if (interne) {
+  const nv = A.categories.flatMap(c => c.criteres.filter(k => k.points === null).map(k => `${c.nom} : ${k.nom}`));
+  h += `<section><span class="eyebrow mono">Interne</span><h2>Notes <em>pour nous.</em></h2>
+  <div class="int"><h3>Contexte du mandat</h3><ul>${A.interne.contexte.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+  <div class="int"><h3>Autres trouvailles</h3><ul>${A.interne.trouvailles.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+  <div class="int"><h3>Upsells possibles</h3><ul>${A.interne.upsells.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+  <div class="int"><h3>Script d'appel (10 à 15 min)</h3><ul>${A.interne.script.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+  <div class="int"><h3>À vérifier avant d'envoyer</h3><ul>${nv.map(x=>`<li>${esc(x)}</li>`).join("") || "<li>Rien, tout est vérifié.</li>"}${A.interne.a_verifier.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div></section>`;
+} else {
+  const isTel = String(A.appel.lien || "").startsWith("tel:");
+  const num = isTel ? A.appel.lien.slice(4).replace(/^\+1(\d{3})(\d{3})(\d{4})$/, "$1-$2-$3") : "";
+  h += `<div class="cta"><span class="eyebrow mono" style="color:var(--sand)">La suite</span><h2>${esc(A.appel.titre)}</h2><p>${esc(A.appel.texte)}</p>
+    <a class="btn" href="${esc(A.appel.lien)}">${esc(A.appel.bouton)}</a>${isTel ? `<p class="tel mono">${esc(num)}</p>` : ""}</div>`;
+}
+
+const outil = esc((A.mesure && A.mesure.outil) || "PageSpeed Insights (Google)");
+const dateMesure = esc((A.mesure && A.mesure.date) || A.date);
+const phraseMesure = passes.length
+  ? `Score de vitesse retenu : ${mediane(passes)}, la médiane de ${passes.length} passages faits le ${dateMesure} (${passes.join(", ")}).`
+  : "";
+const phraseClassement = cl.length
+  ? `Classement Google observé le ${esc((A.mesure && A.mesure.date) || A.date)} pour ${cl.map(c => "« " + esc(c.requete) + " »").join(" et ")} : il peut varier d'un jour et d'une personne à l'autre.`
+  : "";
+h += `<section><span class="eyebrow mono">Méthode</span>
+  <h2>Comment <em>on a calculé.</em></h2>
+  <p class="method">Chaque catégorie compte 100 points répartis entre des critères précis. Un critère qu'on n'a pas pu vérifier est retiré du calcul plutôt que deviné. Les mesures de vitesse viennent de ${outil}, en mode cellulaire. ${phraseMesure} ${phraseClassement} Un même site peut obtenir des scores différents d'un passage à l'autre : c'est pourquoi on retient la médiane et on date chaque mesure. Cet audit reflète le site au ${esc(A.date)}.</p>`;
+A.categories.forEach((c,i) => {
+  h += `<details${interne ? " open" : ""}><summary>${esc(c.nom)}<span class="n">${scores[i] === null ? "à compléter" : scores[i] + "/100"}</span></summary><table>`;
+  c.criteres.forEach(k => {
+    h += `<tr><td>${esc(k.nom)}${k.note ? `<span class="note">${esc(k.note)}</span>` : ""}</td>
+      <td class="p ${k.points === null ? "na" : ""}">${k.points === null ? "non vérifié" : k.points + " / " + k.max}</td></tr>`;
+  });
+  h += `</table></details>`;
+});
+h += `</section></main>
+<footer><div class="wrap"><span class="c">Audit réalisé le ${esc(A.date)} · Beauce (Québec)</span>
+  <a class="attribution" href="https://veelution.com" aria-label="Rapport conçu par Veelution"><span>Rapport conçu par</span><img src="${LOGO}" alt="Veelution"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</div></footer>`;
+document.getElementById("app").innerHTML = h;
+document.title = (interne ? "[Interne] " : "") + "Audit web · " + A.entreprise;
+})();
+</script>
+</body>
+</html>
