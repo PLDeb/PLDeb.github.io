@@ -31,7 +31,7 @@
     "REPLY_TO": "pierreluc.deb@gmail.com",
     "AUTO_SEND": "false",
     "ANTHROPIC_MODEL": "claude-sonnet-5-5",
-    "TURNSTILE_SITEKEY": "",
+    "TURNSTILE_SITEKEY": "0x4AAAAAAFw_ja0ZX15uNWSb",
     "CALL_PHONE": "581-372-7527",
     "CALL_LINK": "tel:+15813727527",
     "CALL_BUTTON": "Appeler Pierre-Luc"
