@@ -17,7 +17,7 @@
   "browser": { "binding": "BROWSER" },
 
   // Remplacer les database_id / bucket_name après les commandes du README.
-  "d1_databases": [{ "binding": "DB", "database_name": "audit-veelution", "database_id": "REMPLACER_APRES_CREATION" }],
+  "d1_databases": [{ "binding": "DB", "database_name": "audit-veelution", "database_id": "d271fdab-375a-4bdb-a081-9be3450e9df6" }],
   "r2_buckets": [{ "binding": "REPORTS", "bucket_name": "audit-veelution-rapports" }],
   "queues": {
     "producers": [{ "binding": "AUDIT_QUEUE", "queue": "audit-veelution" }],
